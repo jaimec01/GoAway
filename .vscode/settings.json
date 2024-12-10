@@ -1,3 +1,16 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.jdt.ls.java.home": "C:\\Program Files\\Java\\jdk-21", 
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "C:\\Program Files\\Java\\jdk-21", 
+            "default": true
+        }
+    ],
+    "java.configuration.maven.globalSettings": "${workspaceFolder}/settings.xml",
+    "java.configuration.maven.userSettings": "${workspaceFolder}/settings.xml",
+    "java.configuration.maven.settings.autoDetection": "true",
+    "java.configuration.annotationProcessing.enabled": true,
+    "java.compile.nullAnalysis.mode": "automatic"
 }
