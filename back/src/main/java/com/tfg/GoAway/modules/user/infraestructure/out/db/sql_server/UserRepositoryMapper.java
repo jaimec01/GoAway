@@ -29,6 +29,7 @@ public class UserRepositoryMapper {
                             ? firstUser.get().get("direction", BigInteger.class).intValue()
                             : null)
                     .userType(firstUser.get().get("userType", String.class))
+                    .rol(firstUser.get().get("rol", String.class))
                     .build();
 
             return Optional.of(user);
@@ -51,6 +52,7 @@ public class UserRepositoryMapper {
         output.setContactNumber(input.getContactNumber());
         output.setDirectionId(input.getDirection());
         output.setUserType(input.getUserType());
+        output.setRol(input.getRol());
         return output;
     }
 
@@ -62,6 +64,7 @@ public class UserRepositoryMapper {
                 .contactNumber(input.getContactNumber())
                 .direction(input.getDirectionId())
                 .userType(input.getUserType())
+                .rol(input.getRol())
                 .build();
     }
 

@@ -26,4 +26,7 @@ public class UserEntity {
     @Column(name = "user_type")
     private String userType;
 
+    @Column(name = "user_rol")
+    private String rol;
+
 }
