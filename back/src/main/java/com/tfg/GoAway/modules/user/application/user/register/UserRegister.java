@@ -17,9 +17,6 @@ public class UserRegister {
     private final UserRepository userRepository;
     private final UserRegisterMapper userRegisterMapper;
 
-
-
-
     public UserRegisterResponse register(UserRegisterRecord record) throws Exception {
 
         if(record.getEmail() != null){

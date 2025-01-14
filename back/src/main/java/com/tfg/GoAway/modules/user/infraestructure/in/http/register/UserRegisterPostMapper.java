@@ -18,6 +18,7 @@ public class UserRegisterPostMapper {
             .name(request.getName())
             .password(passwordEncoderService.encode(request.getPassword())) 
             .contactNumber(request.getContactNumber())
+            .rol("USER")
             .build();
     }
 

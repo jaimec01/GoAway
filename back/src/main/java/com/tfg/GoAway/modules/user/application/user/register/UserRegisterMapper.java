@@ -22,6 +22,7 @@ public class UserRegisterMapper {
             .contactNumber(record.getContactNumber())
             .direction(user.getDirection())
             .userType(user.getUserType())
+            .rol("USER")
             .build();
     } 
 

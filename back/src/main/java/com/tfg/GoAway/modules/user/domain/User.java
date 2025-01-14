@@ -23,4 +23,6 @@ public class User {
 
     private final String userType;
 
+    private final String rol;
+
 }

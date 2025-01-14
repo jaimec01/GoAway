@@ -17,7 +17,8 @@ public final class CustomUserRepositoryQueryBuilder {
         + " password, "
         + " contact_number, "
         + " direction_id, "
-        + " user_type ";
+        + " user_type, "
+        + " user_rol";
 
 
     private static final String Q_FILTER_USER = " AND email = :email";
