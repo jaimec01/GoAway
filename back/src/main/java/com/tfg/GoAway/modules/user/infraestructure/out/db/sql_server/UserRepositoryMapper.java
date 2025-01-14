@@ -5,7 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.math.BigInteger;
 import java.util.*;
 
-import com.tfg.GoAway.modules.user.domain.user.User;
+import com.tfg.GoAway.modules.shared.password.PasswordEncoderService;
+import com.tfg.GoAway.modules.user.domain.User;
 
 import jakarta.persistence.Tuple;
 
@@ -16,7 +17,7 @@ public class UserRepositoryMapper {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    public static Optional<User> tupleToUser(final List<Tuple> tuples){
+    public static Optional<User> tupleToUser(final List<Tuple> tuples) {
         var firstUser = tuples.stream().findFirst();
         if (firstUser.isPresent()) {
             var user = User.builder()
@@ -36,7 +37,11 @@ public class UserRepositoryMapper {
         }
     }
 
-    public static UserEntity userToEntity(final User input) {
+    public static UserEntity userToEntity(final User input, PasswordEncoderService passwordEncoderService) {
+
+        if (input == null) {
+            throw new IllegalArgumentException("Input User cannot be null");
+        }
 
         var output = new UserEntity();
 
@@ -44,13 +49,8 @@ public class UserRepositoryMapper {
         output.setName(input.getName());
         output.setPassword(input.getPassword());
         output.setContactNumber(input.getContactNumber());
-        if (input.getDirection() != null) {
-            output.setDirectionId(input.getDirection());
-        } else {
-            output.setDirectionId(null);
-        }
+        output.setDirectionId(input.getDirection());
         output.setUserType(input.getUserType());
-
         return output;
     }
 

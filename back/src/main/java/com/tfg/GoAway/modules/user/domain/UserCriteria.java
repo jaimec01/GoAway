@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.domain.user;
+package com.tfg.GoAway.modules.user.domain;
 
 import lombok.*;
 

@@ -13,10 +13,6 @@ public class UserRegisterResponse {
 
     private final Long contactNumber;
 
-    private final Integer direction;
-
-    private final String userType;
-    
     private final String message;
 }
  

@@ -15,8 +15,4 @@ public class UserRegisterRecord {
 
     private Long contactNumber;
 
-    private Integer direction;
-    
-    private String userType;
-
 }

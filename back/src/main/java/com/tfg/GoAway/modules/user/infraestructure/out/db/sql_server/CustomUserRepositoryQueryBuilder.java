@@ -1,8 +1,8 @@
 package com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server;
 
-import com.tfg.GoAway.modules.user.domain.user.UserCriteria;
-
 import lombok.extern.slf4j.Slf4j;
+
+import com.tfg.GoAway.modules.user.domain.UserCriteria;
 
 import jakarta.persistence.*;
 

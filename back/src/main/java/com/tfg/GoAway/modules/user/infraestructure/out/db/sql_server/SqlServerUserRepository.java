@@ -2,9 +2,11 @@ package com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server;
 
 import org.springframework.stereotype.Repository;
 
-import com.tfg.GoAway.modules.user.domain.user.User;
-import com.tfg.GoAway.modules.user.domain.user.UserCriteria;
-import com.tfg.GoAway.modules.user.domain.user.UserRepository;
+import com.tfg.GoAway.modules.shared.password.PasswordEncoderService;
+import com.tfg.GoAway.modules.user.domain.User;
+import com.tfg.GoAway.modules.user.domain.UserCriteria;
+import com.tfg.GoAway.modules.user.domain.UserRepository;
+
 import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
@@ -20,9 +22,13 @@ public class SqlServerUserRepository implements UserRepository{
 
     private final SqlServerJpaUserRepository repository;
 
-    public SqlServerUserRepository(EntityManager entityManager, SqlServerJpaUserRepository repository){
+    private final PasswordEncoderService passwordEncoderService;
+
+
+    public SqlServerUserRepository(EntityManager entityManager, SqlServerJpaUserRepository repository, PasswordEncoderService passwordEncoderService){
         this.entityManager = entityManager;
         this.repository = repository;
+        this.passwordEncoderService = passwordEncoderService;
     }
 
     @SuppressWarnings("unchecked")
@@ -37,8 +43,10 @@ public class SqlServerUserRepository implements UserRepository{
     @Override
     public User save(final User user) {
         try {
-            UserEntity saved = repository.save(userToEntity(user));
-            return entityToUser(saved);
+            UserEntity saved = repository.save(
+                UserRepositoryMapper.userToEntity(user, passwordEncoderService) 
+            );
+            return UserRepositoryMapper.entityToUser(saved);
         } catch (Exception e) {
             log.error("Error al guardar el usuario: {}", e.getMessage(), e);
             throw e;
@@ -47,12 +55,13 @@ public class SqlServerUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findByEmail(String email) {
-
+    
         if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("El email no puede ser nulo o vacío.");
+            return Optional.empty();
         }
-
+    
         return repository.findById(email).map(UserRepositoryMapper::entityToUser);
     }
+    
     
 }
