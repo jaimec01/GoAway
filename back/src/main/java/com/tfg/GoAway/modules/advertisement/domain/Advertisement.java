@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.advertisement.domain.advertisement;
+package com.tfg.GoAway.modules.advertisement.domain;
 
 import lombok.Builder;
 import lombok.Data;
