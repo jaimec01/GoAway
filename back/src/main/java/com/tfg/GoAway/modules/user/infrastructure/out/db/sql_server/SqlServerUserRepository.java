@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server;
+package com.tfg.GoAway.modules.user.infrastructure.out.db.sql_server;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +10,10 @@ import com.tfg.GoAway.modules.user.domain.UserRepository;
 import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
-import java.util.List;
 
-import static com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server.UserRepositoryMapper.*;
+import static com.tfg.GoAway.modules.user.infrastructure.out.db.sql_server.UserRepositoryMapper.*;
+
+import java.util.List;
 
 @Slf4j
 @Repository

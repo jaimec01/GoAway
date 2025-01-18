@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.in.http.register;
+package com.tfg.GoAway.modules.user.infrastructure.in.http.register;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server;
+package com.tfg.GoAway.modules.user.infrastructure.out.db.sql_server;
 
 import lombok.extern.slf4j.Slf4j;
 
