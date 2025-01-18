@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.in.http.login;
+package com.tfg.GoAway.modules.user.infrastructure.in.http.login;
 
 import java.io.Serializable;
 

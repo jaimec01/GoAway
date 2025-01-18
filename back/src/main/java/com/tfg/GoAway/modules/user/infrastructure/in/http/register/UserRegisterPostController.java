@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.in.http.register;
+package com.tfg.GoAway.modules.user.infrastructure.in.http.register;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tfg.GoAway.modules.user.domain.User;
-import com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server.SqlServerUserRepository;
+import com.tfg.GoAway.modules.user.infrastructure.out.db.sql_server.SqlServerUserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/auth/user")
 public class UserRegisterPostController {
 
     private final SqlServerUserRepository userRepository;

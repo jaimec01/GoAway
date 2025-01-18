@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Builder
 @Data
 @Getter
 @Setter
 public class Advertisement {
 
-    private final String furnitureId;
+    private final String id;
 
     private final String description;
 
@@ -21,7 +22,8 @@ public class Advertisement {
 
     private final AdvertisementCondition advertisementCondition;
 
-    
+    private String userEmail;
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -31,24 +33,10 @@ public class Advertisement {
         if (getClass() != obj.getClass())
             return false;
         Advertisement other = (Advertisement) obj;
-        if (furnitureId == null) {
-            if (other.furnitureId != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!furnitureId.equals(other.furnitureId))
-            return false;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (advertisementCategory != other.advertisementCategory)
-            return false;
-        if (photoUrls == null) {
-            if (other.photoUrls != null)
-                return false;
-        } else if (!photoUrls.equals(other.photoUrls))
-            return false;
-        if (advertisementCondition != other.advertisementCondition)
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }
@@ -57,16 +45,7 @@ public class Advertisement {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((furnitureId == null) ? 0 : furnitureId.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((advertisementCategory == null) ? 0 : advertisementCategory.hashCode());
-        result = prime * result + ((photoUrls == null) ? 0 : photoUrls.hashCode());
-        result = prime * result + ((advertisementCondition == null) ? 0 : advertisementCondition.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
-
-
-
-    
 }
-

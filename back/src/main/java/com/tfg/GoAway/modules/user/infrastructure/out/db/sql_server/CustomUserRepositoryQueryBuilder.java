@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.out.db.sql_server;
+package com.tfg.GoAway.modules.user.infrastructure.out.db.sql_server;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,9 @@ public final class CustomUserRepositoryQueryBuilder {
         + " contact_number, "
         + " direction_id, "
         + " user_type, "
-        + " user_rol";
+        + " user_rol"
+        + " FROM user"
+        + " WHERE 1 = 1";
 
 
     private static final String Q_FILTER_USER = " AND email = :email";

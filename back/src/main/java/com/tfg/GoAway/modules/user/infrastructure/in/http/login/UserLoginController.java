@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.user.infraestructure.in.http.login;
+package com.tfg.GoAway.modules.user.infrastructure.in.http.login;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/auth/user")
 public class UserLoginController {
 
     private final UserRepository userRepository;
