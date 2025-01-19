@@ -16,7 +16,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
         + " furniture_category, "
         + " photo_urls, "
         + " furniture_condition, "
-        + " user_email "
+        + " user_email, "
+        + " price"
         + " FROM advertisement "
         + " WHERE 1 = 1";
 

@@ -30,4 +30,7 @@ public class AdvertisementEntity {
 
     @Column(name = "user_email")
     private String userEmail;
+
+    @Column(name = "price")
+    private Double price;
 }

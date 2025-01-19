@@ -16,4 +16,6 @@ public class AdvertisementCreatePostRequest {
     private String condition;
 
     private String userEmail;
+
+    private Double price;
 }

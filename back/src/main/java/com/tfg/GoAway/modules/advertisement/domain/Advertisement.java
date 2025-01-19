@@ -24,6 +24,8 @@ public class Advertisement {
 
     private String userEmail;
 
+    private Double price;
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

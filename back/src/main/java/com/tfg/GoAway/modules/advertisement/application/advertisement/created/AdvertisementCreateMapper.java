@@ -16,6 +16,7 @@ public class AdvertisementCreateMapper {
                 .photoUrls(record.getPhotoUrls())
                 .advertisementCondition(AdvertisementCondition.valueOf(record.getCondition().toUpperCase()))
                 .userEmail(record.getUserEmail())
+                .price(record.getPrice())
                 .build();
     }
 }

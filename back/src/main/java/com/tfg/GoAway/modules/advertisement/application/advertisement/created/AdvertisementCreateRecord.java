@@ -18,4 +18,6 @@ public class AdvertisementCreateRecord {
     private final String condition;
 
     private final String userEmail;
+
+    private final Double price;
 }
