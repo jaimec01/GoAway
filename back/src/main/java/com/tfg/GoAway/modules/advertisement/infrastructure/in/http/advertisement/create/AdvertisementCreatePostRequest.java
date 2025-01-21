@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class AdvertisementCreatePostRequest {
 
+    private String title;
+
     private String description;
 
     private String category;

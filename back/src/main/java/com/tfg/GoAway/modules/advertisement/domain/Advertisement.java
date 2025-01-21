@@ -1,5 +1,7 @@
 package com.tfg.GoAway.modules.advertisement.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -14,6 +16,8 @@ public class Advertisement {
 
     private final String id;
 
+    private final String title;
+
     private final String description;
 
     private final AdvertisementCategory advertisementCategory;
@@ -25,6 +29,8 @@ public class Advertisement {
     private String userEmail;
 
     private Double price;
+
+    private LocalDateTime createdAt;
 
     @Override
     public boolean equals(Object obj) {

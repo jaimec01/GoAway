@@ -23,6 +23,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/auth/**").permitAll() // Permite rutas públicas como inicio de sesión y registro
                 .requestMatchers("/api/**").authenticated() // Protege rutas de la API
+                .requestMatchers("/public/**").permitAll()
                 .anyRequest().permitAll() // Permite cualquier otra ruta
             )
             .sessionManagement(session -> session

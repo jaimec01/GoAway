@@ -12,12 +12,14 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
 
     private static final String Q_BASE = "SELECT "
         + " id, "
+        + " title, "
         + " description, "
         + " furniture_category, "
         + " photo_urls, "
         + " furniture_condition, "
         + " user_email, "
-        + " price"
+        + " price, "
+        + " created_at"
         + " FROM advertisement "
         + " WHERE 1 = 1";
 
