@@ -1,7 +1,5 @@
 package com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server;
 
-
-
 import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
 import com.tfg.GoAway.modules.advertisement.domain.AdvertisementRepository;
 
@@ -39,7 +37,6 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
         if (id == null) {
             return Optional.empty();
         }
-
         return repository.findById(id.toString()).map(AdvertisementRepositoryMapper::entityToAdvertisement);
     }
 
@@ -48,5 +45,15 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
         return repository.findAll().stream()
                 .map(AdvertisementRepositoryMapper::entityToAdvertisement)
                 .toList();
+    }
+
+    @Override
+    public void delete(Advertisement advertisement) {
+        try {
+            repository.delete(advertisementToEntity(advertisement));
+        } catch (Exception e) {
+            log.error("Error al eliminar el anuncio: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 }
