@@ -12,4 +12,6 @@ public interface AdvertisementRepository {
     
     List<Advertisement> findAll();
 
+    void delete(Advertisement advertisement);
+
 }
