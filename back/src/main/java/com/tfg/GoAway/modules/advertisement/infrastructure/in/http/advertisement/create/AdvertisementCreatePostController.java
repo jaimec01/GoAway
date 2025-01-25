@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/advertisements")
 public class AdvertisementCreatePostController {
-
+ 
     private final SqlServerAdvertisementRepository advertisementRepository;
     private final AdvertisementCreatePostMapper requestMapper;
 

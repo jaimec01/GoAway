@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfg.GoAway.modules.advertisement.application.advertisement.delete.AdvertisementDeleter;
+import com.tfg.GoAway.modules.advertisement.application.advertisement.delete.AdvertisementDelete;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/advertisements")
 public class AdvertisementDeleteController {
 
-    private final AdvertisementDeleter advertisementDeleter;
+    private final AdvertisementDelete advertisementDeleter;
 
     @DeleteMapping("/myAdvertisements")
     public ResponseEntity<String> deleteAdvertisement(@RequestBody AdvertisementDeleteRequest request) {

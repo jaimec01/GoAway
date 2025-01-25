@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AdvertisementDeleter {
+public class AdvertisementDelete {
 
     private final AdvertisementRepository advertisementRepository;
 
