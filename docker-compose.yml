@@ -15,7 +15,8 @@ services:
       context: ./back
     container_name: goaway-backend
     ports:
-      - "8080:8080"
+      - "8080:8080" # Puerto de la aplicación
+      - "5005:5005" # Puerto del depurador
     depends_on:
       - db
     environment:
