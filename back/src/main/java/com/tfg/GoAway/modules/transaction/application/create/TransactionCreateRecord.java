@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.transaction.application;
+package com.tfg.GoAway.modules.transaction.application.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
