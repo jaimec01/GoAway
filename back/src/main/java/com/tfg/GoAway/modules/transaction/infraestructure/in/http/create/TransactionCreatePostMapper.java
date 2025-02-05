@@ -2,7 +2,7 @@ package com.tfg.GoAway.modules.transaction.infraestructure.in.http.create;
 
 import org.springframework.stereotype.Component;
 
-import com.tfg.GoAway.modules.transaction.application.TransactionCreateRecord;
+import com.tfg.GoAway.modules.transaction.application.create.TransactionCreateRecord;
 
 @Component
 public class TransactionCreatePostMapper {

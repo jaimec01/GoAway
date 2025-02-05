@@ -1,7 +1,6 @@
 package com.tfg.GoAway.modules.transaction.infraestructure.out.db.sql_server;
 
 import com.tfg.GoAway.modules.transaction.domain.Transaction;
-import com.tfg.GoAway.modules.transaction.domain.TransactionOwnerConfirmation;
 import com.tfg.GoAway.modules.transaction.domain.TransactionRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,23 +32,9 @@ public class SqlServerTransactionRepository implements TransactionRepository {
         }
     }
 
-    public Optional<Transaction> acceptTransaction(String transactionId) {
-        return updateTransactionStatus(transactionId, TransactionOwnerConfirmation.ACCEPTED);
-    }
-
-    public Optional<Transaction> rejectTransaction(String transactionId) {
-        return updateTransactionStatus(transactionId, TransactionOwnerConfirmation.REJECTED);
-    }
-
-    private Optional<Transaction> updateTransactionStatus(String transactionId, TransactionOwnerConfirmation newStatus) {
-        Optional<TransactionEntity> optionalTransaction = repository.findById(transactionId);
-        if (optionalTransaction.isPresent()) {
-            TransactionEntity transaction = optionalTransaction.get();
-            transaction.setOwnerConfirmation(newStatus);
-            repository.save(transaction);
-            return Optional.of(entityToTransaction(transaction));
-        }
-        return Optional.empty();
+    @Override
+    public Optional<Transaction> findById(String transactionId) {
+        return repository.findById(transactionId).map(TransactionRepositoryMapper::entityToTransaction);
     }
 
 

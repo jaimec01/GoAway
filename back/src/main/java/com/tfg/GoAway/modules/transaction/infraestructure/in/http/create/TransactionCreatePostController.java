@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.tfg.GoAway.modules.shared.security.SecurityUtils;
-import com.tfg.GoAway.modules.transaction.application.TransactionCreate;
-import com.tfg.GoAway.modules.transaction.application.TransactionCreateRecord;
-import com.tfg.GoAway.modules.transaction.application.TransactionCreateResponse;
+import com.tfg.GoAway.modules.transaction.application.create.TransactionCreate;
+import com.tfg.GoAway.modules.transaction.application.create.TransactionCreateRecord;
+import com.tfg.GoAway.modules.transaction.application.create.TransactionCreateResponse;
 
 import lombok.RequiredArgsConstructor;
 
