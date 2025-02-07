@@ -1,5 +1,6 @@
 package com.tfg.GoAway.modules.transaction.domain;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository {
@@ -7,5 +8,9 @@ public interface TransactionRepository {
     Transaction save(Transaction transaction);
 
     Optional<Transaction> findById(String transactionId);
+
+    List<Transaction> findByOwnerEmail(String ownerEmail);
+    
+    List<Transaction> findByTenantEmail(String tenantEmail);
 
 }
