@@ -3,11 +3,15 @@ package com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server;
 import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
 import com.tfg.GoAway.modules.advertisement.domain.AdvertisementRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.AdvertisementRepositoryMapper.*;
 
@@ -16,6 +20,9 @@ import static com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_ser
 public class SqlServerAdvertisementRepository implements AdvertisementRepository {
 
     private final SqlServerJpaAdvertisementRepository repository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public SqlServerAdvertisementRepository(SqlServerJpaAdvertisementRepository repository) {
         this.repository = repository;
@@ -55,5 +62,15 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
             log.error("Error al eliminar el anuncio: {}", e.getMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public List<Advertisement> findByFilters(String category, String condition) {
+        TypedQuery<AdvertisementEntity> query = CustomAdvertisementRepositoryQueryBuilder.buildQueryByFilters(category, condition, entityManager);
+        List<AdvertisementEntity> advertisementEntities = query.getResultList();
+
+        return advertisementEntities.stream()
+                .map(AdvertisementRepositoryMapper::entityToAdvertisement)
+                .collect(Collectors.toList());
     }
 }
