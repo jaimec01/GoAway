@@ -14,4 +14,7 @@ public interface AdvertisementRepository {
 
     void delete(Advertisement advertisement);
 
+    List<Advertisement> findByFilters(String category, String condition);
+
+
 }
