@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+      {
+        "type": "java",
+        "name": "Attach to Docker Backend",
+        "request": "attach",
+        "hostName": "localhost",
+        "port": 5005,
+        "projectName": "GoAway" // Cambia esto por el nombre de tu proyecto
+      }
+    ]
+  }
+  
