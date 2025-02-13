@@ -11,12 +11,13 @@ public class AdvertisementCreateMapper {
     public static Advertisement toDomain(AdvertisementCreateRecord record) {
         return Advertisement.builder()
                 .id(UUID.randomUUID().toString())
+                .title(record.getTitle())
                 .description(record.getDescription())
-                .advertisementCategory(AdvertisementCategory.valueOf(record.getCategory().toUpperCase()))
+                .advertisementCategory(AdvertisementCategory.fromValue(record.getCategory()))  
+                .advertisementCondition(AdvertisementCondition.fromValue(record.getCondition())) 
                 .photoUrls(record.getPhotoUrls())
-                .advertisementCondition(AdvertisementCondition.valueOf(record.getCondition().toUpperCase()))
-                .userEmail(record.getUserEmail())
                 .price(record.getPrice())
+                .userEmail(record.getUserEmail())
                 .build();
     }
 }

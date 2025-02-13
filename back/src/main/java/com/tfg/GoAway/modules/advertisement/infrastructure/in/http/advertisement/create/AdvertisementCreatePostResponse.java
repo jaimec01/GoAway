@@ -9,5 +9,7 @@ import lombok.Getter;
 public class AdvertisementCreatePostResponse {
 
     private String id;
+
     private String message;
+    
 }

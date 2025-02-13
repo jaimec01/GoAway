@@ -9,9 +9,14 @@ import java.time.LocalDate;
 public class TransactionCreatePostRequest {
 
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     private Double totalPrice;
+
     private String paymentMethod;
+
     private String advertisementId;
+    
     private String ownerEmail; 
 }

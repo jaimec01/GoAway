@@ -20,7 +20,7 @@ public class AdvertisementFinderAllController {
     @Autowired
     private AdvertisementFinderAll advertisementFinderAll;
 
-    @GetMapping("/getAll")
+    @GetMapping
     public List<AdvertisementFinderAllResponse> getAllAdvertisements() {
         return advertisementFinderAll.finderAll();
     }

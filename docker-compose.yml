@@ -1,5 +1,14 @@
 version: "3.9"
 services:
+  frontend:
+    build:
+      context: ./front
+    container_name: goaway-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
   db:
     image: mysql:8.0
     container_name: goaway-db
