@@ -1,0 +1,58 @@
+<!-- Cabecera -->
+<header class="header">
+  <div class="header-left">
+    <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" />
+  </div>
+
+  <div class="header-center">
+    <h1>Lista de Anuncios</h1>
+  </div>
+
+  <div class="header-right">
+    <button *ngIf="!isAuthenticated" (click)="onLoginClick()">Login</button>
+    <button *ngIf="!isAuthenticated" (click)="onSignUpClick()">Sign Up</button>
+    <button *ngIf="isAuthenticated" class="logout" (click)="onLogoutClick()">Logout</button>
+  </div>
+</header>
+
+<!-- Contenedor de anuncios -->
+<div class="advertisement-container">
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando anuncios...</p>
+  </div>
+
+  <div class="error" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="advertisement-list" *ngIf="!loading && !errorMessage">
+    <div class="advertisement-card" *ngFor="let ad of advertisements">
+      <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
+
+      <h2>{{ ad.title }}</h2>
+      <p class="description">{{ ad.description }}</p>
+      <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
+      <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
+      <p><strong>Precio:</strong> {{ ad.price }}€</p>
+      <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
+
+      <button *ngIf="isAuthenticated" class="rent-button">Alquilar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Barra inferior fija con el botón de crear anuncio -->
+<div class="fixed-bottom-bar">
+  <button class="create-advertisement-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="add-icon" />
+  </button>
+</div>
+
+<!-- Pop-up de inicio de sesión -->
+<div *ngIf="showLoginPopup" class="login-popup">
+  <div class="popup-content">
+    <p>Debes iniciar sesión para crear un anuncio.</p>
+    <button (click)="closeLoginPopup()">Cerrar</button>
+  </div>
+</div>

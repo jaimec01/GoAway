@@ -1,10 +1,8 @@
 package com.tfg.GoAway.modules.advertisement.infrastructure.in.http.advertisement.create;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class AdvertisementCreatePostRequest {
 
     private String title;
@@ -20,4 +18,5 @@ public class AdvertisementCreatePostRequest {
     private String userEmail;
 
     private Double price;
+
 }

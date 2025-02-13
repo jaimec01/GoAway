@@ -1,24 +1,21 @@
 package com.tfg.GoAway.modules.advertisement.infrastructure.in.http.advertisement.create;
 
-import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
-import com.tfg.GoAway.modules.advertisement.domain.AdvertisementCategory;
-import com.tfg.GoAway.modules.advertisement.domain.AdvertisementCondition;
-
-
 import org.springframework.stereotype.Component;
+
+import com.tfg.GoAway.modules.advertisement.application.advertisement.created.AdvertisementCreateRecord;
 
 @Component
 public class AdvertisementCreatePostMapper {
 
-    public Advertisement toDomain(AdvertisementCreatePostRequest request, String userEmail) {
-        return Advertisement.builder()
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .advertisementCategory(AdvertisementCategory.valueOf(request.getCategory().toUpperCase()))
-                .photoUrls(request.getPhotoUrls())
-                .advertisementCondition(AdvertisementCondition.valueOf(request.getCondition().toUpperCase()))
-                .userEmail(userEmail)
-                .price(request.getPrice())
-                .build();
+    public AdvertisementCreateRecord toRecord(AdvertisementCreatePostRequest request, String userEmail) {
+        return AdvertisementCreateRecord.builder()
+        .title(request.getTitle())
+        .description(request.getDescription())
+        .category(request.getCategory())
+        .condition(request.getCondition())
+        .price(request.getPrice())
+        .photoUrls(request.getPhotoUrls())
+        .userEmail(userEmail)
+        .build();
     }
 }

@@ -1,13 +1,16 @@
 package com.tfg.GoAway.modules.advertisement.application.advertisement.created;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+
+@Builder
+@Data
 public class AdvertisementCreateRecord {
 
     private final String id;
+
+    private final String title;
 
     private final String description;
 

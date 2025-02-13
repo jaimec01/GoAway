@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
-import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.SqlServerAdvertisementRepository;
+import com.tfg.GoAway.modules.advertisement.application.advertisement.created.AdvertisementCreate;
+import com.tfg.GoAway.modules.advertisement.application.advertisement.created.AdvertisementCreateRecord;
+import com.tfg.GoAway.modules.advertisement.application.advertisement.created.AdvertisementCreateResponse;
 import com.tfg.GoAway.modules.shared.security.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -16,28 +17,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/advertisements")
 public class AdvertisementCreatePostController {
  
-    private final SqlServerAdvertisementRepository advertisementRepository;
+    private final AdvertisementCreate advertisementCreate;
     private final AdvertisementCreatePostMapper requestMapper;
 
-    @PostMapping("/create")
-    public AdvertisementCreatePostResponse saveAdvertisement(@RequestBody AdvertisementCreatePostRequest request) {
+    @PostMapping
+    public AdvertisementCreateResponse saveAdvertisement(@RequestBody AdvertisementCreatePostRequest request) {
 
-        if (request.getDescription() == null || request.getDescription().isEmpty()) {
-            throw new IllegalArgumentException("La descripción no puede ser nula o vacía.");
-        }
-
-        if (request.getCategory() == null || request.getCategory().isEmpty()) {
-            throw new IllegalArgumentException("La categoría no puede ser nula o vacía.");
-        }
+        System.out.println("Solicitud recibida en backend: " + request);
 
         String userEmail = SecurityUtils.getUserEmailFromContext();
 
-        Advertisement advertisement = requestMapper.toDomain(request, userEmail);
-        Advertisement savedAdvertisement = advertisementRepository.save(advertisement);
+        AdvertisementCreateRecord record = requestMapper.toRecord(request, userEmail);
 
-        return new AdvertisementCreatePostResponse(
-            savedAdvertisement.getId(),
-            "Anuncio creado con éxito"
-        );
+        return advertisementCreate.execute(record);
+
     }
 }

@@ -15,6 +15,7 @@ public class TransactionCreatePostMapper {
                 request.getPaymentMethod(),
                 request.getAdvertisementId(),
                 tenantEmail, // Usuario autenticado
-                request.getOwnerEmail()         );
+                request.getOwnerEmail()         
+                );
     }
 }
