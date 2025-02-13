@@ -3,11 +3,13 @@ import { AdvertisementListComponent } from './modules/advertisement/pages/advert
 import { LoginComponent } from './modules/user/pages/login/login.component';
 import { RegisterComponent } from './modules/user/pages/register/register.component';
 import { CreateAdvertisementComponent } from './modules/advertisement/pages/create-advertisement/create-advertisement.component'; 
+import { MyAdsComponent } from './modules/advertisement/pages/my-ads/my-ads.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'advertisements', pathMatch: 'full' },
-  { path: 'advertisements', component: AdvertisementListComponent },
-  { path: 'advertisements/create', component: CreateAdvertisementComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'advertisements', component: AdvertisementListComponent },
+  { path: 'advertisements/new', component: CreateAdvertisementComponent },
+  { path: 'advertisements/my-ads', component: MyAdsComponent },
 ];
