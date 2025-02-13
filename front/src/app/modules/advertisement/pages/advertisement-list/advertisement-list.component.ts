@@ -91,17 +91,23 @@ export class AdvertisementListComponent implements OnInit {
   onCreateAdvertisementClick(): void {
     if (this.isAuthenticated) {
       console.log('➕ Redirigiendo a creación de anuncio...');
-      this.router.navigate(['/advertisements/create']);
+      this.router.navigate(['/advertisements/new'], {
+        queryParams: { returnUrl: this.router.url }
+      });
     } else {
       console.log('⚠️ Usuario no autenticado, mostrando pop-up.');
       this.showLoginPopup = true;
     }
   }
 
-  // ✅ Función para los botones de funcionalidades futuras
-  onPlaceholderClick(): void {
-    console.log('⚠️ Funcionalidad aún no disponible.');
+  // ✅ Redirigir a la página de "Mis Anuncios"
+  onMyAdsClick(): void {
+    if (this.isAuthenticated) {
+      console.log('🔗 Redirigiendo a Mis Anuncios...');
+      this.router.navigate(['/advertisements/my-ads']);
+    }
   }
+
 
   // ✅ Cerrar pop-up de inicio de sesión
   closeLoginPopup(): void {

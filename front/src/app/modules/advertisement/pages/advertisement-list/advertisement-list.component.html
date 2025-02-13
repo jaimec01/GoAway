@@ -11,6 +11,7 @@
   <div class="header-right">
     <button *ngIf="!isAuthenticated" (click)="onLoginClick()">Login</button>
     <button *ngIf="!isAuthenticated" (click)="onSignUpClick()">Sign Up</button>
+    <button *ngIf="isAuthenticated" class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
     <button *ngIf="isAuthenticated" class="logout" (click)="onLogoutClick()">Logout</button>
   </div>
 </header>

@@ -6,10 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecurityUtils {
 
-    private SecurityUtils() {
-        // Constructor privado para evitar instanciación
-    }
-
     public static String getUserEmailFromContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
