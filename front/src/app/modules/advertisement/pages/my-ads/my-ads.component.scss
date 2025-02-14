@@ -1,104 +1,143 @@
 /* Cabecera simplificada */
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Alinear a la izquierda */
-    padding: 10px 20px;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .header-left {
-    .header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ccc;
+}
+
+.header-left {
+  .header-logo {
       height: 100px;
       width: auto;
       margin-right: 1rem;
-    }
+      cursor: pointer;
   }
+}
 
-  .header-center {
-    flex: 1;
-    text-align: center;
-  
-    h1 {
+.header-center {
+  flex: 1;
+  text-align: center;
+
+  h1 {
       margin: 0;
       font-size: 2.5rem;
-    }
   }
-  
-  /* Título de la página */
-  .page-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin: 20px 0;
-  }
-  
-  /* Contenedor de anuncios */
-  .advertisement-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-bottom: 80px;
-  }
-  
-  .advertisement-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-  
-    .advertisement-card {
+}
+
+/* Contenedor de anuncios */
+.advertisement-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  margin-bottom: 80px;
+}
+
+.advertisement-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+
+  .advertisement-card {
       background: #fff;
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease-in-out;
       text-align: left;
-      position: relative;
-  
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: auto;
+
       .ad-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          border-radius: 8px;
       }
-  
+
+      .ad-content {
+          padding: 10px;
+          text-align: left;
+      }
+
       &:hover {
-        transform: scale(1.03);
+          transform: scale(1.03);
       }
-    }
   }
-  
-  /* Barra inferior fija */
-  .fixed-bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #f8f8f8;
-    border-top: 2px solid #ccc;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  /* Botón de creación */
-  .create-advertisement-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-  
-    &:hover {
+}
+
+/* Contenedor de botones de acción */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+/* Botones de eliminar y modificar */
+.delete-button, .edit-button {
+  width: 48%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 5px;
+}
+
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.edit-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
+
+.edit-button:hover {
+  background-color: #388e3c;
+}
+
+/* Barra inferior fija */
+.fixed-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f8f8f8;
+  border-top: 2px solid #ccc;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Botón de creación */
+.create-advertisement-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
       background-color: #218838;
-    }
-  
-    .add-icon {
+  }
+
+  .add-icon {
       width: 40px;
       height: 40px;
-    }
   }
+}
