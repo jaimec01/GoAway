@@ -1,5 +1,7 @@
 package com.tfg.GoAway.modules.transaction.infrastructure.out.db.sql_server;
 
+import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.AdvertisementEntity;
+import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.SqlServerJpaAdvertisementRepository;
 import com.tfg.GoAway.modules.transaction.domain.Transaction;
 import com.tfg.GoAway.modules.transaction.domain.TransactionRepository;
 
@@ -22,18 +24,28 @@ public class SqlServerTransactionRepository implements TransactionRepository {
 
     private final SqlServerJpaTransactionRepository repository;
 
+    private final SqlServerJpaAdvertisementRepository advertisementRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    public SqlServerTransactionRepository(SqlServerJpaTransactionRepository repository) {
+    public SqlServerTransactionRepository(SqlServerJpaTransactionRepository repository,  SqlServerJpaAdvertisementRepository advertisementRepository) {
         this.repository = repository;
+        this.advertisementRepository = advertisementRepository;
     }
 
     @Override
     public Transaction save(final Transaction transaction) {
         try {
-            TransactionEntity saved = repository.save(transactionToEntity(transaction));
+            AdvertisementEntity advertisement = advertisementRepository.findById(transaction.getAdvertisementId())
+                    .orElseThrow(() -> new IllegalArgumentException("El anuncio asociado a esta transacción no existe"));
+
+            TransactionEntity transactionEntity = transactionToEntity(transaction, advertisement);
+
+            TransactionEntity saved = repository.save(transactionEntity);
+
             return entityToTransaction(saved);
+            
         } catch (Exception e) {
             log.error("Error al guardar la transacción: {}", e.getMessage(), e);
             throw e;

@@ -1,5 +1,6 @@
 package com.tfg.GoAway.modules.advertisement.infrastructure.in.http.advertisement.delete;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +21,21 @@ public class AdvertisementDeleteController {
 
     @DeleteMapping
     public ResponseEntity<String> deleteAdvertisement(@RequestBody AdvertisementDeleteRequest request) {
-        
         String userEmail = SecurityUtils.getUserEmailFromContext();
         
-        advertisementDeleter.deleteByUserAndId(userEmail, request.getAdvertisementId());
+        try {
 
-        return ResponseEntity.ok("Anuncio eliminado correctamente.");
+            advertisementDeleter.deleteByUserAndId(userEmail, request.getAdvertisementId());
+            return ResponseEntity.ok("Anuncio eliminado correctamente.");
+
+        } catch (DataIntegrityViolationException e) {
+
+            return ResponseEntity.badRequest().body("Este anuncio tiene una transacción abierta y no puede eliminarse.");
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(500).body("Error inesperado al intentar eliminar el anuncio.");
+            
+        }
     }
 }

@@ -1,10 +1,11 @@
 package com.tfg.GoAway.modules.transaction.infrastructure.out.db.sql_server;
 
+import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.AdvertisementEntity;
 import com.tfg.GoAway.modules.transaction.domain.Transaction;
 
 public class TransactionRepositoryMapper {
 
-    public static TransactionEntity transactionToEntity(Transaction transaction) {
+    public static TransactionEntity transactionToEntity(Transaction transaction, AdvertisementEntity advertisement) {
         TransactionEntity entity = new TransactionEntity();
         entity.setId(transaction.getId());
         entity.setStartDate(transaction.getStartDate());
@@ -14,7 +15,7 @@ public class TransactionRepositoryMapper {
         entity.setStatus(transaction.getStatus());
         entity.setTenantEmail(transaction.getTenantEmail());
         entity.setOwnerEmail(transaction.getOwnerEmail());
-        entity.setAdvertisementId(transaction.getAdvertisementId());
+        entity.setAdvertisement(advertisement);
         entity.setOwnerConfirmation(transaction.getOwnerConfirmation());
         return entity;
     }
@@ -29,7 +30,7 @@ public class TransactionRepositoryMapper {
                 .status(entity.getStatus())
                 .tenantEmail(entity.getTenantEmail())
                 .ownerEmail(entity.getOwnerEmail())
-                .advertisementId(entity.getAdvertisementId())
+                .advertisementId(entity.getAdvertisement().getId())
                 .ownerConfirmation(entity.getOwnerConfirmation())
                 .build();
     }

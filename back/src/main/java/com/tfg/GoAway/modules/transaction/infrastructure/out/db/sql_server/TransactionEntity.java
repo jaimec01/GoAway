@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.tfg.GoAway.modules.transaction.domain.TransactionStatus;
+import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.AdvertisementEntity;
 import com.tfg.GoAway.modules.transaction.domain.TransactionOwnerConfirmation;
 
 import java.time.LocalDate;
@@ -42,8 +43,9 @@ public class TransactionEntity {
     @Column(name = "owner_email", nullable = false)
     private String ownerEmail;
 
-    @Column(name = "advertisement_id", nullable = false, columnDefinition = "CHAR(36)")
-    private String advertisementId;
+    @ManyToOne
+    @JoinColumn(name = "advertisement_id", referencedColumnName = "id", nullable = false)
+    private AdvertisementEntity advertisement;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "owner_confirmation", nullable = false)
