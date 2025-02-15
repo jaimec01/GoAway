@@ -3,6 +3,7 @@ import { AdvertisementListComponent } from './modules/advertisement/pages/advert
 import { LoginComponent } from './modules/user/pages/login/login.component';
 import { RegisterComponent } from './modules/user/pages/register/register.component';
 import { CreateAdvertisementComponent } from './modules/advertisement/pages/create-advertisement/create-advertisement.component'; 
+import { ModifyAdvertisementComponent } from './modules/advertisement/pages/modify-advertisement/modify-advertisement.component'; 
 import { MyAdsComponent } from './modules/advertisement/pages/my-ads/my-ads.component';
 
 export const routes: Routes = [
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'advertisements', component: AdvertisementListComponent },
   { path: 'advertisements/new', component: CreateAdvertisementComponent },
+  { path: 'advertisements/edit/:id', component: ModifyAdvertisementComponent },
   { path: 'advertisements/my-ads', component: MyAdsComponent },
 ];

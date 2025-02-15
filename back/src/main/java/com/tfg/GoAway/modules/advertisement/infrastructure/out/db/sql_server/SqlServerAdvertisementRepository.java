@@ -66,11 +66,31 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
 
     @Override
     public List<Advertisement> findByFilters(String category, String condition) {
-        TypedQuery<AdvertisementEntity> query = CustomAdvertisementRepositoryQueryBuilder.buildQueryByFilters(category, condition, entityManager);
+        TypedQuery<AdvertisementEntity> query = CustomAdvertisementRepositoryQueryBuilder.buildQueryByFilters(category,
+                condition, entityManager);
         List<AdvertisementEntity> advertisementEntities = query.getResultList();
 
         return advertisementEntities.stream()
                 .map(AdvertisementRepositoryMapper::entityToAdvertisement)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<Advertisement> findByIdAndUserEmail(String id, String userEmail) {
+        if (id == null || userEmail == null) {
+            return Optional.empty();
+        }
+
+        TypedQuery<AdvertisementEntity> query = CustomAdvertisementRepositoryQueryBuilder.buildQueryByIdAndUserEmail(id,
+                userEmail, entityManager);
+
+        List<AdvertisementEntity> results = query.getResultList();
+
+        if (results.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(AdvertisementRepositoryMapper.entityToAdvertisement(results.get(0)));
+    }
+
 }

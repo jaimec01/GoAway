@@ -23,8 +23,6 @@ public class AdvertisementCreatePostController {
     @PostMapping
     public AdvertisementCreateResponse saveAdvertisement(@RequestBody AdvertisementCreatePostRequest request) {
 
-        System.out.println("Solicitud recibida en backend: " + request);
-
         String userEmail = SecurityUtils.getUserEmailFromContext();
 
         AdvertisementCreateRecord record = requestMapper.toRecord(request, userEmail);
