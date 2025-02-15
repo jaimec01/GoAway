@@ -17,12 +17,14 @@ public class TransactionCreate {
 
     public TransactionCreateResponse execute(TransactionCreateRecord record) {
         
-        if (record.getTenantEmail().equalsIgnoreCase(record.getOwnerEmail())) {
-            throw new IllegalArgumentException("No puedes crear una transacción sobre un anuncio que te pertenece.");
-        }
-
         Advertisement advertisement = advertisementRepository.findById(record.getAdvertisementId())
                 .orElseThrow(() -> new IllegalArgumentException("El anuncio no existe"));
+
+        String ownerEmail = advertisement.getUserEmail();
+
+        if (record.getTenantEmail().equalsIgnoreCase(ownerEmail)) {
+            throw new IllegalArgumentException("No puedes crear una transacción sobre un anuncio que te pertenece.");
+        }
 
         Transaction transaction = TransactionCreateMapper.toDomain(record, advertisement);
 

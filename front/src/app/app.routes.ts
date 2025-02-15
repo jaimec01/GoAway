@@ -5,6 +5,7 @@ import { RegisterComponent } from './modules/user/pages/register/register.compon
 import { CreateAdvertisementComponent } from './modules/advertisement/pages/create-advertisement/create-advertisement.component'; 
 import { ModifyAdvertisementComponent } from './modules/advertisement/pages/modify-advertisement/modify-advertisement.component'; 
 import { MyAdsComponent } from './modules/advertisement/pages/my-ads/my-ads.component';
+import { CreateTransactionComponent } from './modules/transaction/pages/create-transaction/create-transaction.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'advertisements', pathMatch: 'full' },
@@ -14,4 +15,5 @@ export const routes: Routes = [
   { path: 'advertisements/new', component: CreateAdvertisementComponent },
   { path: 'advertisements/edit/:id', component: ModifyAdvertisementComponent },
   { path: 'advertisements/my-ads', component: MyAdsComponent },
+  { path: 'transaction/new/:id', component: CreateTransactionComponent },
 ];

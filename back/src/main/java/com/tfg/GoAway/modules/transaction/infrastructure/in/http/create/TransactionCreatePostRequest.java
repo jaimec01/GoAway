@@ -18,5 +18,4 @@ public class TransactionCreatePostRequest {
 
     private String advertisementId;
     
-    private String ownerEmail; 
 }

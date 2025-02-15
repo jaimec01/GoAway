@@ -7,6 +7,7 @@ import com.tfg.GoAway.modules.shared.security.SecurityUtils;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +20,13 @@ public class AdvertisementUpdatePutController {
 
     private final AdvertisementUpdate advertisementUpdater;
 
-    @PutMapping("/myAdvertisements")
-    public ResponseEntity<?> updateAdvertisement(@RequestBody AdvertisementUpdateRequest request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateAdvertisement(@PathVariable String id, @RequestBody AdvertisementUpdateRequest request) {
 
         String userEmail = SecurityUtils.getUserEmailFromContext();
 
         AdvertisementUpdateRecord record = new AdvertisementUpdateRecord(
-                request.getId(),
+                id,
                 request.getTitle(),
                 request.getDescription(),
                 request.getCategory(),

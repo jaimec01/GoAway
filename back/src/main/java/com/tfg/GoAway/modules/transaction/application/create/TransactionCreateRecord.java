@@ -20,5 +20,4 @@ public class TransactionCreateRecord {
 
     private final String tenantEmail; 
     
-    private final String ownerEmail;
 }

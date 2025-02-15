@@ -35,10 +35,11 @@
       <p class="description">{{ ad.description }}</p>
       <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
       <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
-      <p><strong>Precio:</strong> {{ ad.price }}€</p>
+      <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
       <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
 
-      <button *ngIf="isAuthenticated" class="rent-button">Alquilar</button>
+      <button *ngIf="isAuthenticated" class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
+
     </div>
   </div>
 </div>
