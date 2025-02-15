@@ -52,6 +52,9 @@ export class ModifyAdvertisementComponent implements OnInit {
     });
   }
 
+  /**
+   * ✅ Carga el anuncio a modificar desde el backend
+   */
   loadAdvertisement(): void {
     const token = sessionStorage.getItem('token');
 
@@ -64,9 +67,9 @@ export class ModifyAdvertisementComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>(`/api/advertisements/myAdvertisement/${this.advertisementId}`, { headers }).subscribe({
+    this.http.get<any>(`/api/advertisements/${this.advertisementId}`, { headers }).subscribe({
       next: (data) => {
-        console.log("Datos del anuncio obtenidos:", data);
+        console.log("📌 Datos del anuncio obtenidos:", data);
         this.adForm.patchValue({
           title: data.title,
           description: data.description,
@@ -77,58 +80,69 @@ export class ModifyAdvertisementComponent implements OnInit {
         });
       },
       error: (error) => {
-        console.error("Error al obtener el anuncio:", error);
+        console.error("❌ Error al obtener el anuncio:", error);
         this.errorMessage = "Error al cargar el anuncio. Inténtalo de nuevo.";
       }
     });
   }
 
+  /**
+   * ✅ Enviar la actualización del anuncio
+   */
   onSubmit(): void {
     if (this.adForm.valid) {
-      console.log("Formulario enviado al backend:", this.adForm.value);
-
+      console.log("📤 Enviando datos al backend:", this.adForm.value);
+  
       const token = sessionStorage.getItem('token');
-
+  
       if (!token) {
         this.errorMessage = 'Error de autenticación. Inicia sesión.';
         return;
       }
-
+  
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       });
-
+  
+      // ✅ Asegurar que `category` y `condition` sean en mayúsculas
       const requestBody = {
         id: this.advertisementId,
-        ...this.adForm.value
+        title: this.adForm.value.title,
+        description: this.adForm.value.description,
+        category: this.adForm.value.category.toUpperCase(),
+        condition: this.adForm.value.condition.toUpperCase(),
+        price: this.adForm.value.price,
+        photoUrls: this.adForm.value.photoUrls
       };
-
-      this.http.put('/api/advertisements/myAdvertisements', requestBody, { headers }).subscribe({
+  
+      this.http.put(`/api/advertisements/${this.advertisementId}`, requestBody, { headers }).subscribe({
         next: () => {
-          console.log("Anuncio modificado correctamente.");
+          console.log("✅ Anuncio modificado correctamente.");
           
           this.successMessage = "✅ El anuncio se ha modificado correctamente.";
-
           this.errorMessage = '';
-         
+  
           setTimeout(() => {
             this.router.navigateByUrl(this.returnUrl);
           }, 2000);
         },
         error: (error) => {
-          console.error("Error en la respuesta del backend:", error);
+          console.error("❌ Error en la respuesta del backend:", error);
           this.successMessage = '';  
           this.errorMessage = error.error?.message || 'No se pudo modificar el anuncio.';
         },
       });
     } else {
-      console.warn("Formulario inválido, revisa los campos.");
+      console.warn("⚠️ Formulario inválido, revisa los campos.");
     }
   }
 
+  /**
+   * ✅ Cancela y redirige a la lista de anuncios del usuario
+   */
   onCancel(): void {
-    console.log("Redirigiendo a:", this.returnUrl);
+    console.log("🔄 Redirigiendo a:", this.returnUrl);
     this.router.navigateByUrl(this.returnUrl);
   }
 }

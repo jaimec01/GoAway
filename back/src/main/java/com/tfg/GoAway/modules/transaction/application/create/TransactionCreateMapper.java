@@ -18,7 +18,7 @@ public class TransactionCreateMapper {
                 .paymentMethod(record.getPaymentMethod())
                 .status(TransactionStatus.PENDING) 
                 .tenantEmail(record.getTenantEmail()) 
-                .ownerEmail(record.getOwnerEmail()) 
+                .ownerEmail(advertisement.getUserEmail())
                 .advertisementId(advertisement.getId())
                 .ownerConfirmation(TransactionOwnerConfirmation.PENDING)
                 .build();

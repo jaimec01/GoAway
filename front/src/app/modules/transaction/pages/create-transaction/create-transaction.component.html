@@ -1,0 +1,39 @@
+<div class="create-ad-container">
+    <div class="create-ad-box">
+      <img src="assets/images/logoApp.png" alt="GoAway Logo" class="logo" />
+      <h2>Crear Nueva Transacción</h2>
+  
+      <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <label for="startDate">Fecha de inicio</label>
+          <input id="startDate" type="date" formControlName="startDate" />
+        </div>
+  
+        <div class="input-group">
+          <label for="endDate">Fecha de fin</label>
+          <input id="endDate" type="date" formControlName="endDate" />
+        </div>
+  
+        <div class="input-group">
+          <label for="paymentMethod">Método de pago</label>
+          <select id="paymentMethod" formControlName="paymentMethod">
+            <option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</option>
+          </select>
+        </div>
+  
+        <div class="input-group">
+          <label for="totalPrice">Precio Total (Recomendado)(€)</label>
+          <input id="totalPrice" type="number" formControlName="totalPrice" readonly />
+        </div>
+  
+        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+        <p *ngIf="successMessage" class="success">{{ successMessage }}</p> 
+  
+        <div class="button-group">
+          <button type="button" class="cancel" (click)="onCancel()">Cancelar</button>
+          <button type="submit" class="accept" [disabled]="transactionForm.invalid">Crear Transacción</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

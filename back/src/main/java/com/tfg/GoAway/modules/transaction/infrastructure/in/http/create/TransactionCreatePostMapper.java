@@ -14,8 +14,7 @@ public class TransactionCreatePostMapper {
                 request.getTotalPrice(),
                 request.getPaymentMethod(),
                 request.getAdvertisementId(),
-                tenantEmail, // Usuario autenticado
-                request.getOwnerEmail()         
+                tenantEmail
                 );
     }
 }

@@ -4,7 +4,6 @@ import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
 import com.tfg.GoAway.modules.advertisement.domain.AdvertisementRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +16,11 @@ public class AdvertisementUpdate {
     public void updateByUserAndId(String userEmail, String advertisementId, AdvertisementUpdateRecord record) {
 
         Advertisement existingAdvertisement = advertisementRepository.findById(advertisementId)
-                .filter(ad -> userEmail.equals(ad.getUserEmail()))
-                .orElseThrow(() -> new IllegalStateException("El anuncio no existe o no pertenece al usuario."));
+                .orElseThrow(() -> new IllegalStateException("El anuncio no existe."));
+
+        if (!existingAdvertisement.getUserEmail().equalsIgnoreCase(userEmail)) {
+            throw new IllegalStateException("No tienes permiso para modificar este anuncio.");
+        }
 
         Advertisement updatedAdvertisement = AdvertisementUpdateMapper.mergeChanges(existingAdvertisement, record);
 

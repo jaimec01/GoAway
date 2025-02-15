@@ -15,13 +15,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/transactions")
+@RequestMapping("/api/transaction")
 public class TransactionCreatePostController {
  
     private final TransactionCreate transactionCreate;
     private final TransactionCreatePostMapper requestMapper;
 
-    @PostMapping("/create")
+    @PostMapping
     public TransactionCreateResponse createTransaction(@RequestBody TransactionCreatePostRequest request) {
 
         if (request.getStartDate() == null || request.getEndDate() == null) {
@@ -30,10 +30,6 @@ public class TransactionCreatePostController {
 
         if (request.getAdvertisementId() == null || request.getAdvertisementId().isEmpty()) {
             throw new IllegalArgumentException("El ID del anuncio es obligatorio.");
-        }
-
-        if (request.getOwnerEmail() == null || request.getOwnerEmail().isEmpty()) {
-            throw new IllegalArgumentException("El email del propietario es obligatorio.");
         }
 
         String tenantEmail = SecurityUtils.getUserEmailFromContext();

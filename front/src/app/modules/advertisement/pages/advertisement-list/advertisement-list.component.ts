@@ -113,4 +113,12 @@ export class AdvertisementListComponent implements OnInit {
   closeLoginPopup(): void {
     this.showLoginPopup = false;
   }
+
+  onRentClick(advertisementId: string): void {
+    console.log('🛒 Redirigiendo a la creación de transacción para el anuncio:', advertisementId);
+    this.router.navigate([`/transaction/new/${advertisementId}`], {
+      queryParams: { returnUrl: this.router.url }
+    });
+  }
+  
 }
