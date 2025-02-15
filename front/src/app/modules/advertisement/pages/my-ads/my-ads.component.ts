@@ -54,40 +54,42 @@ export class MyAdsComponent implements OnInit {
 
   deleteAd(adId: string): void {
     if (confirm('¿Estás seguro de que quieres eliminar este anuncio?')) {
-      const url = '/api/advertisements/myAdvertisements';
-  
-      this.http.delete(url, {
-        body: { advertisementId: adId }, 
-        headers: { 'Content-Type': 'application/json' }
+      this.http.delete(`/api/advertisements/myAdvertisements`, {
+        body: { advertisementId: adId },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`
+        }
       }).subscribe({
         next: () => {
           console.log("Anuncio eliminado:", adId);
-          this.router.navigateByUrl('/refresh', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/advertisements/myAdvertisements']);
-          });
+          this.myAds = this.myAds.filter(ad => ad.id !== adId);
         },
         error: (error) => {
           console.error("Error al eliminar anuncio:", error);
   
-          if (error.error === "Este anuncio pertenece a una transacción.") {
-            alert("Este anuncio pertenece a una transacción y no puede eliminarse.");
+          if (error.status === 400) {
+            alert("⚠️ " + error.error || "Este anuncio tiene una transacción abierta y no puede eliminarse.");
+          } else if (error.status === 500) {
+            alert("❌ Error inesperado al intentar eliminar el anuncio.");
+          } else {
+            alert("⚠️ No se pudo eliminar el anuncio. Inténtalo de nuevo.");
           }
         }
       });
     }
   }
   
-
-  // Método para redirigir a la creación de anuncios
   onCreateAdvertisementClick(): void {
     this.router.navigate(['/advertisements/new'], {
       queryParams: { returnUrl: this.router.url }
     });
   }
 
-  // Método para editar un anuncio
   editAd(adId: string): void {
-    this.router.navigate([`/advertisements/edit/${adId}`]);
+    this.router.navigate([`/advertisements/edit/${adId}`], {
+      queryParams: { returnUrl: this.router.url }
+    });
   }
 
   goToAdvertisements(): void {

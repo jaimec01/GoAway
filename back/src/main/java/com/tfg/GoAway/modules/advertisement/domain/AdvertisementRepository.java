@@ -16,5 +16,7 @@ public interface AdvertisementRepository {
 
     List<Advertisement> findByFilters(String category, String condition);
 
+    Optional<Advertisement> findByIdAndUserEmail(String id, String userEmail);
+
 
 }

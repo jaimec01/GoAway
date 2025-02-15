@@ -1,0 +1,49 @@
+<div class="create-ad-container">
+  <div class="create-ad-box">
+    <img src="assets/images/logoApp.png" alt="GoAway Logo" class="logo" />
+    <h2>Modificar Anuncio</h2>
+
+    <form [formGroup]="adForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label for="title">Título</label>
+        <input id="title" type="text" formControlName="title" />
+      </div>
+
+      <div class="input-group">
+        <label for="description">Descripción</label>
+        <textarea id="description" formControlName="description"></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="category">Categoría</label>
+        <select id="category" formControlName="category">
+          <option *ngFor="let category of advertisementCategories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+      
+      <div class="input-group">
+        <label for="condition">Condición</label>
+        <select id="condition" formControlName="condition">
+          <option *ngFor="let condition of advertisementConditions" [value]="condition">{{ condition }}</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="price">Precio (€)</label>
+        <input id="price" type="number" formControlName="price" />
+      </div>
+
+      <div class="input-group">
+        <label for="photoUrls">URL de la Imagen</label>
+        <input id="photoUrls" type="text" formControlName="photoUrls" />
+      </div>
+
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+      <p *ngIf="successMessage" class="success">{{ successMessage }}</p> 
+      <div class="button-group">
+        <button type="button" class="cancel" (click)="onCancel()">Cancelar</button>
+        <button type="submit" class="accept" [disabled]="adForm.invalid">Modificar Anuncio</button>
+      </div>
+    </form>
+  </div>
+</div>

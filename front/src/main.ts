@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { routes } from './app/app.routes'; // Usa las rutas desde un solo lugar
-import { appConfig } from './app/app.config'; // Agregado para incluir la configuración global
+import { routes } from './app/app.routes'; 
+import { appConfig } from './app/app.config'; 
 
 bootstrapApplication(AppComponent, {
   providers: [

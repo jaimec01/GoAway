@@ -2,10 +2,11 @@ package com.tfg.GoAway.modules.advertisement.infrastructure.in.http.advertisemen
 
 import com.tfg.GoAway.modules.advertisement.application.advertisement.update.AdvertisementUpdate;
 import com.tfg.GoAway.modules.advertisement.application.advertisement.update.AdvertisementUpdateRecord;
+import com.tfg.GoAway.modules.shared.security.SecurityUtils;
+
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,18 +20,10 @@ public class AdvertisementUpdatePutController {
     private final AdvertisementUpdate advertisementUpdater;
 
     @PutMapping("/myAdvertisements")
-    public ResponseEntity<String> updateAdvertisement(@RequestBody AdvertisementUpdateRequest request) {
-        // Obtener el email del usuario autenticado
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userEmail;
+    public ResponseEntity<?> updateAdvertisement(@RequestBody AdvertisementUpdateRequest request) {
 
-        if (principal instanceof UserDetails) {
-            userEmail = ((UserDetails) principal).getUsername();
-        } else {
-            throw new IllegalStateException("Usuario no autenticado o token inválido.");
-        }
+        String userEmail = SecurityUtils.getUserEmailFromContext();
 
-        // Crear el record con los datos enviados en el request
         AdvertisementUpdateRecord record = new AdvertisementUpdateRecord(
                 request.getId(),
                 request.getTitle(),
@@ -38,12 +31,11 @@ public class AdvertisementUpdatePutController {
                 request.getCategory(),
                 request.getPhotoUrls(),
                 request.getCondition(),
-                request.getPrice()
-        );
+                request.getPrice());
 
         // Ejecutar la actualización
         advertisementUpdater.updateByUserAndId(userEmail, request.getId(), record);
 
-        return ResponseEntity.ok("Anuncio actualizado correctamente.");
+        return ResponseEntity.ok(Map.of("message", "Anuncio actualizado correctamente."));
     }
 }
