@@ -1,51 +1,61 @@
-<!-- Cabecera simplificada -->
+<!-- Cabecera -->
 <header class="header">
   <div class="header-left">
     <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" (click)="goToAdvertisements()" />
   </div>
 
   <div class="header-center">
-      <h1>Mis Anuncios</h1>
+    <h1>Mis Anuncios</h1>
+  </div>
+
+  <div class="header-right">
+    <button class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
+    <button class="logout" (click)="onLogoutClick()">LogOut</button>
   </div>
 </header>
 
 <!-- Contenedor de anuncios -->
 <div class="advertisement-container">
-
   <div class="loading" *ngIf="loading">
-      <div class="spinner"></div>
-      <p>Cargando mis anuncios...</p>
+    <div class="spinner"></div>
+    <p>Cargando mis anuncios...</p>
   </div>
 
   <div class="error" *ngIf="errorMessage">
-      <p>{{ errorMessage }}</p>
+    <p>{{ errorMessage }}</p>
   </div>
 
   <div class="advertisement-list" *ngIf="!loading && !errorMessage">
-      <div class="advertisement-card" *ngFor="let ad of myAds">
-          <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
+    <div class="advertisement-card" *ngFor="let ad of myAds">
+      <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
 
-          <div class="ad-content">
-            <h2>{{ ad.title }}</h2>
-            <p class="description">{{ ad.description }}</p>
-            <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
-            <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
-            <p><strong>Precio:</strong> {{ ad.price }}€</p>
-            <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
-          </div>
-
-          <!-- Contenedor para los botones de acción -->
-          <div class="action-buttons">
-              <button class="delete-button" (click)="deleteAd(ad.id)">🗑️ Eliminar</button>
-              <button class="edit-button" (click)="editAd(ad.id)">✏️ Modificar</button>
-          </div>
+      <div class="ad-content">
+        <h2>{{ ad.title }}</h2>
+        <p class="description">{{ ad.description }}</p>
+        <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
+        <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
+        <p><strong>Precio:</strong> {{ ad.price }}€</p>
+        <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
       </div>
+
+      <!-- Contenedor para los botones de acción -->
+      <div class="action-buttons">
+        <button class="delete-button" (click)="deleteAd(ad.id)">🗑️ Eliminar</button>
+        <button class="edit-button" (click)="editAd(ad.id)">✏️ Modificar</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Barra inferior fija con el botón de crear anuncio -->
+<!-- Barra inferior con iconos de navegación -->
 <div class="fixed-bottom-bar">
-  <button class="create-advertisement-button" (click)="onCreateAdvertisementClick()">
-      <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="add-icon" />
+  <button class="nav-button" (click)="onFavoritesClick()">
+    <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
+  </button>
+  <button class="nav-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
+  </button>
+  <button class="nav-button" (click)="onTransactionsClick()">
+    <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
   </button>
 </div>

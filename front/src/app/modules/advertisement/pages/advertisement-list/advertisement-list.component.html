@@ -9,10 +9,10 @@
   </div>
 
   <div class="header-right">
-    <button *ngIf="!isAuthenticated" (click)="onLoginClick()">Login</button>
-    <button *ngIf="!isAuthenticated" (click)="onSignUpClick()">Sign Up</button>
+    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onLoginClick()">Login</button>
+    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onSignUpClick()">Sign Up</button>
     <button *ngIf="isAuthenticated" class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
-    <button *ngIf="isAuthenticated" class="logout" (click)="onLogoutClick()">Logout</button>
+    <button *ngIf="isAuthenticated" class="logout-button" (click)="onLogoutClick()">Logout</button>
   </div>
 </header>
 
@@ -30,7 +30,6 @@
   <div class="advertisement-list" *ngIf="!loading && !errorMessage">
     <div class="advertisement-card" *ngFor="let ad of advertisements">
       <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
-
       <h2>{{ ad.title }}</h2>
       <p class="description">{{ ad.description }}</p>
       <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
@@ -38,23 +37,23 @@
       <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
       <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
 
+      <!-- Botón de alquilar solo si el usuario está autenticado -->
       <button *ngIf="isAuthenticated" class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
-
     </div>
   </div>
 </div>
 
-<!-- Barra inferior fija con el botón de crear anuncio -->
+<!-- Barra inferior fija con los iconos de navegación -->
 <div class="fixed-bottom-bar">
-  <button class="create-advertisement-button" (click)="onCreateAdvertisementClick()">
-    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="add-icon" />
+  <button class="nav-button" (click)="onFavoritesClick()">
+    <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
   </button>
-</div>
 
-<!-- Pop-up de inicio de sesión -->
-<div *ngIf="showLoginPopup" class="login-popup">
-  <div class="popup-content">
-    <p>Debes iniciar sesión para crear un anuncio.</p>
-    <button (click)="closeLoginPopup()">Cerrar</button>
-  </div>
+  <button class="nav-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
+  </button>
+
+  <button class="nav-button" (click)="onTransactionsClick()">
+    <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
+  </button>
 </div>

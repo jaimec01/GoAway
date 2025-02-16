@@ -1,0 +1,101 @@
+<!-- Cabecera -->
+<header class="header">
+  <div class="header-left">
+    <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" (click)="goToAdvertisements()" />
+  </div>
+
+  <div class="header-center">
+    <h1>My Transactions</h1>
+  </div>
+
+  <div class="header-right">
+    <button class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
+    <button class="logout" (click)="onLogoutClick()">LogOut</button>
+  </div>
+</header>
+
+<!-- Selector Owner / Tenant -->
+<div class="transaction-toggle">
+  <button [class.active]="isOwnerView" (click)="setView('owner')">Owner</button>
+  <button [class.active]="!isOwnerView" (click)="setView('tenant')">Tenant</button>
+</div>
+
+<!-- Contenedor de transacciones con margen inferior para evitar que los botones sean tapados -->
+<div class="transaction-container">
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading transactions...</p>
+  </div>
+
+  <div class="error" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="transaction-list" *ngIf="!loading && !errorMessage">
+    <div class="transaction-card" *ngFor="let transaction of transactions">
+      <div class="transaction-header">
+        <h2>{{ isOwnerView ? 'Tenant' : 'Owner' }}: {{ isOwnerView ? transaction.tenantEmail : transaction.ownerEmail }}</h2>
+      </div>
+      
+      <div class="advertisement-section">
+        <h3 *ngIf="transaction.advertisement">{{ transaction.advertisement.title }}</h3>
+        <p *ngIf="transaction.advertisement"><strong>Description:</strong> {{ transaction.advertisement.description }}</p>
+        <p *ngIf="transaction.advertisement">
+          <strong>Original Price:</strong> <span class="original-price">{{ transaction.advertisement.price }}€/month</span>
+        </p>
+      </div>
+
+      <div class="transaction-details">
+        <p><strong>Start Date:</strong> {{ transaction.startDate }}</p>
+        <p><strong>End Date:</strong> {{ transaction.endDate }}</p>
+        <p><strong>Total Price:</strong> <span class="final-price">{{ transaction.totalPrice }}€</span></p>
+        <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
+        <p><strong>Owner Confirmation:</strong> 
+          <span class="owner-confirmation" 
+                [class.pending]="transaction.ownerConfirmation === 'PENDING'"
+                [class.accepted]="transaction.ownerConfirmation === 'ACCEPTED'"
+                [class.rejected]="transaction.ownerConfirmation === 'REJECTED'">
+            {{ transaction.ownerConfirmation }}
+          </span>
+        </p>
+      </div>
+
+      <!-- Botones de Aceptar / Rechazar -->
+      <div class="action-buttons" *ngIf="isOwnerView && transaction.ownerConfirmation === 'PENDING'">
+        <button class="accept" (click)="onAccept(transaction.id)">✔ Accept</button>
+        <button class="reject" (click)="onReject(transaction.id)">✖ Reject</button>
+      </div>
+
+      <!-- Botón de Contacto -->
+      <div class="contact-button-container" *ngIf="!isOwnerView && transaction.ownerConfirmation === 'ACCEPTED'">
+        <button class="contact" (click)="openContactPopup(transaction)">Contact</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Popup de contacto -->
+<div class="contact-popup" *ngIf="showContactPopup">
+  <div class="popup-content">
+    <h2>Contact Owner</h2>
+    <p><strong>Email:</strong> {{ selectedTransaction?.ownerEmail }}</p>
+    <textarea placeholder="Write your message..." [(ngModel)]="contactMessage"></textarea>
+    <div class="popup-buttons">
+      <button class="close-popup" (click)="closeContactPopup()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Barra inferior con iconos de navegación -->
+<div class="fixed-bottom-bar">
+  <button class="nav-button" (click)="onFavoritesClick()">
+    <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
+  </button>
+  <button class="nav-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
+  </button>
+  <button class="nav-button" (click)="onTransactionsClick()">
+    <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
+  </button>
+</div>

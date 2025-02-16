@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-//import { AdvertisementListComponent } from './pages/advertisement-list/advertisement-list.component';
+import { TransactionListComponent } from './pages/transaction-list/transaction-list.component';
 
 
 @NgModule({
-  //declarations: [AdvertisementListComponent], 
-  imports: [CommonModule, RouterModule]
-  //exports: [AdvertisementListComponent]
+  declarations: [TransactionListComponent], 
+  imports: [CommonModule, RouterModule],
+  exports: [TransactionListComponent]
 })
 export class TransactionModule { }
 
