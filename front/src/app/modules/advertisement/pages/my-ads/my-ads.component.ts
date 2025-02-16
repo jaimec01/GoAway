@@ -79,13 +79,19 @@ export class MyAdsComponent implements OnInit {
       });
     }
   }
-  
-  onCreateAdvertisementClick(): void {
-    this.router.navigate(['/advertisements/new'], {
-      queryParams: { returnUrl: this.router.url }
-    });
-  }
 
+  onLogoutClick(): void {
+    console.log('🔴 Cerrando sesión...');
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/']);
+  }
+  
+  onMyAdsClick(): void {
+    console.log('🔗 Redirigiendo a Mis Anuncios...');
+    this.router.navigate(['/advertisements/my-ads']);
+  }
+  
+  
   editAd(adId: string): void {
     this.router.navigate([`/advertisements/edit/${adId}`], {
       queryParams: { returnUrl: this.router.url }
@@ -94,5 +100,23 @@ export class MyAdsComponent implements OnInit {
 
   goToAdvertisements(): void {
     this.router.navigate(['/advertisements']);
+  }
+
+
+  onCreateAdvertisementClick(): void {
+    this.router.navigate(['/advertisements/new'], {
+      queryParams: { returnUrl: this.router.url }
+    });
+  }
+
+
+  onFavoritesClick(): void {
+    console.log('⭐ Redirigiendo a la lista de favoritos...');
+    this.router.navigate(['/advertisements/favorites']);
+  }
+  
+  onTransactionsClick(): void {
+    console.log('💳 Redirigiendo a mis transacciones...');
+    this.router.navigate(['/transaction/my-transactions']);
   }
 }

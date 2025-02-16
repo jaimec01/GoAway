@@ -26,24 +26,21 @@ export class AdvertisementListComponent implements OnInit {
   advertisements: Advertisement[] = [];
   loading = true;
   errorMessage = '';
-  isAuthenticated = false; // Verifica si el usuario tiene token
-  showLoginPopup = false; // Estado del pop-up
+  isAuthenticated = false;
+  showLoginPopup = false;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    console.log('✅ AdvertisementListComponent inicializado');
-  }
+  ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.checkAuthentication(); // Comprobar autenticación al cargar la página
+      this.checkAuthentication();
 
       this.http.get<Advertisement[]>('/public/advertisements').subscribe({
         next: (data) => {
-          console.log('📌 Datos recibidos del backend:', data);
           this.advertisements = data.map((ad) => ({
             ...ad,
             title: ad.title ? ad.title : 'Sin título',
@@ -53,7 +50,6 @@ export class AdvertisementListComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          console.error('❌ Error al obtener los anuncios:', error);
           this.errorMessage = 'Error al cargar los anuncios. Inténtalo de nuevo.';
           this.loading = false;
         },
@@ -61,64 +57,68 @@ export class AdvertisementListComponent implements OnInit {
     }
   }
 
-  // ✅ Verificar autenticación
   checkAuthentication(): void {
     const token = sessionStorage.getItem('token');
     this.isAuthenticated = !!token;
   }
 
-  // ✅ Redirigir a login
   onLoginClick(): void {
-    console.log('🔄 Redirigiendo a login...');
     this.router.navigate(['/login']);
   }
 
-  // ✅ Redirigir a registro
   onSignUpClick(): void {
-    console.log('🔄 Redirigiendo a registro...');
     this.router.navigate(['/register']);
   }
 
-  // ✅ Cerrar sesión
   onLogoutClick(): void {
-    console.log('🔴 Cerrando sesión...');
     sessionStorage.removeItem('token');
     this.isAuthenticated = false;
     this.router.navigate(['/']);
   }
 
-  // ✅ Redirigir a la página de creación de anuncios o mostrar pop-up
   onCreateAdvertisementClick(): void {
     if (this.isAuthenticated) {
-      console.log('➕ Redirigiendo a creación de anuncio...');
-      this.router.navigate(['/advertisements/new'], {
-        queryParams: { returnUrl: this.router.url }
-      });
+      this.router.navigate(['/advertisements/new']);
     } else {
-      console.log('⚠️ Usuario no autenticado, mostrando pop-up.');
-      this.showLoginPopup = true;
+      this.showAuthPopup();
     }
   }
 
-  // ✅ Redirigir a la página de "Mis Anuncios"
   onMyAdsClick(): void {
     if (this.isAuthenticated) {
-      console.log('🔗 Redirigiendo a Mis Anuncios...');
       this.router.navigate(['/advertisements/my-ads']);
     }
   }
 
+  onRentClick(advertisementId: string): void {
+    if (this.isAuthenticated) {
+      this.router.navigate([`/transaction/new/${advertisementId}`]);
+    } else {
+      this.showAuthPopup();
+    }
+  }
 
-  // ✅ Cerrar pop-up de inicio de sesión
+  onFavoritesClick(): void {
+    if (this.isAuthenticated) {
+      this.router.navigate(['/advertisements/favorites']);
+    } else {
+      this.showAuthPopup();
+    }
+  }
+
+  onTransactionsClick(): void {
+    if (this.isAuthenticated) {
+      this.router.navigate(['/transaction/my-transactions']);
+    } else {
+      this.showAuthPopup();
+    }
+  }
+
+  showAuthPopup(): void {
+    this.showLoginPopup = true;
+  }
+
   closeLoginPopup(): void {
     this.showLoginPopup = false;
   }
-
-  onRentClick(advertisementId: string): void {
-    console.log('🛒 Redirigiendo a la creación de transacción para el anuncio:', advertisementId);
-    this.router.navigate([`/transaction/new/${advertisementId}`], {
-      queryParams: { returnUrl: this.router.url }
-    });
-  }
-  
 }
