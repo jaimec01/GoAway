@@ -20,11 +20,21 @@ public class AdvertisementFinderAll {
     @Autowired
     private AdvertisementFinderAllMapper advertisementMapper;
 
-    public List<AdvertisementFinderAllResponse> finderAll() {
-        return advertisementRepository.findAll()
-                                      .stream()
-                                      .map(advertisementMapper::toResponse)
-                                      .collect(Collectors.toList());
-    }
+    public List<AdvertisementFinderAllResponse> finderAll(String userEmail) {
+        List<AdvertisementFinderAllResponse> advertisements;
 
+        if (userEmail == null || userEmail.isEmpty()) {
+            advertisements = advertisementRepository.findAll()
+                    .stream()
+                    .map(advertisementMapper::toResponse)
+                    .collect(Collectors.toList());
+        } else {
+            advertisements = advertisementRepository.findAllExcludingUser(userEmail)
+                    .stream()
+                    .map(advertisementMapper::toResponse)
+                    .collect(Collectors.toList());
+        }
+
+        return advertisements;
+    }
 }

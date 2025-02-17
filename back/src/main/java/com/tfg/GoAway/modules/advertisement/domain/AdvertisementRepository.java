@@ -18,5 +18,10 @@ public interface AdvertisementRepository {
 
     Optional<Advertisement> findByIdAndUserEmail(String id, String userEmail);
 
+    List<Advertisement> findAllExcludingUser(String email);
+
+
+    
+
 
 }

@@ -78,4 +78,21 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
 
         return query;
     }
+
+    public static TypedQuery<AdvertisementEntity> buildQueryExcludingUser(final String userEmail, final EntityManager entityManager) {
+        StringBuilder queryString = new StringBuilder(Q_BASE);
+    
+        if (userEmail != null) {
+            queryString.append(" AND a.userEmail <> :userEmail");
+        }
+    
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+    
+        if (userEmail != null) {
+            query.setParameter(PARAM_USER_EMAIL, userEmail);
+        }
+    
+        return query;
+    }
+    
 }
