@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tfg.GoAway.modules.advertisement.application.advertisement.finder.AdvertisementFinderAll;
 import com.tfg.GoAway.modules.advertisement.application.advertisement.finder.AdvertisementFinderAllResponse;
+import com.tfg.GoAway.modules.shared.security.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,15 @@ public class AdvertisementFinderAllController {
 
     @GetMapping
     public List<AdvertisementFinderAllResponse> getAllAdvertisements() {
-        return advertisementFinderAll.finderAll();
+
+        String userEmail = null;
+        
+        try {
+            userEmail = SecurityUtils.getUserEmailFromContext();
+        } catch (Exception e) {
+            userEmail = null;
+        }
+
+        return advertisementFinderAll.finderAll(userEmail);
     }
 }

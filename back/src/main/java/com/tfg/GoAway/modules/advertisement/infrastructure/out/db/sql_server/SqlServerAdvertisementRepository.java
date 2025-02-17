@@ -93,4 +93,15 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
         return Optional.of(AdvertisementRepositoryMapper.entityToAdvertisement(results.get(0)));
     }
 
+    @Override
+    public List<Advertisement> findAllExcludingUser(String userEmail) {
+        TypedQuery<AdvertisementEntity> query = CustomAdvertisementRepositoryQueryBuilder
+                .buildQueryExcludingUser(userEmail, entityManager);
+        List<AdvertisementEntity> advertisementEntities = query.getResultList();
+
+        return advertisementEntities.stream()
+                .map(AdvertisementRepositoryMapper::entityToAdvertisement)
+                .collect(Collectors.toList());
+    }
+
 }
