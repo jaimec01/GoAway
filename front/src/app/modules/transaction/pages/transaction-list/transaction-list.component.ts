@@ -171,7 +171,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   onFavoritesClick(): void {
-    this.router.navigate(['/favorites']);
+    this.router.navigate(['/advertisements/favorites']);
   }
 
   onTransactionsClick(): void {

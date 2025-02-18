@@ -30,4 +30,6 @@ public class AdvertisementFinderAllResponse {
 
     private LocalDateTime createdAt;
 
+    private Boolean isFavorite;
+
 }

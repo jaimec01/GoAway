@@ -18,6 +18,7 @@ public class AdvertisementFinderAllMapper {
                 .userEmail(advertisement.getUserEmail())
                 .price(advertisement.getPrice())
                 .createdAt(advertisement.getCreatedAt())
+                .isFavorite(false)
                 .build();
     }
 }

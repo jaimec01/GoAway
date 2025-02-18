@@ -20,8 +20,4 @@ public interface AdvertisementRepository {
 
     List<Advertisement> findAllExcludingUser(String email);
 
-
-    
-
-
 }

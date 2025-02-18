@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.favorite.infrastructure.in.http;
+package com.tfg.GoAway.modules.favorite.infrastructure.in.http.post;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class FavoriteAdvertisementCreatePostController {
     private final SqlServerFavoriteAdvertisementRepository favoriteRepository;
     private final FavoriteAdvertisementCreatePostMapper requestMapper;
 
-    @PostMapping("/create")
+    @PostMapping
     public FavoriteAdvertisementCreatePostResponse toggleFavorite(@RequestBody FavoriteAdvertisementCreatePostRequest request) {
 
         if (request.getAdvertisementId() == null || request.getAdvertisementId().isEmpty()) {
