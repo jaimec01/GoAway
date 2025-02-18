@@ -29,6 +29,7 @@ public class AdvertisementRepositoryMapper {
                 .userEmail(entity.getUserEmail())
                 .price(entity.getPrice())
                 .createdAt(entity.getCreatedAt())
+                .isFavorite(false)
                 .build();
     }
     

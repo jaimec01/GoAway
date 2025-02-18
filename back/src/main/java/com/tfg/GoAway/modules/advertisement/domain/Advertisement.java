@@ -32,6 +32,8 @@ public class Advertisement {
 
     private LocalDateTime createdAt;
 
+    private boolean isFavorite;
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

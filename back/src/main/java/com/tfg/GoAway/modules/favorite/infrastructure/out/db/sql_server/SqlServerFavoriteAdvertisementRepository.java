@@ -1,18 +1,30 @@
 package com.tfg.GoAway.modules.favorite.infrastructure.out.db.sql_server;
 
+import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
+import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.AdvertisementEntity;
+import com.tfg.GoAway.modules.advertisement.infrastructure.out.db.sql_server.AdvertisementRepositoryMapper;
 import com.tfg.GoAway.modules.favorite.domain.FavoriteAdvertisement;
 import com.tfg.GoAway.modules.favorite.domain.FavoriteAdvertisementRepository;
 import com.tfg.GoAway.modules.shared.security.SecurityUtils;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.tfg.GoAway.modules.favorite.infrastructure.out.db.sql_server.FavoriteAdvertisementRepositoryMapper.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
 public class SqlServerFavoriteAdvertisementRepository implements FavoriteAdvertisementRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final SqlServerJpaFavoriteAdvertisementRepository repository;
 
@@ -51,6 +63,16 @@ public class SqlServerFavoriteAdvertisementRepository implements FavoriteAdverti
             log.error("Error al eliminar el favorito: {}", e.getMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public List<Advertisement> findFavoritesByUserEmail(String userEmail) {
+        TypedQuery<AdvertisementEntity> query = CustomFavoriteAdvertisementRepositoryQueryBuilder.buildQueryByUserEmail(userEmail, entityManager);
+        List<AdvertisementEntity> advertisementEntities = query.getResultList();
+        
+        return advertisementEntities.stream()
+                .map(AdvertisementRepositoryMapper::entityToAdvertisement)
+                .collect(Collectors.toList());
     }
 
 }

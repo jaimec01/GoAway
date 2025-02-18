@@ -104,4 +104,5 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
                 .collect(Collectors.toList());
     }
 
+
 }

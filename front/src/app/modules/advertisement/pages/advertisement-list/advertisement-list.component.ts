@@ -1,6 +1,6 @@
 import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 interface Advertisement {
@@ -13,6 +13,7 @@ interface Advertisement {
   userEmail: string;
   price: number | null;
   createdAt: string;
+  isFavorite?: boolean;
 }
 
 @Component({
@@ -38,28 +39,60 @@ export class AdvertisementListComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.checkAuthentication();
-
-      this.http.get<Advertisement[]>('/public/advertisements').subscribe({
-        next: (data) => {
-          this.advertisements = data.map((ad) => ({
-            ...ad,
-            title: ad.title ? ad.title : 'Sin título',
-            price: ad.price !== null ? ad.price : 0,
-            createdAt: new Date(ad.createdAt).toLocaleDateString('es-ES'),
-          }));
-          this.loading = false;
-        },
-        error: (error) => {
-          this.errorMessage = 'Error al cargar los anuncios. Inténtalo de nuevo.';
-          this.loading = false;
-        },
-      });
+      this.fetchAdvertisements();
     }
   }
 
   checkAuthentication(): void {
     const token = sessionStorage.getItem('token');
     this.isAuthenticated = !!token;
+  }
+
+  fetchAdvertisements(): void {
+    const token = sessionStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : undefined;
+
+    this.http.get<Advertisement[]>('/public/advertisements', { headers }).subscribe({
+      next: (data) => {
+        this.advertisements = data.map((ad) => ({
+          ...ad,
+          createdAt: new Date(ad.createdAt).toLocaleDateString('es-ES'),
+        }));
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Error al cargar los anuncios.';
+        this.loading = false;
+      },
+    });
+  }
+
+  toggleFavorite(advertisementId: string): void {
+    if (!this.isAuthenticated) {
+      this.showAuthPopup();
+      return;
+    }
+
+    const adIndex = this.advertisements.findIndex((ad) => ad.id === advertisementId);
+    if (adIndex === -1) return;
+
+    const advertisement = this.advertisements[adIndex];
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    this.http.post('/api/favorites', { advertisementId }, { headers }).subscribe({
+      next: (response: any) => {
+        advertisement.isFavorite = response.message.includes('añadido');
+      },
+      error: (error) => {
+        console.error('Error al alternar favorito:', error);
+      },
+    });
   }
 
   onLoginClick(): void {
@@ -76,23 +109,25 @@ export class AdvertisementListComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  onCreateAdvertisementClick(): void {
-    if (this.isAuthenticated) {
-      this.router.navigate(['/advertisements/new']);
-    } else {
-      this.showAuthPopup();
-    }
-  }
-
   onMyAdsClick(): void {
     if (this.isAuthenticated) {
       this.router.navigate(['/advertisements/my-ads']);
+    } else {
+      this.showAuthPopup();
     }
   }
 
   onRentClick(advertisementId: string): void {
     if (this.isAuthenticated) {
       this.router.navigate([`/transaction/new/${advertisementId}`]);
+    } else {
+      this.showAuthPopup();
+    }
+  }
+
+  onCreateAdvertisementClick(): void {
+    if (this.isAuthenticated) {
+      this.router.navigate(['/advertisements/new']);
     } else {
       this.showAuthPopup();
     }

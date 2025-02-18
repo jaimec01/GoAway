@@ -1,4 +1,4 @@
-package com.tfg.GoAway.modules.favorite.application;
+package com.tfg.GoAway.modules.favorite.application.create;
 
 import lombok.Getter;
 import lombok.Setter;

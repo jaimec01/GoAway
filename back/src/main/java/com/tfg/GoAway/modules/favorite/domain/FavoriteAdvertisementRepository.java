@@ -1,5 +1,8 @@
 package com.tfg.GoAway.modules.favorite.domain;
 
+import java.util.List;
+
+import com.tfg.GoAway.modules.advertisement.domain.Advertisement;
 
 public interface FavoriteAdvertisementRepository {
 
@@ -9,5 +12,6 @@ public interface FavoriteAdvertisementRepository {
 
     boolean existsById(String advertisementId);
 
-    //List<String> findAllByUser(String userEmail);
+    List<Advertisement> findFavoritesByUserEmail(String userEmail);
+
 }

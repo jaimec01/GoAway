@@ -1,12 +1,14 @@
 package com.tfg.GoAway.modules.advertisement.application.advertisement.finder;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tfg.GoAway.modules.advertisement.domain.AdvertisementRepository;
+import com.tfg.GoAway.modules.favorite.application.find_all.FavoriteAdvertisementFinder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +21,9 @@ public class AdvertisementFinderAll {
 
     @Autowired
     private AdvertisementFinderAllMapper advertisementMapper;
+
+    @Autowired
+    private FavoriteAdvertisementFinder favoriteAdvertisement;
 
     public List<AdvertisementFinderAllResponse> finderAll(String userEmail) {
         List<AdvertisementFinderAllResponse> advertisements;
@@ -33,6 +38,14 @@ public class AdvertisementFinderAll {
                     .stream()
                     .map(advertisementMapper::toResponse)
                     .collect(Collectors.toList());
+
+            List<AdvertisementFinderAllResponse> favoriteAdvertisements = favoriteAdvertisement.findFavorites(userEmail);
+
+            Set<String> favoriteIds = favoriteAdvertisements.stream()
+                    .map(AdvertisementFinderAllResponse::getId)
+                    .collect(Collectors.toSet());
+
+            advertisements.forEach(ad -> ad.setIsFavorite(favoriteIds.contains(ad.getId())));
         }
 
         return advertisements;
