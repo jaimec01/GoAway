@@ -79,21 +79,44 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
         return query;
     }
 
-    public static TypedQuery<AdvertisementEntity> buildQueryExcludingUser(final String userEmail, final EntityManager entityManager) {
-        StringBuilder queryString = new StringBuilder(Q_BASE);
-    
-        if (userEmail != null) {
-            queryString.append(" AND a.userEmail <> :userEmail");
-        }
-    
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
-    
-        if (userEmail != null) {
-            query.setParameter(PARAM_USER_EMAIL, userEmail);
-        }
-    
-        return query;
+    public static TypedQuery<AdvertisementEntity> buildQueryByFiltersAndExcludeUser(
+        final String userEmail, final String category, final String condition, final EntityManager entityManager) {
+
+    StringBuilder queryString = new StringBuilder(Q_BASE);
+
+    if (userEmail != null) {
+        queryString.append(" AND a.userEmail <> :userEmail");
     }
+    if (category != null) {
+        queryString.append(Q_FILTER_CATEGORY);
+    }
+    if (condition != null) {
+        queryString.append(Q_FILTER_CONDITION);
+    }
+
+    TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+
+    if (userEmail != null) {
+        query.setParameter(PARAM_USER_EMAIL, userEmail);
+    }
+    if (category != null) {
+        try {
+            query.setParameter(PARAM_CATEGORY, AdvertisementCategory.valueOf(category.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Categoría inválida: " + category);
+        }
+    }
+    if (condition != null) {
+        try {
+            query.setParameter(PARAM_CONDITION, AdvertisementCondition.valueOf(condition.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Condición inválida: " + condition);
+        }
+    }
+
+    return query;
+}
+
 
    
 }

@@ -4,8 +4,27 @@
     <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" />
   </div>
 
+  <!-- Centro con los filtros -->
   <div class="header-center">
     <h1>Lista de Anuncios</h1>
+
+    <div class="filters">
+      <!-- ComboBox de Categoría -->
+      <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
+        <option value="">Todas las categorías</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+
+      <!-- ComboBox de Condición -->
+      <select [(ngModel)]="selectedCondition" (change)="applyFilters()">
+        <option value="">Todas las condiciones</option>
+        <option *ngFor="let condition of conditions" [value]="condition">
+          {{ condition }}
+        </option>
+      </select>
+    </div>
   </div>
 
   <div class="header-right">
@@ -27,7 +46,7 @@
     <p>{{ errorMessage }}</p>
   </div>
 
-  <div class="advertisement-list" *ngIf="!loading && !errorMessage">
+  <div class="advertisement-list" *ngIf="!loading && !errorMessage && advertisements.length > 0">
     <div class="advertisement-card" *ngFor="let ad of advertisements">
       <!-- Icono de favorito -->
       <img

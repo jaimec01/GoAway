@@ -4,7 +4,7 @@ public enum AdvertisementCategory {
     CHAIR("chair"),
     TABLE("table"),
     TV("TV"),
-    CHEST_OF_DRAWERS("chestOfDrawers"),
+    CHESTOFDRAWERS("chestOfDrawers"),
     SOFA("sofa"),
     BOOKSHELF("bookshelf"),
     OTHER("other");
@@ -28,10 +28,12 @@ public enum AdvertisementCategory {
      */
     public static AdvertisementCategory fromValue(String value) {
         for (AdvertisementCategory category : AdvertisementCategory.values()) {
-            if (category.value.equalsIgnoreCase(value)) {
+            if (category.value.equalsIgnoreCase(value) || category.name().equalsIgnoreCase(value)) {
                 return category;
             }
         }
         throw new IllegalArgumentException("Invalid AdvertisementCategory value: " + value);
     }
+    
+    
 }
