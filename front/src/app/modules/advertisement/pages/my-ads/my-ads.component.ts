@@ -59,17 +59,22 @@ export class MyAdsComponent implements OnInit {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${sessionStorage.getItem('token')}`
-        }
+        },
+        responseType: 'text'  
       }).subscribe({
-        next: () => {
-          console.log("Anuncio eliminado:", adId);
+        next: (response) => {
+          console.log("✅ Respuesta del backend:", response);
+          
           this.myAds = this.myAds.filter(ad => ad.id !== adId);
+  
+          alert(response); 
         },
         error: (error) => {
-          console.error("Error al eliminar anuncio:", error);
-  
+          console.error("❌ Error al eliminar anuncio:", error);
+          
+          // ⚠️ Manejar correctamente los errores específicos
           if (error.status === 400) {
-            alert("⚠️ " + error.error || "Este anuncio tiene una transacción abierta y no puede eliminarse.");
+            alert("⚠️ " + (error.error || "Este anuncio tiene una transacción abierta y no puede eliminarse."));
           } else if (error.status === 500) {
             alert("❌ Error inesperado al intentar eliminar el anuncio.");
           } else {
@@ -79,6 +84,8 @@ export class MyAdsComponent implements OnInit {
       });
     }
   }
+  
+  
 
   onLogoutClick(): void {
     console.log('🔴 Cerrando sesión...');

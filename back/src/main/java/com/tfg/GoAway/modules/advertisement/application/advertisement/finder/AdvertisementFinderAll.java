@@ -25,29 +25,29 @@ public class AdvertisementFinderAll {
     @Autowired
     private FavoriteAdvertisementFinder favoriteAdvertisement;
 
-    public List<AdvertisementFinderAllResponse> finderAll(String userEmail) {
+    public List<AdvertisementFinderAllResponse> finderAll(String userEmail, String category, String condition) {
         List<AdvertisementFinderAllResponse> advertisements;
-
+    
         if (userEmail == null || userEmail.isEmpty()) {
-            advertisements = advertisementRepository.findAll()
+            advertisements = advertisementRepository.findByFilters(category, condition)
                     .stream()
                     .map(advertisementMapper::toResponse)
                     .collect(Collectors.toList());
         } else {
-            advertisements = advertisementRepository.findAllExcludingUser(userEmail)
+            advertisements = advertisementRepository.findByFiltersAndExcludeUser(userEmail, category, condition)
                     .stream()
                     .map(advertisementMapper::toResponse)
                     .collect(Collectors.toList());
-
+    
             List<AdvertisementFinderAllResponse> favoriteAdvertisements = favoriteAdvertisement.findFavorites(userEmail);
-
             Set<String> favoriteIds = favoriteAdvertisements.stream()
                     .map(AdvertisementFinderAllResponse::getId)
                     .collect(Collectors.toSet());
-
+    
             advertisements.forEach(ad -> ad.setIsFavorite(favoriteIds.contains(ad.getId())));
         }
-
+    
         return advertisements;
     }
+    
 }

@@ -2,6 +2,7 @@ import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';  // Importar FormsModule para el [(ngModel)]
 
 interface Advertisement {
   id: string;
@@ -19,7 +20,7 @@ interface Advertisement {
 @Component({
   selector: 'app-advertisement-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule], // Importar FormsModule
   templateUrl: './advertisement-list.component.html',
   styleUrls: ['./advertisement-list.component.scss'],
 })
@@ -29,6 +30,12 @@ export class AdvertisementListComponent implements OnInit {
   errorMessage = '';
   isAuthenticated = false;
   showLoginPopup = false;
+
+  // Filtros
+  categories: string[] = ['chair', 'table', 'TV', 'chestOfDrawers', 'sofa', 'bookshelf', 'other'];
+  conditions: string[] = ['Good', 'Fair', 'Excellent'];  
+  selectedCategory: string = '';
+  selectedCondition: string = '';
 
   constructor(
     private http: HttpClient,
@@ -54,12 +61,35 @@ export class AdvertisementListComponent implements OnInit {
       ? new HttpHeaders({ Authorization: `Bearer ${token}` })
       : undefined;
 
-    this.http.get<Advertisement[]>('/public/advertisements', { headers }).subscribe({
+    let url = `/public/advertisements`;
+
+    // Aplicar filtros en la URL si están seleccionados
+    const params = [];
+    if (this.selectedCategory) {
+      params.push(`category=${this.selectedCategory}`);
+    }
+    if (this.selectedCondition) {
+      params.push(`condition=${this.selectedCondition}`);
+    }
+
+    if (params.length) {
+      url += '?' + params.join('&');
+    }
+
+    this.http.get<Advertisement[]>(url, { headers }).subscribe({
       next: (data) => {
         this.advertisements = data.map((ad) => ({
           ...ad,
           createdAt: new Date(ad.createdAt).toLocaleDateString('es-ES'),
         }));
+
+        if (this.advertisements.length === 0) {
+          this.errorMessage = 'No hay anuncios para estos filtros.';
+        } else {
+          this.errorMessage = ''; 
+        }
+
+
         this.loading = false;
       },
       error: () => {
@@ -67,6 +97,10 @@ export class AdvertisementListComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  applyFilters(): void {
+    this.fetchAdvertisements(); // Vuelve a cargar los anuncios con los filtros aplicados
   }
 
   toggleFavorite(advertisementId: string): void {
@@ -95,6 +129,7 @@ export class AdvertisementListComponent implements OnInit {
     });
   }
 
+  // Métodos de navegación y autenticación
   onLoginClick(): void {
     this.router.navigate(['/login']);
   }

@@ -208,3 +208,26 @@
   background-color: #c0392b;
 }
 
+
+/* Estilos para los filtros */
+.filters {
+  margin-top: 10px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.filters select {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filters select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+

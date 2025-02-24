@@ -18,8 +18,9 @@ export class ModifyAdvertisementComponent implements OnInit {
   advertisementId: string = '';
   returnUrl: string = '/advertisements/my-ads';  
 
-  advertisementCategories = ['CHAIR', 'TABLE', 'TV', 'CHEST_OF_DRAWERS', 'SOFA', 'BOOKSHELF', 'OTHER'];
-  advertisementConditions = ['GOOD', 'FAIR', 'EXCELLENT'];  
+ 
+  advertisementCategories = ['chair', 'table', 'TV', 'chestOfDrawers', 'sofa', 'bookshelf', 'other'];
+  advertisementConditions = ['Good', 'Fair', 'Excellent'];  
 
   constructor(
     private fb: FormBuilder, 
@@ -52,9 +53,6 @@ export class ModifyAdvertisementComponent implements OnInit {
     });
   }
 
-  /**
-   * ✅ Carga el anuncio a modificar desde el backend
-   */
   loadAdvertisement(): void {
     const token = sessionStorage.getItem('token');
 
@@ -70,11 +68,13 @@ export class ModifyAdvertisementComponent implements OnInit {
     this.http.get<any>(`/api/advertisements/${this.advertisementId}`, { headers }).subscribe({
       next: (data) => {
         console.log("📌 Datos del anuncio obtenidos:", data);
+
+
         this.adForm.patchValue({
           title: data.title,
           description: data.description,
-          category: data.advertisementCategory.toUpperCase(),
-          condition: data.advertisementCondition.toUpperCase(),
+          category: data.advertisementCategory, 
+          condition: data.advertisementCondition,  
           price: data.price,
           photoUrls: data.photoUrls
         });
@@ -87,7 +87,7 @@ export class ModifyAdvertisementComponent implements OnInit {
   }
 
   /**
-   * ✅ Enviar la actualización del anuncio
+   * ✅ Enviar la actualización del anuncio manteniendo el formato
    */
   onSubmit(): void {
     if (this.adForm.valid) {
@@ -105,13 +105,12 @@ export class ModifyAdvertisementComponent implements OnInit {
         Authorization: `Bearer ${token}`,
       });
   
-      // ✅ Asegurar que `category` y `condition` sean en mayúsculas
       const requestBody = {
         id: this.advertisementId,
         title: this.adForm.value.title,
         description: this.adForm.value.description,
-        category: this.adForm.value.category.toUpperCase(),
-        condition: this.adForm.value.condition.toUpperCase(),
+        category: this.adForm.value.category,  
+        condition: this.adForm.value.condition,  
         price: this.adForm.value.price,
         photoUrls: this.adForm.value.photoUrls
       };

@@ -94,15 +94,16 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
     }
 
     @Override
-    public List<Advertisement> findAllExcludingUser(String userEmail) {
+    public List<Advertisement> findByFiltersAndExcludeUser(String userEmail, String category, String condition) {
         TypedQuery<AdvertisementEntity> query = CustomAdvertisementRepositoryQueryBuilder
-                .buildQueryExcludingUser(userEmail, entityManager);
+                .buildQueryByFiltersAndExcludeUser(userEmail, category, condition, entityManager);
+    
         List<AdvertisementEntity> advertisementEntities = query.getResultList();
-
         return advertisementEntities.stream()
                 .map(AdvertisementRepositoryMapper::entityToAdvertisement)
                 .collect(Collectors.toList());
     }
+    
 
 
 }
