@@ -15,6 +15,11 @@ public enum AdvertisementCondition {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return this.value; 
+    }
+
     /**
      * Converts a string value to the corresponding AdvertisementCondition enum.
      * Throws an exception if the value is invalid.

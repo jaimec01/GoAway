@@ -109,4 +109,10 @@ export class FavoriteListComponent implements OnInit {
   goToAdvertisements(): void {
     this.router.navigate(['/advertisements']);
   }
+
+  onAdvertisementClick(advertisementId: string): void {
+    this.router.navigate([`/advertisement/${advertisementId}`], {
+      queryParams: { returnUrl: this.router.url } 
+    });
+  }
 }

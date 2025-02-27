@@ -1,0 +1,39 @@
+<!-- Logo de la aplicación -->
+<img src="assets/images/logoApp.png" alt="Logo de la aplicación" class="logo" />
+
+<div class="advertisement-container" *ngIf="advertisement">
+  <!-- Botón de volver -->
+  <button class="back-button" (click)="goBack()">
+    <img src="assets/images/volver.png" alt="Volver" class="back-icon" />
+    Volver
+  </button>
+
+  <h1>{{ advertisement?.title }}</h1>
+  <img [src]="advertisement?.photoUrls" alt="Imagen del anuncio" class="advertisement-image" />
+
+  <div class="advertisement-details">
+    <div class="detail-item">
+      <strong>Categoría:</strong> {{ categoryTranslations[advertisement?.advertisementCategory] || advertisement?.advertisementCategory }}
+    </div>
+    <div class="detail-item">
+      <strong>Estado:</strong> {{ conditionTranslations[advertisement?.advertisementCondition] || advertisement?.advertisementCondition }}
+    </div>
+    <div class="detail-item">
+      <strong>Precio:</strong> {{ advertisement?.price | currency:'EUR' }}
+    </div>
+    <div class="detail-item">
+      <strong>Fecha de modificación:</strong> {{ advertisement?.updatedAt | date:'longDate' }}
+    </div>
+    <div class="description">
+      <strong>Descripción:</strong> {{ advertisement?.description }}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">
+  <p>Cargando anuncio...</p>
+</div>
+
+<div *ngIf="error" class="error">
+  <p>{{ error }}</p>
+</div>

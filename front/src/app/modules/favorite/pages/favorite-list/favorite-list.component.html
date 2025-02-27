@@ -26,7 +26,7 @@
     </div>
   
     <div class="advertisement-list" *ngIf="!loading && !errorMessage">
-      <div class="advertisement-card" *ngFor="let ad of favoriteAdvertisements">
+      <div class="advertisement-card" *ngFor="let ad of favoriteAdvertisements" (click)="onAdvertisementClick(ad.id)">
         <!-- Icono de favorito -->
         <img
           class="favorite-icon"

@@ -14,11 +14,12 @@ import { CommonModule } from '@angular/common';
 export class CreateTransactionComponent implements OnInit {
   transactionForm: FormGroup;
   errorMessage: string = '';
-  successMessage: string = ''; 
+  successMessage: string = '';
   advertisementId: string = '';
-  advertisementPrice: number = 0; 
+  advertisementPrice: number = 0;
   returnUrl: string = '/advertisements';
   paymentMethods = ['Credit Card', 'PayPal', 'Bank Transfer'];
+  dateError: boolean = false; // Para controlar el error de fechas
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +30,7 @@ export class CreateTransactionComponent implements OnInit {
     this.transactionForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      totalPrice: [0, Validators.required], 
+      totalPrice: [0, [Validators.required, Validators.min(0)]], // Permitir edición y validar que sea positivo
       paymentMethod: ['', Validators.required],
       advertisementId: ['']
     });
@@ -40,7 +41,7 @@ export class CreateTransactionComponent implements OnInit {
       if (params['id']) {
         this.advertisementId = params['id'];
         this.transactionForm.patchValue({ advertisementId: this.advertisementId });
-        this.loadAdvertisementPrice(); 
+        this.loadAdvertisementPrice();
       }
     });
 
@@ -50,8 +51,30 @@ export class CreateTransactionComponent implements OnInit {
       }
     });
 
-    this.transactionForm.get('startDate')?.valueChanges.subscribe(() => this.calculateTotalPrice());
-    this.transactionForm.get('endDate')?.valueChanges.subscribe(() => this.calculateTotalPrice());
+    // Escuchar cambios en las fechas para recalcular el precio
+    this.transactionForm.get('startDate')?.valueChanges.subscribe(() => {
+      this.validateDates();
+      this.calculateTotalPrice();
+    });
+
+    this.transactionForm.get('endDate')?.valueChanges.subscribe(() => {
+      this.validateDates();
+      this.calculateTotalPrice();
+    });
+  }
+
+  /**
+   * ✅ Valida que la fecha de fin no sea anterior a la fecha de inicio
+   */
+  validateDates(): void {
+    const startDate = new Date(this.transactionForm.get('startDate')?.value);
+    const endDate = new Date(this.transactionForm.get('endDate')?.value);
+
+    if (startDate && endDate && endDate < startDate) {
+      this.dateError = true;
+    } else {
+      this.dateError = false;
+    }
   }
 
   /**
@@ -67,14 +90,12 @@ export class CreateTransactionComponent implements OnInit {
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    this.http.get<any>(`/api/advertisements/${this.advertisementId}`, { headers }).subscribe({
+    this.http.get<any>(`/public/advertisements/${this.advertisementId}`, { headers }).subscribe({
       next: (data) => {
-        console.log("📌 Precio del anuncio obtenido:", data.price);
         this.advertisementPrice = data.price;
-        this.calculateTotalPrice(); 
+        this.calculateTotalPrice(); // Calcular el precio inicial
       },
       error: (error) => {
-        console.error("❌ Error al obtener el precio del anuncio:", error);
         this.errorMessage = "Error al obtener el precio del anuncio.";
       }
     });
@@ -91,8 +112,9 @@ export class CreateTransactionComponent implements OnInit {
       const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
       const monthlyPrice = this.advertisementPrice;
       const pricePerDay = monthlyPrice / 30;
-      const totalPrice = parseFloat((days * pricePerDay).toFixed(2)); 
+      const totalPrice = parseFloat((days * pricePerDay).toFixed(2));
 
+      // Establecer el precio calculado como valor inicial
       this.transactionForm.patchValue({ totalPrice });
     }
   }
@@ -101,7 +123,7 @@ export class CreateTransactionComponent implements OnInit {
    * ✅ Envía la transacción al backend
    */
   onSubmit(): void {
-    if (this.transactionForm.valid) {
+    if (this.transactionForm.valid && !this.dateError) {
       const token = sessionStorage.getItem('token');
 
       if (!token) {
@@ -121,24 +143,20 @@ export class CreateTransactionComponent implements OnInit {
 
       this.http.post('/api/transaction', requestBody, { headers }).subscribe({
         next: () => {
-          console.log("✅ Transacción creada correctamente.");
-          
           this.successMessage = "✅ La transacción se ha creado correctamente.";
-          this.errorMessage = ''; 
+          this.errorMessage = '';
 
-          
           setTimeout(() => {
             this.router.navigateByUrl(this.returnUrl);
           }, 2000);
         },
         error: (error) => {
-          console.error("❌ Error al crear la transacción:", error);
-          this.successMessage = '';  
+          this.successMessage = '';
           this.errorMessage = error.error?.message || 'No se pudo crear la transacción.';
         },
       });
     } else {
-      console.warn("⚠️ Formulario inválido, revisa los campos.");
+      this.errorMessage = "Por favor, corrige los errores en el formulario.";
     }
   }
 
@@ -146,7 +164,6 @@ export class CreateTransactionComponent implements OnInit {
    * ✅ Cancela y redirige a la página de anuncios
    */
   onCancel(): void {
-    console.log("🔄 Redirigiendo a:", this.returnUrl);
     this.router.navigateByUrl(this.returnUrl);
   }
 }

@@ -32,6 +32,8 @@ public class Advertisement {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime updatedAt;
+
     private boolean isFavorite;
 
     @Override

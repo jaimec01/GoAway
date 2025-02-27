@@ -26,7 +26,7 @@
 
 .header-right {
   display: flex;
-  gap: 10px; 
+  gap: 10px;
 
   .logout, .my-ads-button {
     padding: 10px 15px;
@@ -56,7 +56,6 @@
     }
   }
 }
-
 
 /* Selector Owner/Tenant */
 .transaction-toggle {
@@ -99,6 +98,7 @@
 }
 
 /* Tarjeta de transacción */
+/* Tarjeta de transacción */
 .transaction-card {
   background: #fff;
   padding: 20px;
@@ -118,7 +118,7 @@
     margin-bottom: 10px;
   }
 
-    /* Estilos para Owner Confirmation */
+  /* Estilos para Owner Confirmation */
   .owner-confirmation {
     font-weight: bold;
     text-transform: uppercase;
@@ -136,7 +136,6 @@
     }
   }
 
-
   /* Nueva sección para mostrar información del anuncio */
   .advertisement-section {
     background: #f9f9f9;
@@ -152,6 +151,16 @@
     p {
       font-size: 1rem;
       margin: 5px 0;
+
+      /* Limitar la descripción a 3 líneas */
+      &.description {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // Limitar a 3 líneas
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; // Asegurar que el texto se ajuste
+      }
     }
 
     .original-price {
@@ -229,7 +238,6 @@
   }
 }
 
-
 /* Botón de Contacto */
 .contact-button-container {
   text-align: center;
@@ -268,9 +276,8 @@
     background: white;
     padding: 30px;
     border-radius: 12px;
-    text-align: center; // Centra todo el contenido del popup
     width: 500px;
-    max-width: 90%; // Para que se vea bien en pantallas pequeñas
+    max-width: 90%;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 
     h2 {
@@ -285,31 +292,55 @@
       color: #555;
     }
 
-    textarea {
-      width: 100%;
-      height: 120px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      padding: 12px;
-      font-size: 1rem;
-      resize: none;
+    .input-group {
       margin-bottom: 20px;
-      transition: border 0.3s ease;
 
-      &:focus {
-        border: 1px solid #3498db;
-        outline: none;
+      label {
+        display: block;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      input, textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        resize: none;
+        transition: border 0.3s ease;
+
+        &:focus {
+          border: 1px solid #3498db;
+          outline: none;
+        }
+      }
+
+      textarea {
+        height: 150px;
+      }
+
+      .character-count {
+        font-size: 0.9rem;
+        color: #666;
+        text-align: right;
+        margin-top: 5px;
+
+        &.limit-reached {
+          color: #e74c3c; // Cambiar color si se supera el límite
+        }
       }
     }
 
     .popup-buttons {
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
+      gap: 10px;
 
-      .close-popup {
-        background-color: #e74c3c;
-        color: white;
-        padding: 12px 20px;
+      button {
+        padding: 10px 20px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
@@ -317,8 +348,22 @@
         font-weight: bold;
         transition: background 0.2s ease-in-out;
 
-        &:hover {
-          background-color: #c0392b;
+        &.send {
+          background-color: #3498db;
+          color: white;
+
+          &:hover {
+            background-color: #2980b9;
+          }
+        }
+
+        &.close-popup {
+          background-color: #e74c3c;
+          color: white;
+
+          &:hover {
+            background-color: #c0392b;
+          }
         }
       }
     }

@@ -12,12 +12,13 @@ public class AdvertisementFinderAllMapper {
                 .id(advertisement.getId())
                 .title(advertisement.getTitle())
                 .description(advertisement.getDescription())
-                .advertisementCategory(advertisement.getAdvertisementCategory())
+                .advertisementCategory(advertisement.getAdvertisementCategory().getValue())
                 .photoUrls(advertisement.getPhotoUrls())
-                .advertisementCondition(advertisement.getAdvertisementCondition())
+                .advertisementCondition(advertisement.getAdvertisementCondition().getValue())
                 .userEmail(advertisement.getUserEmail())
                 .price(advertisement.getPrice())
                 .createdAt(advertisement.getCreatedAt())
+                .updatedAt(advertisement.getUpdatedAt())
                 .isFavorite(false)
                 .build();
     }

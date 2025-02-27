@@ -11,20 +11,30 @@
 
       <div class="input-group">
         <label for="description">Descripción</label>
-        <textarea id="description" formControlName="description"></textarea>
+        <textarea
+          id="description"
+          formControlName="description"
+          maxlength="400"
+          (input)="updateCharacterCount()"
+        ></textarea>
+        <p class="character-count">{{ characterCount }} / 400 caracteres</p>
       </div>
 
       <div class="input-group">
         <label for="category">Categoría</label>
         <select id="category" formControlName="category">
-          <option *ngFor="let category of advertisementCategories" [value]="category">{{ category }}</option>
+          <option *ngFor="let category of advertisementCategories" [value]="category">
+            {{ categoryTranslations[category] || category }}
+          </option>
         </select>
       </div>
       
       <div class="input-group">
         <label for="condition">Condición</label>
         <select id="condition" formControlName="condition">
-          <option *ngFor="let condition of advertisementConditions" [value]="condition">{{ condition }}</option>
+          <option *ngFor="let condition of advertisementConditions" [value]="condition">
+            {{ conditionTranslations[condition] || condition }}
+          </option>
         </select>
       </div>
 

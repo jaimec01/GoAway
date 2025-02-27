@@ -9,8 +9,8 @@
   </div>
 
   <div class="header-right">
-    <button class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
-    <button class="logout" (click)="onLogoutClick()">LogOut</button>
+    <button class="my-ads-button" (click)="onMyAdsClick()">Mis anuncios</button>
+    <button class="logout" (click)="onLogoutClick()">Salir</button>
   </div>
 </header>
 
@@ -26,16 +26,16 @@
   </div>
 
   <div class="advertisement-list" *ngIf="!loading && !errorMessage">
-    <div class="advertisement-card" *ngFor="let ad of myAds">
+    <div class="advertisement-card" *ngFor="let ad of myAds" (click)="onAdvertisementClick(ad.id)">
       <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
 
       <div class="ad-content">
         <h2>{{ ad.title }}</h2>
         <p class="description">{{ ad.description }}</p>
-        <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
-        <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
+        <p><strong>Categoría:</strong> {{ categoryTranslations[ad.advertisementCategory] || ad.advertisementCategory }}</p>
+        <p><strong>Condición:</strong> {{ conditionTranslations[ad.advertisementCondition] || ad.advertisementCondition }}</p>
         <p><strong>Precio:</strong> {{ ad.price }}€</p>
-        <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
+        <p><strong>Última modificación:</strong> {{ ad.updatedAt }}</p>
       </div>
 
       <!-- Contenedor para los botones de acción -->

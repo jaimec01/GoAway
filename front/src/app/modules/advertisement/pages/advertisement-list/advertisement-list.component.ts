@@ -14,6 +14,7 @@ interface Advertisement {
   userEmail: string;
   price: number | null;
   createdAt: string;
+  updatedAt: string;
   isFavorite?: boolean;
 }
 
@@ -32,8 +33,26 @@ export class AdvertisementListComponent implements OnInit {
   showLoginPopup = false;
 
   // Filtros
-  categories: string[] = ['chair', 'table', 'TV', 'chestOfDrawers', 'sofa', 'bookshelf', 'other'];
-  conditions: string[] = ['Good', 'Fair', 'Excellent'];  
+  categoryTranslations: { [key: string]: string } = {
+    chair: 'Silla',
+    table: 'Mesa',
+    TV: 'Televisión',
+    chestOfDrawers: 'Cómoda',
+    sofa: 'Sofá',
+    bookshelf: 'Estantería',
+    other: 'Otro'
+  };
+
+  conditionTranslations: { [key: string]: string } = {
+    Good: 'Buena',
+    Fair: 'Regular',
+    Excellent: 'Excelente'
+  };
+
+  // Filtros con los valores reales para el backend
+  categories: string[] = Object.keys(this.categoryTranslations);
+  conditions: string[] = Object.keys(this.conditionTranslations);
+
   selectedCategory: string = '';
   selectedCondition: string = '';
 
@@ -78,9 +97,10 @@ export class AdvertisementListComponent implements OnInit {
 
     this.http.get<Advertisement[]>(url, { headers }).subscribe({
       next: (data) => {
+        console.log('Datos recibidos:', data); 
         this.advertisements = data.map((ad) => ({
           ...ad,
-          createdAt: new Date(ad.createdAt).toLocaleDateString('es-ES'),
+          updatedAt: new Date(ad.updatedAt).toLocaleDateString('es-ES'),
         }));
 
         if (this.advertisements.length === 0) {
@@ -191,4 +211,11 @@ export class AdvertisementListComponent implements OnInit {
   closeLoginPopup(): void {
     this.showLoginPopup = false;
   }
+
+  onAdvertisementClick(advertisementId: string): void {
+    this.router.navigate([`/advertisement/${advertisementId}`], {
+      queryParams: { returnUrl: this.router.url } 
+    });
+  }
+  
 }

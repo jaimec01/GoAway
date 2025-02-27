@@ -2,9 +2,6 @@ package com.tfg.GoAway.modules.advertisement.application.advertisement.finder;
 
 import java.time.LocalDateTime;
 
-import com.tfg.GoAway.modules.advertisement.domain.AdvertisementCategory;
-import com.tfg.GoAway.modules.advertisement.domain.AdvertisementCondition;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,17 +15,19 @@ public class AdvertisementFinderAllResponse {
 
     private String description;
 
-    private AdvertisementCategory advertisementCategory;
+    private String advertisementCategory;
 
     private String photoUrls;
 
-    private AdvertisementCondition advertisementCondition;
+    private String advertisementCondition;
 
     private String userEmail;
     
     private Double price;
 
     private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private Boolean isFavorite;
 
