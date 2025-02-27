@@ -12,6 +12,7 @@ interface Advertisement {
   advertisementCondition: string;
   price: number | null;
   createdAt: string;
+  updatedAt: string;
 }
 
 @Component({
@@ -25,6 +26,24 @@ export class MyAdsComponent implements OnInit {
   myAds: Advertisement[] = [];
   loading = true;
   errorMessage = '';
+
+  // Mapeo de nombres en inglés a nombres en español
+  categoryTranslations: { [key: string]: string } = {
+    chair: 'Silla',
+    table: 'Mesa',
+    TV: 'Televisión',
+    chestOfDrawers: 'Cómoda',
+    sofa: 'Sofá',
+    bookshelf: 'Estantería',
+    other: 'Otro'
+  };
+
+  conditionTranslations: { [key: string]: string } = {
+    Good: 'Buena',
+    Fair: 'Regular',
+    Excellent: 'Excelente'
+  };
+  
 
   constructor(
     private http: HttpClient,
@@ -40,7 +59,7 @@ export class MyAdsComponent implements OnInit {
         console.log("Anuncios recibidos:", data);
         this.myAds = data.map((ad) => ({
           ...ad,
-          createdAt: new Date(ad.createdAt).toLocaleDateString('es-ES'),
+          updatedAt: new Date(ad.updatedAt).toLocaleDateString('es-ES'),
         }));
         this.loading = false;
       },
@@ -125,5 +144,11 @@ export class MyAdsComponent implements OnInit {
   onTransactionsClick(): void {
     console.log('💳 Redirigiendo a mis transacciones...');
     this.router.navigate(['/transaction/my-transactions']);
+  }
+
+  onAdvertisementClick(advertisementId: string): void {
+    this.router.navigate([`/advertisement/${advertisementId}`], {
+      queryParams: { returnUrl: this.router.url } 
+    });
   }
 }

@@ -35,17 +35,33 @@ h2 {
   margin-bottom: 1rem;
 
   label {
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-      color: #555;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    color: #555;
   }
 
   input, textarea, select {
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-      outline: none;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  textarea {
+    resize: none; 
+    height: 120px; 
+  }
+
+  .character-count {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: right;
+    margin-top: 0.3rem;
+
+    &.limit-reached {
+      color: #e74c3c; 
+    }
   }
 }
 

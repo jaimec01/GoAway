@@ -13,7 +13,7 @@
       <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
         <option value="">Todas las categorías</option>
         <option *ngFor="let category of categories" [value]="category">
-          {{ category }}
+          {{ categoryTranslations[category] }}
         </option>
       </select>
 
@@ -21,17 +21,17 @@
       <select [(ngModel)]="selectedCondition" (change)="applyFilters()">
         <option value="">Todas las condiciones</option>
         <option *ngFor="let condition of conditions" [value]="condition">
-          {{ condition }}
+          {{ conditionTranslations[condition] }}
         </option>
       </select>
     </div>
   </div>
 
   <div class="header-right">
-    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onLoginClick()">Login</button>
-    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onSignUpClick()">Sign Up</button>
-    <button *ngIf="isAuthenticated" class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
-    <button *ngIf="isAuthenticated" class="logout-button" (click)="onLogoutClick()">Logout</button>
+    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onLoginClick()">Iniciar sesión</button>
+    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onSignUpClick()">Registrarse</button>
+    <button *ngIf="isAuthenticated" class="my-ads-button" (click)="onMyAdsClick()">Mis anuncios</button>
+    <button *ngIf="isAuthenticated" class="logout-button" (click)="onLogoutClick()">Salir</button>
   </div>
 </header>
 
@@ -47,7 +47,7 @@
   </div>
 
   <div class="advertisement-list" *ngIf="!loading && !errorMessage && advertisements.length > 0">
-    <div class="advertisement-card" *ngFor="let ad of advertisements">
+    <div class="advertisement-card" *ngFor="let ad of advertisements" (click)="onAdvertisementClick(ad.id)">
       <!-- Icono de favorito -->
       <img
         class="favorite-icon"
@@ -59,10 +59,10 @@
       <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
       <h2>{{ ad.title }}</h2>
       <p class="description">{{ ad.description }}</p>
-      <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
-      <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
+      <p><strong>Categoría:</strong> {{ categoryTranslations[ad.advertisementCategory] || ad.advertisementCategory }}</p>
+      <p><strong>Condición:</strong> {{ conditionTranslations[ad.advertisementCondition] || ad.advertisementCondition }}</p>    
       <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
-      <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
+      <p><strong>Última modificación:</strong> {{ ad.updatedAt }}</p>
 
       <!-- Botón de alquilar solo si el usuario está autenticado -->
       <button *ngIf="isAuthenticated" class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>

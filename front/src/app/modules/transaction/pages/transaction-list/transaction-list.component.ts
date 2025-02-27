@@ -43,6 +43,7 @@ export class TransactionListComponent implements OnInit {
   showContactPopup = false;
   selectedTransaction: Transaction | null = null;
   contactMessage = '';
+  characterCount = 0;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -80,7 +81,7 @@ export class TransactionListComponent implements OnInit {
    * 📌 Obtiene los detalles del anuncio usando el `advertisementId`
    */
   fetchAdvertisement(transaction: Transaction): void {
-    this.http.get<Advertisement>(`/api/advertisements/${transaction.advertisementId}`).subscribe({
+    this.http.get<Advertisement>(`/public/advertisements/${transaction.advertisementId}`).subscribe({
       next: (advertisement) => {
         transaction.advertisement = advertisement;
       },
@@ -152,22 +153,22 @@ export class TransactionListComponent implements OnInit {
     });
   }
 
-  /**
-   * 📩 Abrir el popup de contacto
-   */
   openContactPopup(transaction: Transaction): void {
     this.selectedTransaction = transaction;
     this.contactMessage = ''; // Limpiar mensaje anterior
+    this.characterCount = 0; // Reiniciar contador de caracteres
     this.showContactPopup = true;
   }
 
-  /**
-   * ❌ Cerrar el popup de contacto
-   */
   closeContactPopup(): void {
     this.showContactPopup = false;
     this.selectedTransaction = null;
     this.contactMessage = '';
+    this.characterCount = 0;
+  }
+
+  updateCharacterCount(): void {
+    this.characterCount = this.contactMessage.length;
   }
 
   onFavoritesClick(): void {
@@ -194,5 +195,11 @@ export class TransactionListComponent implements OnInit {
   onMyAdsClick(): void {
     console.log('🔗 Redirigiendo a Mis Anuncios...');
     this.router.navigate(['/advertisements/my-ads']);
+  }
+
+  onAdvertisementClick(advertisementId: string): void {
+    this.router.navigate([`/advertisement/${advertisementId}`], {
+      queryParams: { returnUrl: this.router.url } 
+    });
   }
 }

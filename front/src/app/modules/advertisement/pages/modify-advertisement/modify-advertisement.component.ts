@@ -17,10 +17,28 @@ export class ModifyAdvertisementComponent implements OnInit {
   successMessage: string = '';  
   advertisementId: string = '';
   returnUrl: string = '/advertisements/my-ads';  
+  characterCount: number = 0; // Contador de caracteres
 
- 
-  advertisementCategories = ['chair', 'table', 'TV', 'chestOfDrawers', 'sofa', 'bookshelf', 'other'];
-  advertisementConditions = ['Good', 'Fair', 'Excellent'];  
+  // Mapeo de nombres en inglés a nombres en español
+  categoryTranslations: { [key: string]: string } = {
+    chair: 'Silla',
+    table: 'Mesa',
+    TV: 'Televisión',
+    chestOfDrawers: 'Cómoda',
+    sofa: 'Sofá',
+    bookshelf: 'Estantería',
+    other: 'Otro'
+  };
+
+  conditionTranslations: { [key: string]: string } = {
+    Good: 'Buena',
+    Fair: 'Regular',
+    Excellent: 'Excelente'
+  };
+
+  // Listas de categorías y condiciones
+  advertisementCategories = Object.keys(this.categoryTranslations);
+  advertisementConditions = Object.keys(this.conditionTranslations);
 
   constructor(
     private fb: FormBuilder, 
@@ -51,8 +69,22 @@ export class ModifyAdvertisementComponent implements OnInit {
         this.returnUrl = params['returnUrl'];
       }
     });
+
+    // Escuchar cambios en la descripción para actualizar el contador
+    this.adForm.get('description')?.valueChanges.subscribe(() => this.updateCharacterCount());
   }
 
+  /**
+   * 🔢 Actualizar el contador de caracteres
+   */
+  updateCharacterCount(): void {
+    const description = this.adForm.get('description')?.value || '';
+    this.characterCount = description.length;
+  }
+
+  /**
+   * ✅ Cargar los datos del anuncio
+   */
   loadAdvertisement(): void {
     const token = sessionStorage.getItem('token');
 
@@ -65,10 +97,9 @@ export class ModifyAdvertisementComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>(`/api/advertisements/${this.advertisementId}`, { headers }).subscribe({
+    this.http.get<any>(`/public/advertisements/${this.advertisementId}`, { headers }).subscribe({
       next: (data) => {
         console.log("📌 Datos del anuncio obtenidos:", data);
-
 
         this.adForm.patchValue({
           title: data.title,
@@ -78,6 +109,9 @@ export class ModifyAdvertisementComponent implements OnInit {
           price: data.price,
           photoUrls: data.photoUrls
         });
+
+        // Actualizar el contador de caracteres al cargar el anuncio
+        this.updateCharacterCount();
       },
       error: (error) => {
         console.error("❌ Error al obtener el anuncio:", error);
@@ -87,7 +121,7 @@ export class ModifyAdvertisementComponent implements OnInit {
   }
 
   /**
-   * ✅ Enviar la actualización del anuncio manteniendo el formato
+   * ✅ Enviar el formulario
    */
   onSubmit(): void {
     if (this.adForm.valid) {
@@ -138,7 +172,7 @@ export class ModifyAdvertisementComponent implements OnInit {
   }
 
   /**
-   * ✅ Cancela y redirige a la lista de anuncios del usuario
+   * ✅ Cancelar y redirigir
    */
   onCancel(): void {
     console.log("🔄 Redirigiendo a:", this.returnUrl);

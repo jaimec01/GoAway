@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/advertisements")
+@RequestMapping("/public/advertisements")
 public class AdvertisementGetByIdController {
 
     private final AdvertisementFinderById advertisementFinderById;

@@ -15,6 +15,7 @@ public class AdvertisementRepositoryMapper {
         entity.setUserEmail(advertisement.getUserEmail());
         entity.setPrice(advertisement.getPrice());
         entity.setCreatedAt(advertisement.getCreatedAt());
+        entity.setUpdatedAt(advertisement.getUpdatedAt());
         return entity;
     }
     
@@ -29,6 +30,7 @@ public class AdvertisementRepositoryMapper {
                 .userEmail(entity.getUserEmail())
                 .price(entity.getPrice())
                 .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .isFavorite(false)
                 .build();
     }

@@ -8,6 +8,7 @@ import { MyAdsComponent } from './modules/advertisement/pages/my-ads/my-ads.comp
 import { CreateTransactionComponent } from './modules/transaction/pages/create-transaction/create-transaction.component';
 import { TransactionListComponent } from './modules/transaction/pages/transaction-list/transaction-list.component';
 import { FavoriteListComponent } from './modules/favorite/pages/favorite-list/favorite-list.component';
+import { SingleAdvertisementComponent } from './modules/advertisement/pages/single-advertisement/single-advertisement.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'advertisements', pathMatch: 'full' },
@@ -20,4 +21,5 @@ export const routes: Routes = [
   { path: 'transaction/new/:id', component: CreateTransactionComponent },
   { path: 'transaction/my-transactions', component: TransactionListComponent },
   { path: 'advertisements/favorites', component: FavoriteListComponent },
+  { path: 'advertisement/:id', component: SingleAdvertisementComponent },
 ];

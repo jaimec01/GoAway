@@ -19,6 +19,12 @@ public enum AdvertisementCategory {
         return value;
     }
 
+
+    @Override
+    public String toString() {
+        return this.value; 
+    }
+
     /**
      * Converts a string value to the corresponding AdvertisementCategory enum.
      * Throws an exception if the value is invalid.

@@ -5,26 +5,26 @@
   </div>
 
   <div class="header-center">
-    <h1>My Transactions</h1>
+    <h1>Mis transacciones</h1>
   </div>
 
   <div class="header-right">
-    <button class="my-ads-button" (click)="onMyAdsClick()">My Ads</button>
-    <button class="logout" (click)="onLogoutClick()">LogOut</button>
+    <button class="my-ads-button" (click)="onMyAdsClick()">Mis anuncios</button>
+    <button class="logout" (click)="onLogoutClick()">Salir</button>
   </div>
 </header>
 
 <!-- Selector Owner / Tenant -->
 <div class="transaction-toggle">
-  <button [class.active]="isOwnerView" (click)="setView('owner')">Owner</button>
-  <button [class.active]="!isOwnerView" (click)="setView('tenant')">Tenant</button>
+  <button [class.active]="isOwnerView" (click)="setView('owner')">Peticiones</button>
+  <button [class.active]="!isOwnerView" (click)="setView('tenant')">Solicitudes</button>
 </div>
 
-<!-- Contenedor de transacciones con margen inferior para evitar que los botones sean tapados -->
+<!-- Contenedor de transacciones -->
 <div class="transaction-container">
   <div class="loading" *ngIf="loading">
     <div class="spinner"></div>
-    <p>Loading transactions...</p>
+    <p>Cargando transacciones</p>
   </div>
 
   <div class="error" *ngIf="errorMessage">
@@ -33,24 +33,22 @@
 
   <div class="transaction-list" *ngIf="!loading && !errorMessage">
     <div class="transaction-card" *ngFor="let transaction of transactions">
-      <div class="transaction-header">
-        <h2>{{ isOwnerView ? 'Tenant' : 'Owner' }}: {{ isOwnerView ? transaction.tenantEmail : transaction.ownerEmail }}</h2>
-      </div>
-      
-      <div class="advertisement-section">
+      <div class="advertisement-section" (click)="onAdvertisementClick(transaction.advertisementId)">
         <h3 *ngIf="transaction.advertisement">{{ transaction.advertisement.title }}</h3>
-        <p *ngIf="transaction.advertisement"><strong>Description:</strong> {{ transaction.advertisement.description }}</p>
+        <p *ngIf="transaction.advertisement" class="description"  >
+          <strong>Descripción:</strong> {{ transaction.advertisement.description }}
+        </p>
         <p *ngIf="transaction.advertisement">
-          <strong>Original Price:</strong> <span class="original-price">{{ transaction.advertisement.price }}€/month</span>
+          <strong>Precio original:</strong> <span class="original-price">{{ transaction.advertisement.price }}€/mes</span>
         </p>
       </div>
 
       <div class="transaction-details">
-        <p><strong>Start Date:</strong> {{ transaction.startDate }}</p>
-        <p><strong>End Date:</strong> {{ transaction.endDate }}</p>
-        <p><strong>Total Price:</strong> <span class="final-price">{{ transaction.totalPrice }}€</span></p>
-        <p><strong>Payment Method:</strong> {{ transaction.paymentMethod }}</p>
-        <p><strong>Owner Confirmation:</strong> 
+        <p><strong>Comienzo:</strong> {{ transaction.startDate }}</p>
+        <p><strong>Fin:</strong> {{ transaction.endDate }}</p>
+        <p><strong>Precio total:</strong> <span class="final-price">{{ transaction.totalPrice }}€</span></p>
+        <p><strong>Método de pago:</strong> {{ transaction.paymentMethod }}</p>
+        <p><strong>Confirmación propietario:</strong> 
           <span class="owner-confirmation" 
                 [class.pending]="transaction.ownerConfirmation === 'PENDING'"
                 [class.accepted]="transaction.ownerConfirmation === 'ACCEPTED'"
@@ -62,27 +60,51 @@
 
       <!-- Botones de Aceptar / Rechazar -->
       <div class="action-buttons" *ngIf="isOwnerView && transaction.ownerConfirmation === 'PENDING'">
-        <button class="accept" (click)="onAccept(transaction.id)">✔ Accept</button>
-        <button class="reject" (click)="onReject(transaction.id)">✖ Reject</button>
+        <button class="accept" (click)="onAccept(transaction.id)">✔ Aceptar</button>
+        <button class="reject" (click)="onReject(transaction.id)">✖ Denegar</button>
       </div>
 
-      <!-- Botón de Contacto -->
+      <!-- Botón de Contactar (Owner) -->
+      <div class="contact-button-container" *ngIf="isOwnerView && (transaction.ownerConfirmation === 'ACCEPTED' || transaction.ownerConfirmation === 'REJECTED')">
+        <button class="contact" (click)="openContactPopup(transaction)">Contactar</button>
+      </div>
+
+      <!-- Botón de Contactar (Tenant) -->
       <div class="contact-button-container" *ngIf="!isOwnerView && transaction.ownerConfirmation === 'ACCEPTED'">
-        <button class="contact" (click)="openContactPopup(transaction)">Contact</button>
+        <button class="contact" (click)="openContactPopup(transaction)">Contactar</button>
       </div>
     </div>
   </div>
 </div>
 
-
 <!-- Popup de contacto -->
 <div class="contact-popup" *ngIf="showContactPopup">
   <div class="popup-content">
-    <h2>Contact Owner</h2>
-    <p><strong>Email:</strong> {{ selectedTransaction?.ownerEmail }}</p>
-    <textarea placeholder="Write your message..." [(ngModel)]="contactMessage"></textarea>
+    <h2>Contactar con {{ isOwnerView ? 'el solicitante' : 'el propietario' }}</h2>
+    <p><strong>Email:</strong> {{ isOwnerView ? selectedTransaction?.tenantEmail : selectedTransaction?.ownerEmail }}</p>
+
+    <!-- Campo de asunto -->
+    <div class="input-group">
+      <label for="subject">Asunto</label>
+      <input id="subject" type="text" placeholder="Asunto del correo" />
+    </div>
+
+    <!-- Campo de mensaje -->
+    <div class="input-group">
+      <label for="message">Mensaje</label>
+      <textarea
+        id="message"
+        placeholder="Escribe tu mensaje (máximo 500 caracteres)..."
+        [(ngModel)]="contactMessage"
+        (input)="updateCharacterCount()"
+      ></textarea>
+      <p class="character-count">{{ characterCount }} / 500 caracteres</p>
+    </div>
+
+    <!-- Botones de acción -->
     <div class="popup-buttons">
-      <button class="close-popup" (click)="closeContactPopup()">Close</button>
+      <button class="send">Enviar</button>
+      <button class="close-popup" (click)="closeContactPopup()">Cancelar</button>
     </div>
   </div>
 </div>
