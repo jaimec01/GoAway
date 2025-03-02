@@ -207,3 +207,25 @@
     height: 40px;
   }
 }
+
+
+/* Estilos para el estado del anuncio */
+.ad-status {
+  margin-top: 10px;
+}
+
+.ad-status span {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: white;
+}
+
+.status-active {
+  background-color: #28a745; /* Verde para activo */
+}
+
+.status-inactive {
+  background-color: #dc3545; /* Rojo para inactivo */
+}
