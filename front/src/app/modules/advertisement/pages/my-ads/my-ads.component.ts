@@ -13,6 +13,7 @@ interface Advertisement {
   price: number | null;
   createdAt: string;
   updatedAt: string;
+  active: boolean;
 }
 
 @Component({
