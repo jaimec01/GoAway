@@ -28,6 +28,9 @@ export class MyAdsComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
+  // Mensaje cuando no hay anuncios
+  noAdsMessage = '¡Aún no has creado ningún anuncio!';
+
   // Mapeo de nombres en inglés a nombres en español
   categoryTranslations: { [key: string]: string } = {
     chair: 'Silla',
@@ -44,7 +47,6 @@ export class MyAdsComponent implements OnInit {
     Fair: 'Regular',
     Excellent: 'Excelente'
   };
-  
 
   constructor(
     private http: HttpClient,
@@ -104,8 +106,6 @@ export class MyAdsComponent implements OnInit {
       });
     }
   }
-  
-  
 
   onLogoutClick(): void {
     console.log('🔴 Cerrando sesión...');
@@ -118,7 +118,6 @@ export class MyAdsComponent implements OnInit {
     this.router.navigate(['/advertisements/my-ads']);
   }
   
-  
   editAd(adId: string): void {
     this.router.navigate([`/advertisements/edit/${adId}`], {
       queryParams: { returnUrl: this.router.url }
@@ -129,13 +128,11 @@ export class MyAdsComponent implements OnInit {
     this.router.navigate(['/advertisements']);
   }
 
-
   onCreateAdvertisementClick(): void {
     this.router.navigate(['/advertisements/new'], {
       queryParams: { returnUrl: this.router.url }
     });
   }
-
 
   onFavoritesClick(): void {
     console.log('⭐ Redirigiendo a la lista de favoritos...');

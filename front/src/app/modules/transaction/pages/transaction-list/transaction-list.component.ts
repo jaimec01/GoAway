@@ -51,6 +51,15 @@ export class TransactionListComponent implements OnInit {
     this.fetchTransactions();
   }
 
+  // Mensajes cuando no hay transacciones
+  get noOwnerTransactionsMessage(): string {
+    return 'No tienes peticiones de alquiler.';
+  }
+
+  get noTenantTransactionsMessage(): string {
+    return 'No has realizado ninguna solicitud de alquiler.';
+  }
+
   setView(view: 'owner' | 'tenant'): void {
     this.isOwnerView = view === 'owner';
     this.fetchTransactions();
@@ -59,12 +68,12 @@ export class TransactionListComponent implements OnInit {
   fetchTransactions(): void {
     this.loading = true;
     const endpoint = this.isOwnerView ? '/api/transactions/owner' : '/api/transactions/tenant';
-
+  
     this.http.get<Transaction[]>(endpoint).subscribe({
       next: (data) => {
         this.transactions = data;
         this.loading = false;
-
+  
         this.transactions.forEach(transaction => {
           this.fetchAdvertisement(transaction);
         });
@@ -77,9 +86,6 @@ export class TransactionListComponent implements OnInit {
     });
   }
 
-  /**
-   * 📌 Obtiene los detalles del anuncio usando el `advertisementId`
-   */
   fetchAdvertisement(transaction: Transaction): void {
     this.http.get<Advertisement>(`/public/advertisements/${transaction.advertisementId}`).subscribe({
       next: (advertisement) => {
@@ -91,9 +97,6 @@ export class TransactionListComponent implements OnInit {
     });
   }
 
-    /**
-   * ✅ Acepta una transacción
-   */
   onAccept(transactionId: string): void {
     const token = sessionStorage.getItem('token');
 
@@ -122,9 +125,6 @@ export class TransactionListComponent implements OnInit {
     });
   }
 
-  /**
-   * ❌ Rechaza una transacción
-   */
   onReject(transactionId: string): void {
     const token = sessionStorage.getItem('token');
 

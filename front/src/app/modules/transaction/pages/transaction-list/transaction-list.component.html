@@ -31,11 +31,17 @@
     <p>{{ errorMessage }}</p>
   </div>
 
-  <div class="transaction-list" *ngIf="!loading && !errorMessage">
+  <!-- Mensaje cuando no hay transacciones -->
+  <div class="no-transactions-message" *ngIf="!loading && !errorMessage && transactions.length === 0">
+    <p>{{ isOwnerView ? noOwnerTransactionsMessage : noTenantTransactionsMessage }}</p>
+  </div>
+
+  <!-- Lista de transacciones -->
+  <div class="transaction-list" *ngIf="!loading && !errorMessage && transactions.length > 0">
     <div class="transaction-card" *ngFor="let transaction of transactions">
       <div class="advertisement-section" (click)="onAdvertisementClick(transaction.advertisementId)">
         <h3 *ngIf="transaction.advertisement">{{ transaction.advertisement.title }}</h3>
-        <p *ngIf="transaction.advertisement" class="description"  >
+        <p *ngIf="transaction.advertisement" class="description">
           <strong>Descripción:</strong> {{ transaction.advertisement.description }}
         </p>
         <p *ngIf="transaction.advertisement">

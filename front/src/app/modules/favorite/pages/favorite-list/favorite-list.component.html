@@ -1,40 +1,50 @@
 <!-- Cabecera -->
 <header class="header">
-    <div class="header-left">
-      <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" (click)="goToAdvertisements()"/>
-    </div>
-  
-    <div class="header-center">
-      <h1>Mis Favoritos</h1>
-    </div>
-  
-    <div class="header-right">
-      <button class="my-ads-button" (click)="onMyAdsClick()">Mis Anuncios</button>
-      <button class="logout-button" (click)="onLogoutClick()">Logout</button>
-    </div>
-  </header>
-  
-  <!-- Contenedor de anuncios favoritos -->
-  <div class="advertisement-container">
-    <div class="loading" *ngIf="loading">
-      <div class="spinner"></div>
-      <p>Cargando anuncios favoritos...</p>
-    </div>
-  
-    <div class="error" *ngIf="errorMessage">
-      <p>{{ errorMessage }}</p>
-    </div>
-  
-    <div class="advertisement-list" *ngIf="!loading && !errorMessage">
-      <div class="advertisement-card" *ngFor="let ad of favoriteAdvertisements" (click)="onAdvertisementClick(ad.id)">
-        <!-- Icono de favorito -->
+  <div class="header-left">
+    <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" (click)="goToAdvertisements()" />
+  </div>
+
+  <div class="header-center">
+    <h1>Mis Favoritos</h1>
+  </div>
+
+  <div class="header-right">
+    <button class="my-ads-button" (click)="onMyAdsClick()">Mis Anuncios</button>
+    <button class="logout-button" (click)="onLogoutClick()">Logout</button>
+  </div>
+</header>
+
+<!-- Contenedor de anuncios favoritos -->
+<div class="advertisement-container">
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando anuncios favoritos...</p>
+  </div>
+
+  <div class="error" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Mensaje cuando no hay anuncios favoritos -->
+  <div class="no-ads-message" *ngIf="!loading && !errorMessage && favoriteAdvertisements.length === 0">
+    <p>{{ noAdsMessage }}</p>
+  </div>
+
+  <!-- Lista de anuncios favoritos -->
+  <div class="advertisement-list" *ngIf="!loading && !errorMessage && favoriteAdvertisements.length > 0">
+    <div class="advertisement-card" *ngFor="let ad of favoriteAdvertisements">
+      <!-- Sección superior: Ícono de favorito -->
+      <div class="favorite-section">
         <img
           class="favorite-icon"
           [src]="ad.isFavorite ? 'assets/images/favoritoActivado.png' : 'assets/images/favoritoDesactivado.png'"
           (click)="toggleFavorite(ad.id)"
           alt="Favorito"
         />
-  
+      </div>
+
+      <!-- Sección inferior: Contenido del anuncio -->
+      <div class="content-section" (click)="onAdvertisementClick(ad.id)">
         <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
         <h2>{{ ad.title }}</h2>
         <p class="description">{{ ad.description }}</p>
@@ -42,25 +52,25 @@
         <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
         <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
         <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
-  
+
         <!-- Botón de alquilar -->
         <button class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
       </div>
     </div>
   </div>
-  
-  <!-- Barra inferior fija con los iconos de navegación -->
-  <div class="fixed-bottom-bar">
-    <button class="nav-button" (click)="onFavoritesClick()">
-      <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
-    </button>
-  
-    <button class="nav-button" (click)="onCreateAdvertisementClick()">
-      <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
-    </button>
-  
-    <button class="nav-button" (click)="onTransactionsClick()">
-      <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
-    </button>
-  </div>
-  
+</div>
+
+<!-- Barra inferior fija con los iconos de navegación -->
+<div class="fixed-bottom-bar">
+  <button class="nav-button" (click)="onFavoritesClick()">
+    <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
+  </button>
+
+  <button class="nav-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
+  </button>
+
+  <button class="nav-button" (click)="onTransactionsClick()">
+    <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
+  </button>
+</div>

@@ -25,7 +25,13 @@
     <p>{{ errorMessage }}</p>
   </div>
 
-  <div class="advertisement-list" *ngIf="!loading && !errorMessage">
+  <!-- Mensaje cuando no hay anuncios -->
+  <div class="no-ads-message" *ngIf="!loading && !errorMessage && myAds.length === 0">
+    <p>{{ noAdsMessage }}</p>
+  </div>
+
+  <!-- Lista de anuncios -->
+  <div class="advertisement-list" *ngIf="!loading && !errorMessage && myAds.length > 0">
     <div class="advertisement-card" *ngFor="let ad of myAds" (click)="onAdvertisementClick(ad.id)">
       <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
     
