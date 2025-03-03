@@ -18,10 +18,6 @@ public class TransactionGetByTenant {
     public List<TransactionGetTenantResponse> execute(String tenantEmail) {
         List<Transaction> transactions = transactionRepository.findByTenantEmail(tenantEmail);
 
-        if (transactions.isEmpty()) {
-            throw new IllegalArgumentException("Aún no tienes transacciones.");
-        }
-        
         return transactions.stream()
                 .map(TransactionGetTenantMapper::toResponse)
                 .collect(Collectors.toList());

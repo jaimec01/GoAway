@@ -20,16 +20,10 @@ public class AdvertisementFinderByUserController {
 
     @GetMapping("/myAdvertisements")
     public List<AdvertisementFinderByUserGetResponse> getAdvertisementsByUser() {
-        // Obtener el usuario autenticado del contexto de seguridad
+
         String userEmail = SecurityUtils.getUserEmailFromContext();
 
-        // Obtener anuncios asociados al usuario autenticado
         List<AdvertisementFinderByUserGetResponse> advertisements = advertisementFinderByUser.findByUser(userEmail);
-
-        // Comprobar si la lista está vacía
-        if (advertisements.isEmpty()) {
-            throw new IllegalStateException("No se encontraron anuncios para este usuario.");
-        }
 
         return advertisements;
     }
