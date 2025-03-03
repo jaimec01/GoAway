@@ -26,11 +26,17 @@ interface Advertisement {
   styleUrls: ['./advertisement-list.component.scss'],
 })
 export class AdvertisementListComponent implements OnInit {
-  advertisements: Advertisement[] = [];
+  advertisements: Advertisement[] = []; // Todos los anuncios cargados
+  displayedAdvertisements: Advertisement[] = []; // Anuncios mostrados en la página actual
   loading = true;
   errorMessage = '';
   isAuthenticated = false;
   showLoginPopup = false;
+
+  // Paginación
+  currentPage = 1; // Página actual
+  itemsPerPage = 20; // Número de anuncios por página
+  totalPages = 1; // Número total de páginas
 
   // Filtros
   categoryTranslations: { [key: string]: string } = {
@@ -55,6 +61,7 @@ export class AdvertisementListComponent implements OnInit {
 
   selectedCategory: string = '';
   selectedCondition: string = '';
+  selectedSortOrder: string = 'desc'; // Valor por defecto: más recientes primero
 
   constructor(
     private http: HttpClient,
@@ -75,6 +82,8 @@ export class AdvertisementListComponent implements OnInit {
   }
 
   fetchAdvertisements(): void {
+    this.loading = true;
+
     const token = sessionStorage.getItem('token');
     const headers = token
       ? new HttpHeaders({ Authorization: `Bearer ${token}` })
@@ -90,6 +99,9 @@ export class AdvertisementListComponent implements OnInit {
     if (this.selectedCondition) {
       params.push(`condition=${this.selectedCondition}`);
     }
+    if (this.selectedSortOrder) {
+      params.push(`sortOrder=${this.selectedSortOrder}`);
+    }
 
     if (params.length) {
       url += '?' + params.join('&');
@@ -97,18 +109,13 @@ export class AdvertisementListComponent implements OnInit {
 
     this.http.get<Advertisement[]>(url, { headers }).subscribe({
       next: (data) => {
-        console.log('Datos recibidos:', data); 
         this.advertisements = data.map((ad) => ({
           ...ad,
           updatedAt: new Date(ad.updatedAt).toLocaleDateString('es-ES'),
         }));
 
-        if (this.advertisements.length === 0) {
-          this.errorMessage = 'No hay anuncios para estos filtros.';
-        } else {
-          this.errorMessage = ''; 
-        }
-
+        this.totalPages = Math.ceil(this.advertisements.length / this.itemsPerPage);
+        this.updateDisplayedAdvertisements();
 
         this.loading = false;
       },
@@ -119,8 +126,36 @@ export class AdvertisementListComponent implements OnInit {
     });
   }
 
+  updateDisplayedAdvertisements(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedAdvertisements = this.advertisements.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateDisplayedAdvertisements();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedAdvertisements();
+    }
+  }
+
   applyFilters(): void {
-    this.fetchAdvertisements(); // Vuelve a cargar los anuncios con los filtros aplicados
+    this.currentPage = 1; // Reiniciar a la primera página
+    this.fetchAdvertisements();
+  }
+
+  onScroll(): void {
+    // Verificar si el usuario ha llegado al final de la página
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+      this.fetchAdvertisements(); // Cargar más anuncios
+    }
   }
 
   toggleFavorite(advertisementId: string): void {
