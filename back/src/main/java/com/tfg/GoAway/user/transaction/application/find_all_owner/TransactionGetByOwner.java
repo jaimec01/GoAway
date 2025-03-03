@@ -17,10 +17,6 @@ public class TransactionGetByOwner {
 
     public List<TransactionGetOwnerResponse> execute(String ownerEmail) {
         List<Transaction> transactions = transactionRepository.findByOwnerEmail(ownerEmail);
-
-        if (transactions.isEmpty()) {
-            throw new IllegalArgumentException("Aún no tienes transacciones.");
-        }
         
         return transactions.stream()
                 .map(TransactionGetOwnerMapper::toResponse)

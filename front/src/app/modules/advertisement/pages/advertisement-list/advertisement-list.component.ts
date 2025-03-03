@@ -252,5 +252,14 @@ export class AdvertisementListComponent implements OnInit {
       queryParams: { returnUrl: this.router.url } 
     });
   }
+
+  get noAdsMessage(): string {
+    if (this.advertisements.length === 0) {
+      return '¡No hay anuncios disponibles!';
+    } else if (this.displayedAdvertisements.length === 0) {
+      return '¡Todavía no hay anuncios para estos filtros!';
+    }
+    return '';
+  }
   
 }

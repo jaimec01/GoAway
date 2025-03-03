@@ -40,6 +40,13 @@ export class FavoriteListComponent implements OnInit {
     }
   }
 
+  get noAdsMessage(): string {
+    if (this.favoriteAdvertisements.length === 0) {
+      return '¡Aún no tienes anuncios en favoritos!';
+    }
+    return '';
+  }
+
   fetchFavoriteAdvertisements(): void {
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({

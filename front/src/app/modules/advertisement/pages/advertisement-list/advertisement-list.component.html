@@ -52,8 +52,13 @@
     <p>{{ errorMessage }}</p>
   </div>
 
+  <div class="no-ads-message" *ngIf="!loading && !errorMessage && displayedAdvertisements.length === 0">
+    <p>{{ noAdsMessage }}</p>
+  </div>
+  
+  <!-- Lista de anuncios -->
   <div class="advertisement-list" *ngIf="!loading && !errorMessage && displayedAdvertisements.length > 0">
-    <div class="advertisement-card" *ngFor="let ad of displayedAdvertisements" >
+    <div class="advertisement-card" *ngFor="let ad of displayedAdvertisements">
       <!-- Sección superior: Ícono de favorito -->
       <div class="favorite-section">
         <img
@@ -63,7 +68,7 @@
           alt="Favorito"
         />
       </div>
-    
+
       <!-- Sección inferior: Contenido del anuncio -->
       <div class="content-section" (click)="onAdvertisementClick(ad.id)">
         <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
@@ -73,7 +78,7 @@
         <p><strong>Condición:</strong> {{ conditionTranslations[ad.advertisementCondition] || ad.advertisementCondition }}</p>
         <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
         <p><strong>Última modificación:</strong> {{ ad.updatedAt }}</p>
-    
+
         <!-- Botón de alquilar solo si el usuario está autenticado -->
         <button *ngIf="isAuthenticated" class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
       </div>
