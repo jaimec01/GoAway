@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { AdvertisementListComponent } from './modules/advertisement/pages/advertisement-list/advertisement-list.component';
-import { LoginComponent } from './modules/user/pages/login/login.component';
-import { RegisterComponent } from './modules/user/pages/register/register.component';
-import { CreateAdvertisementComponent } from './modules/advertisement/pages/create-advertisement/create-advertisement.component'; 
-import { ModifyAdvertisementComponent } from './modules/advertisement/pages/modify-advertisement/modify-advertisement.component'; 
-import { MyAdsComponent } from './modules/advertisement/pages/my-ads/my-ads.component';
-import { CreateTransactionComponent } from './modules/transaction/pages/create-transaction/create-transaction.component';
-import { TransactionListComponent } from './modules/transaction/pages/transaction-list/transaction-list.component';
-import { FavoriteListComponent } from './modules/favorite/pages/favorite-list/favorite-list.component';
-import { SingleAdvertisementComponent } from './modules/advertisement/pages/single-advertisement/single-advertisement.component';
+import { AdvertisementListComponent } from './user/advertisement/pages/advertisement-list/advertisement-list.component';
+import { LoginComponent } from './user/user/pages/login/login.component';
+import { RegisterComponent } from './user/user/pages/register/register.component';
+import { CreateAdvertisementComponent } from './user/advertisement/pages/create-advertisement/create-advertisement.component'; 
+import { ModifyAdvertisementComponent } from './user/advertisement/pages/modify-advertisement/modify-advertisement.component'; 
+import { MyAdsComponent } from './user/advertisement/pages/my-ads/my-ads.component';
+import { CreateTransactionComponent } from './user/transaction/pages/create-transaction/create-transaction.component';
+import { TransactionListComponent } from './user/transaction/pages/transaction-list/transaction-list.component';
+import { FavoriteListComponent } from './user/favorite/pages/favorite-list/favorite-list.component';
+import { SingleAdvertisementComponent } from './user/advertisement/pages/single-advertisement/single-advertisement.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'advertisements', pathMatch: 'full' },
