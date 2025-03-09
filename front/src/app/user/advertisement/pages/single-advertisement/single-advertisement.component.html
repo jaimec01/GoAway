@@ -9,7 +9,52 @@
   </button>
 
   <h1>{{ advertisement?.title }}</h1>
-  <img [src]="advertisement?.photoUrls" alt="Imagen del anuncio" class="advertisement-image" />
+
+  <!-- Carrusel de imágenes -->
+  <div class="image-carousel" *ngIf="advertisement.photoUrls?.length > 0; else noImages">
+    <!-- Botón para retroceder -->
+    <button
+      class="carousel-button prev"
+      (click)="prevImage()"
+      [disabled]="currentImageIndex === 0"
+    >
+      ❮ <!-- Flecha izquierda -->
+    </button>
+  
+    <!-- Contenedor de la imagen -->
+    <div class="image-container">
+      <img
+        [src]="getImageUrl(advertisement.photoUrls[currentImageIndex])"
+        alt="Imagen del anuncio"
+        class="advertisement-image"
+      />
+    </div>
+  
+    <!-- Botón para avanzar -->
+    <button
+      class="carousel-button next"
+      (click)="nextImage()"
+      [disabled]="currentImageIndex === advertisement.photoUrls.length - 1"
+    >
+      ❯ <!-- Flecha derecha -->
+    </button>
+  
+    <!-- Indicadores de imágenes -->
+    <div class="carousel-indicators">
+      <span
+        *ngFor="let photo of advertisement.photoUrls; let i = index"
+        [class.active]="i === currentImageIndex"
+        (click)="goToImage(i)"
+      ></span>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay imágenes -->
+  <ng-template #noImages>
+    <div class="no-images">
+      <p>No hay imágenes disponibles para este anuncio.</p>
+    </div>
+  </ng-template>
 
   <div class="advertisement-details">
     <div class="detail-item">

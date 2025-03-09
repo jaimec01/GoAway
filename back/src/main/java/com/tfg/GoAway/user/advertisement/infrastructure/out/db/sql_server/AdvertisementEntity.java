@@ -1,17 +1,21 @@
 package com.tfg.GoAway.user.advertisement.infrastructure.out.db.sql_server;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
+
+
 import org.hibernate.annotations.GenericGenerator;
 
 import com.tfg.GoAway.user.advertisement.domain.AdvertisementCategory;
 import com.tfg.GoAway.user.advertisement.domain.AdvertisementCondition;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Table(name = "advertisement") 
-@Entity
+@Entity 
 public class AdvertisementEntity {
 
     @Id
@@ -30,8 +34,8 @@ public class AdvertisementEntity {
     @Column(name = "furniture_category", nullable = false)
     private AdvertisementCategory furnitureCategory;
 
-    @Column(name = "photo_urls", columnDefinition = "TEXT")
-    private String photoUrls;
+    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AdvertisementPhotoEntity> photos;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "furniture_condition", nullable = false)
@@ -56,6 +60,10 @@ public class AdvertisementEntity {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        
+        if (this.active == null) {
+            this.active = true; 
+        }
     }
 
     @PreUpdate

@@ -1,6 +1,7 @@
 package com.tfg.GoAway.user.advertisement.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Advertisement {
 
     private final AdvertisementCategory advertisementCategory;
 
-    private final String photoUrls;
+    private  List<AdvertisementPhoto> photos; 
 
     private final AdvertisementCondition advertisementCondition;
 

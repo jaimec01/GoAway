@@ -1,5 +1,6 @@
 package com.tfg.GoAway.user.advertisement.infrastructure.in.http.advertisement.update;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,19 +8,19 @@ import lombok.Setter;
 @Setter
 public class AdvertisementUpdateRequest {
 
-    private String id;
-
     private String title;
 
     private String description;
 
     private String category;
 
-    private String photoUrls;
-
+    private List<String> photoUrls;
+    
     private String condition;
 
     private Double price;
-
+    
     private boolean active;
+
+    private List<String> existingPhotoIds;
 }

@@ -45,14 +45,18 @@
 
       <!-- Sección inferior: Contenido del anuncio -->
       <div class="content-section" (click)="onAdvertisementClick(ad.id)">
-        <img [src]="ad.photoUrls" alt="Imagen del anuncio" class="ad-image" />
+        <img
+          [src]="getImageUrl(ad.photoUrls[0])"
+          alt="Imagen del anuncio"
+          class="ad-image"
+        />
         <h2>{{ ad.title }}</h2>
         <p class="description">{{ ad.description }}</p>
         <p><strong>Categoría:</strong> {{ ad.advertisementCategory }}</p>
         <p><strong>Condición:</strong> {{ ad.advertisementCondition }}</p>
         <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
         <p><strong>Fecha:</strong> {{ ad.createdAt }}</p>
-
+      
         <!-- Botón de alquilar -->
         <button class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
       </div>

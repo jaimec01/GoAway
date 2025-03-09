@@ -2,13 +2,13 @@ package com.tfg.GoAway.user.advertisement.application.advertisement.created;
 
 import lombok.Builder;
 import lombok.Data;
+import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
 public class AdvertisementCreateRecord {
-
-    private final String id;
 
     private final String title;
 
@@ -16,11 +16,11 @@ public class AdvertisementCreateRecord {
 
     private final String category;
 
-    private final String photoUrls;
+    private final List<MultipartFile> photoUrls; 
 
     private final String condition;
 
     private final String userEmail;
-
+    
     private final Double price;
 }

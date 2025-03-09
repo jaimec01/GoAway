@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,16 +8,19 @@ import { CommonModule } from '@angular/common';
   selector: 'app-create-advertisement',
   templateUrl: './create-advertisement.component.html',
   styleUrls: ['./create-advertisement.component.scss'],
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
 })
 export class CreateAdvertisementComponent {
+  @ViewChild('fileInput') fileInput: any; // Referencia al input de archivos
   adForm: FormGroup;
   errorMessage: string = '';
-  returnUrl: string = '/advertisements'; 
+  returnUrl: string = '/advertisements';
   characterCount = 0; // Contador de caracteres
+  fileError: string = '';
+  selectedFiles: File[] = [];
+  isDragging: boolean = false;
 
-  // Mapeo de nombres en inglés a nombres en español
   categoryTranslations: { [key: string]: string } = {
     chair: 'Silla',
     table: 'Mesa',
@@ -25,24 +28,23 @@ export class CreateAdvertisementComponent {
     chestOfDrawers: 'Cómoda',
     sofa: 'Sofá',
     bookshelf: 'Estantería',
-    other: 'Otro'
+    other: 'Otro',
   };
 
   conditionTranslations: { [key: string]: string } = {
     Good: 'Buena',
     Fair: 'Regular',
-    Excellent: 'Excelente'
+    Excellent: 'Excelente',
   };
 
-  // Listas de categorías y condiciones (usamos las claves del mapeo)
   advertisementCategories = Object.keys(this.categoryTranslations);
   advertisementConditions = Object.keys(this.conditionTranslations);
 
   constructor(
-    private fb: FormBuilder, 
-    private http: HttpClient, 
-    private router: Router, 
-    private route: ActivatedRoute 
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.adForm = this.fb.group({
       title: ['', Validators.required],
@@ -50,56 +52,126 @@ export class CreateAdvertisementComponent {
       category: ['', Validators.required],
       condition: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
-      photoUrls: [''],
     });
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       if (params['returnUrl']) {
-        this.returnUrl = params['returnUrl']; 
-        console.log("URL de retorno capturada:", this.returnUrl);
+        this.returnUrl = params['returnUrl'];
       }
     });
   }
 
   /**
-   * 🔢 Actualizar el contador de caracteres
+   * Actualiza el contador de caracteres de la descripción.
    */
   updateCharacterCount(): void {
     const description = this.adForm.get('description')?.value || '';
     this.characterCount = description.length;
   }
 
+  openFileInput(): void {
+    this.fileInput.nativeElement.click(); // Abre el explorador de archivos
+  }
+
+  onFileChange(event: any): void {
+    const files = Array.from(event.target.files) as File[];
+    this.handleFiles(files);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(): void {
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files) {
+      const files = Array.from(event.dataTransfer.files) as File[];
+      this.handleFiles(files);
+    }
+  }
+
+  handleFiles(files: File[]): void {
+    if (this.selectedFiles.length + files.length > 6) {
+      this.fileError = 'No puedes subir más de 6 imágenes.';
+      return;
+    }
+    this.selectedFiles = [...this.selectedFiles, ...files];
+    this.validateFiles();
+  }
+
+  validateFiles(): void {
+    this.fileError = '';
+    const invalidFiles = this.selectedFiles.filter(
+      (file) => !['image/jpeg', 'image/png'].includes(file.type)
+    );
+    if (invalidFiles.length > 0) {
+      this.fileError = 'Solo se permiten archivos .jpg y .png.';
+      this.selectedFiles = this.selectedFiles.filter(
+        (file) => ['image/jpeg', 'image/png'].includes(file.type)
+      );
+    }
+  }
+
+  getImagePreview(file: File): string {
+    return URL.createObjectURL(file);
+  }
+
+  removeImage(index: number): void {
+    this.selectedFiles.splice(index, 1);
+    this.fileError = '';
+  }
+
   onSubmit(): void {
-    if (this.adForm.valid) {
-      console.log("Formulario enviado al backend:", this.adForm.value);
+    if (this.adForm.valid && this.selectedFiles.length > 0) {
+      const formData = new FormData();
+
+      // Añadir los campos del formulario como un JSON
+      const advertisementData = {
+        title: this.adForm.get('title')?.value,
+        description: this.adForm.get('description')?.value,
+        category: this.adForm.get('category')?.value,
+        condition: this.adForm.get('condition')?.value,
+        price: this.adForm.get('price')?.value,
+      };
+      formData.append('advertisement', new Blob([JSON.stringify(advertisementData)], {
+        type: 'application/json',
+      }));
+
+      // Añadir las imágenes
+      this.selectedFiles.forEach((file) => {
+        formData.append('photos', file, file.name);
+      });
 
       const token = sessionStorage.getItem('token');
-
       if (!token) {
         this.errorMessage = 'Error de autenticación. Inicia sesión.';
         return;
       }
 
       const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       });
 
-      this.http.post('/api/advertisements', this.adForm.value, { headers }).subscribe({
+      this.http.post('/api/advertisements', formData, { headers }).subscribe({
         next: () => {
-          console.log("Redirigiendo a:", this.returnUrl);
-          this.router.navigateByUrl(this.returnUrl); // Redirige a la URL de retorno
+          this.router.navigateByUrl(this.returnUrl);
         },
         error: (error) => {
-          console.error("Error en la respuesta del backend:", error);
           this.errorMessage = error.error?.message || 'No se pudo crear el anuncio.';
         },
       });
+    } else {
+      this.errorMessage = 'Por favor, completa todos los campos y selecciona al menos una imagen.';
     }
   }
 
   onCancel(): void {
-    console.log("Redirigiendo a:", this.returnUrl);
-    this.router.navigateByUrl(this.returnUrl); // Redirige a la URL de retorno
+    this.router.navigateByUrl(this.returnUrl);
   }
 }

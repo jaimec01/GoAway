@@ -3,8 +3,7 @@
     <img src="assets/images/logoApp.png" alt="GoAway Logo" class="logo" />
     <h2>Modificar Anuncio</h2>
 
-    <form [formGroup]="adForm" (ngSubmit)="onSubmit()">
-      <!-- Campos existentes -->
+    <form [formGroup]="adForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
       <div class="input-group">
         <label for="title">Título</label>
         <input id="title" type="text" formControlName="title" />
@@ -40,16 +39,59 @@
       </div>
 
       <div class="input-group">
-        <label for="price">Precio (€)</label>
+        <label for="price">Precio/mes (€)</label>
         <input id="price" type="number" formControlName="price" />
       </div>
 
       <div class="input-group">
-        <label for="photoUrls">URL de la Imagen</label>
-        <input id="photoUrls" type="text" formControlName="photoUrls" />
+        <label for="photos">Imágenes del anuncio</label>
+        <div class="existing-images">
+          <div class="image-item" *ngFor="let photo of existingPhotos; let i = index">
+            <img [src]="getImageUrl(photo.photoUrl)" alt="Existing Photo" class="preview-image" />
+            <button
+              type="button"
+              class="remove-image"
+              (click)="markPhotoForDeletion(photo.id, $event)"
+              [class.marked-for-deletion]="isMarkedForDeletion(photo.id)"
+            >
+              {{ isMarkedForDeletion(photo.id) ? '✖' : '×' }}
+            </button>
+          </div>
+        </div>
       </div>
 
-      <!-- Nuevo campo: Botón de activar/desactivar -->
+      <div class="input-group">
+        <label for="photos">Subir nuevas imágenes (solo .jpg y .png, máximo 6)</label>
+        <div
+          class="file-drop-area"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave()"
+          (drop)="onDrop($event)"
+          [class.dragover]="isDragging"
+        >
+          <p *ngIf="!selectedFiles.length">Arrastra tus archivos aquí o haz clic para seleccionar.</p>
+          <div class="image-preview" *ngIf="selectedFiles.length">
+            <div class="image-item" *ngFor="let file of selectedFiles; let i = index">
+              <img [src]="getImagePreview(file)" alt="Preview" class="preview-image" />
+              <button type="button" class="remove-image" (click)="removeImage(i)">×</button>
+            </div>
+          </div>
+          <button type="button" class="file-input-button" (click)="openFileInput()">
+            Seleccionar archivos
+          </button>
+          <input
+            id="photos"
+            type="file"
+            (change)="onFileChange($event)"
+            multiple
+            accept=".jpg, .png"
+            #fileInput
+            hidden
+          />
+        </div>
+        <p *ngIf="fileError" class="error">{{ fileError }}</p>
+      </div>
+
       <div class="input-group">
         <label>Estado del Anuncio</label>
         <div class="toggle-switch">
@@ -63,12 +105,14 @@
         </div>
       </div>
 
-      <!-- Mensajes y botones -->
       <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
       <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+
       <div class="button-group">
         <button type="button" class="cancel" (click)="onCancel()">Cancelar</button>
-        <button type="submit" class="accept" [disabled]="adForm.invalid">Modificar Anuncio</button>
+        <button type="submit" class="accept" [disabled]="adForm.invalid || fileError">
+          Modificar Anuncio
+        </button>
       </div>
     </form>
   </div>
