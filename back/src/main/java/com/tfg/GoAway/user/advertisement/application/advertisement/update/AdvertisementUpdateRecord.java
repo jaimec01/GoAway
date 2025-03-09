@@ -1,5 +1,9 @@
 package com.tfg.GoAway.user.advertisement.application.advertisement.update;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +21,13 @@ public class AdvertisementUpdateRecord {
 
     private String category;
 
-    private String photoUrls;
-
+    private List<MultipartFile> photoUrls; 
+    
     private String condition;
 
     private Double price;
-
+    
     private Boolean active;
+
+    private List<String> existingPhotoIds;
 }

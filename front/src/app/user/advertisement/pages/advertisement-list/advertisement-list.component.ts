@@ -3,13 +3,14 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';  // Importar FormsModule para el [(ngModel)]
+import { ImageConfigService } from '@app/core/services/image-config.service'; // Usar el alias @app
 
 interface Advertisement {
   id: string;
   title: string;
   description: string;
   advertisementCategory: string;
-  photoUrls: string;
+  photoUrls: string[];
   advertisementCondition: string;
   userEmail: string;
   price: number | null;
@@ -66,6 +67,7 @@ export class AdvertisementListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private imageConfigService: ImageConfigService, // Inyectar el servicio
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -111,6 +113,7 @@ export class AdvertisementListComponent implements OnInit {
       next: (data) => {
         this.advertisements = data.map((ad) => ({
           ...ad,
+          photoUrls: Array.isArray(ad.photoUrls) ? ad.photoUrls : [ad.photoUrls], // Convertir a array si no lo es
           updatedAt: new Date(ad.updatedAt).toLocaleDateString('es-ES'),
         }));
 
@@ -261,5 +264,11 @@ export class AdvertisementListComponent implements OnInit {
     }
     return '';
   }
-  
+
+  getImageUrl(relativePath: string): string {
+    if (!relativePath) {
+      return 'assets/images/placeholder.png'; // Imagen de placeholder si no hay ruta
+    }
+    return `${this.imageConfigService.imageBaseUrl}/${relativePath}`;
+  }
 }

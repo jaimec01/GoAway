@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import com.tfg.GoAway.user.advertisement.domain.Advertisement;
 
+import java.util.stream.Collectors;
+
 @Component
 public class AdvertisementFinderByIdMapper {
 
@@ -13,7 +15,12 @@ public class AdvertisementFinderByIdMapper {
                 .title(advertisement.getTitle())
                 .description(advertisement.getDescription())
                 .advertisementCategory(advertisement.getAdvertisementCategory().getValue())
-                .photoUrls(advertisement.getPhotoUrls())
+                .photoUrls(advertisement.getPhotos().stream()
+                        .map(photo -> AdvertisementFinderByIdPhotoResponse.builder()
+                                .id(photo.getId())
+                                .photoUrl(photo.getPhotoUrl())
+                                .build())
+                        .collect(Collectors.toList()))
                 .advertisementCondition(advertisement.getAdvertisementCondition().getValue())
                 .userEmail(advertisement.getUserEmail())
                 .price(advertisement.getPrice())

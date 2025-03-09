@@ -1,7 +1,7 @@
 package com.tfg.GoAway.user.advertisement.application.advertisement.find_by_id;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,8 +17,8 @@ public class AdvertisementFinderByIdResponse {
 
     private String advertisementCategory;
 
-    private String photoUrls;
-
+    private List<AdvertisementFinderByIdPhotoResponse> photoUrls; 
+    
     private String advertisementCondition;
 
     private String userEmail;
@@ -26,8 +26,9 @@ public class AdvertisementFinderByIdResponse {
     private Double price;
 
     private LocalDateTime createdAt;
-    
+
     private LocalDateTime updatedAt;
 
     private Boolean active;
+    
 }

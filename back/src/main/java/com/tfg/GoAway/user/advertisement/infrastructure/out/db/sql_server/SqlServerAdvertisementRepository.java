@@ -31,13 +31,26 @@ public class SqlServerAdvertisementRepository implements AdvertisementRepository
     @Override
     public Advertisement save(final Advertisement advertisement) {
         try {
-            AdvertisementEntity saved = repository.save(advertisementToEntity(advertisement));
+            // 1) Convertimos del dominio (Advertisement) a entidad JPA (AdvertisementEntity)
+            AdvertisementEntity entity = advertisementToEntity(advertisement);
+    
+            // 2) Forzamos que siempre esté activo si no está definido
+            if (entity.getActive() == null) {
+                entity.setActive(true);  
+            }
+    
+            // 3) Guardamos con Spring Data JPA (se generan los IDs y se rellenan las FKs en las fotos)
+            AdvertisementEntity saved = repository.save(entity);
+    
+            // 4) Convertimos de vuelta la entidad guardada a dominio
             return entityToAdvertisement(saved);
+    
         } catch (Exception e) {
             log.error("Error al guardar el anuncio: {}", e.getMessage(), e);
             throw e;
         }
     }
+    
 
     @Override
     public Optional<Advertisement> findById(String id) {

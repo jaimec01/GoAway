@@ -2,13 +2,14 @@ import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ImageConfigService } from '@app/core/services/image-config.service'; // Importar el servicio
 
 interface Advertisement {
   id: string;
   title: string;
   description: string;
   advertisementCategory: string;
-  photoUrls: string;
+  photoUrls: string[]; // Cambiar a array de strings
   advertisementCondition: string;
   userEmail: string;
   price: number | null;
@@ -31,6 +32,7 @@ export class FavoriteListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private imageConfigService: ImageConfigService, // Inyectar el servicio
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -57,6 +59,7 @@ export class FavoriteListComponent implements OnInit {
       next: (data) => {
         this.favoriteAdvertisements = data.map((ad) => ({
           ...ad,
+          photoUrls: Array.isArray(ad.photoUrls) ? ad.photoUrls : [ad.photoUrls], // Convertir a array si no lo es
           createdAt: new Date(ad.createdAt).toLocaleDateString('es-ES'),
           isFavorite: true,
         }));
@@ -67,6 +70,14 @@ export class FavoriteListComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  // Método para obtener la URL completa de la imagen
+  getImageUrl(relativePath: string): string {
+    if (!relativePath) {
+      return 'assets/images/placeholder.png'; // Imagen de placeholder si no hay ruta
+    }
+    return `${this.imageConfigService.imageBaseUrl}/${relativePath}`;
   }
 
   toggleFavorite(advertisementId: string): void {

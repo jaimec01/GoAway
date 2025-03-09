@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ImageConfigService } from '@app/core/services/image-config.service'; // Importar el servicio
 
 interface Advertisement {
   id: string;
   title: string;
   description: string;
   advertisementCategory: string;
-  photoUrls: string;
+  photoUrls: { id: string; photoUrl: string }[]; // Actualizado a array de objetos
   advertisementCondition: string;
   price: number | null;
   createdAt: string;
@@ -50,7 +51,9 @@ export class MyAdsComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private router: Router) {}
+    private router: Router,
+    private imageConfigService: ImageConfigService // Inyectar el servicio
+  ) {}
 
   ngOnInit(): void {
     this.loadMyAds();
@@ -74,6 +77,15 @@ export class MyAdsComponent implements OnInit {
     });
   }
 
+  // Método para obtener la URL completa de la imagen
+  getImageUrl(photoUrlObject: { id: string; photoUrl: string } | string): string {
+    if (!photoUrlObject) {
+      return 'assets/images/placeholder.png'; // Imagen de placeholder si no hay ruta
+    }
+    const url = typeof photoUrlObject === 'string' ? photoUrlObject : photoUrlObject.photoUrl;
+    return `${this.imageConfigService.imageBaseUrl}/${url}`;
+  }
+
   deleteAd(adId: string): void {
     if (confirm('¿Estás seguro de que quieres eliminar este anuncio?')) {
       this.http.delete(`/api/advertisements/myAdvertisements`, {
@@ -86,15 +98,11 @@ export class MyAdsComponent implements OnInit {
       }).subscribe({
         next: (response) => {
           console.log("✅ Respuesta del backend:", response);
-          
           this.myAds = this.myAds.filter(ad => ad.id !== adId);
-  
           alert(response); 
         },
         error: (error) => {
           console.error("❌ Error al eliminar anuncio:", error);
-          
-          // ⚠️ Manejar correctamente los errores específicos
           if (error.status === 400) {
             alert("⚠️ " + (error.error || "Este anuncio tiene una transacción abierta y no puede eliminarse."));
           } else if (error.status === 500) {

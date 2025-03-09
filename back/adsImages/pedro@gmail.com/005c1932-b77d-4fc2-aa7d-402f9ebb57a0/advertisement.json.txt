@@ -1,0 +1,1 @@
+{  "title": "Nuevo título del anuncio", "description": "Descripción actualizada del anuncio", "category": "sofa", "condition": "GOOD", "price": 150.75}

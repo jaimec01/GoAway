@@ -1,7 +1,7 @@
 package com.tfg.GoAway.user.advertisement.infrastructure.in.http.advertisement.find_all;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,20 +17,18 @@ public class AdvertisementFinderAllGetResponse {
 
     private String advertisementCategory;
 
-    private String photoUrls;
+    private List<String> photoUrls; 
 
     private String advertisementCondition;
 
     private String userEmail;
 
     private Double price;
-    
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    private boolean isFavorite;
-
     private Boolean active;
-
+    
 }
