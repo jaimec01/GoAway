@@ -1,0 +1,91 @@
+<div class="create-ad-container">
+  <div class="create-ad-box">
+    <img src="assets/images/logoApp.png" alt="GoAway Logo" class="logo" />
+    <h2>Crear Nuevo Anuncio</h2>
+
+    <form [formGroup]="adForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="input-group">
+        <label for="title">Título</label>
+        <input id="title" type="text" formControlName="title" maxlength="60" (input)="updateTitleCharacterCount()" />
+        <p class="character-count">{{ titleCharacterCount }} / 60 caracteres</p>
+      </div>
+
+      <div class="input-group">
+        <label for="description">Descripción</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          maxlength="400"
+          (input)="updateCharacterCount()"
+        ></textarea>
+        <p class="character-count">{{ characterCount }} / 400 caracteres</p>
+      </div>
+      
+      <div class="input-group">
+        <label for="category">Categoría</label>
+        <select id="category" formControlName="category">
+          <option *ngFor="let category of advertisementCategories" [ngValue]="category">
+            {{ categoryTranslations[category] || category }}
+          </option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="condition">Condición</label>
+        <select id="condition" formControlName="condition">
+          <option *ngFor="let condition of advertisementConditions" [ngValue]="condition">
+            {{ conditionTranslations[condition] || condition }}
+          </option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="price">Precio/mes (€)</label>
+        <input id="price" type="number" formControlName="price" />
+        <p *ngIf="adForm.get('price')?.invalid && adForm.get('price')?.touched && adForm.get('price')?.value < 0" class="error">
+          El precio debe ser positivo (0 o mayor).
+        </p>
+      </div>
+
+      <div class="input-group">
+        <label for="photos">Subir imágenes (solo .jpg y .png, máximo 6)</label>
+        <div
+          class="file-drop-area"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave()"
+          (drop)="onDrop($event)"
+          [class.dragover]="isDragging"
+        >
+          <p *ngIf="!selectedFiles.length">Arrastra tus archivos aquí o haz clic para seleccionar.</p>
+          <div class="image-preview" *ngIf="selectedFiles.length">
+            <div class="image-item" *ngFor="let file of selectedFiles; let i = index">
+              <img [src]="getImagePreview(file)" alt="Preview" class="preview-image" />
+              <button type="button" class="remove-image" (click)="removeImage(i)">×</button>
+            </div>
+          </div>
+          <button type="button" class="file-input-button" (click)="openFileInput()">
+            Seleccionar archivos
+          </button>
+          <input
+            id="photos"
+            type="file"
+            (change)="onFileChange($event)"
+            multiple
+            accept=".jpg, .png"
+            #fileInput
+          />
+        </div>
+        <p *ngIf="fileError" class="error">{{ fileError }}</p>
+      </div>
+
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+      <div class="button-group">
+        <button type="button" class="cancel" (click)="onCancel()">Cancelar</button>
+        <button type="submit" class="accept" [disabled]="adForm.invalid || fileError">
+          Crear Anuncio
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

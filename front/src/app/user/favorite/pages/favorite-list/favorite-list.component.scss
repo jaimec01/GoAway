@@ -1,0 +1,189 @@
+/* Cabecera */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .header-left .header-logo {
+    height: 80px;
+    width: auto;
+  }
+  
+  .header-center {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .header-center h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+  
+  /* Contenedor de los botones de la cabecera */
+  .header-right {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Estilo general de los botones */
+  .auth-button,
+  .my-ads-button,
+  .logout-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.2s ease-in-out;
+  }
+  
+  /* Botón de Login y Sign Up */
+  .auth-button {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .auth-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Botón de "Mis Anuncios" */
+  .my-ads-button {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .my-ads-button:hover {
+    background-color: #27ae60;
+  }
+  
+  /* Botón de Logout */
+  .logout-button {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .logout-button:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Contenedor de anuncios */
+  .advertisement-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  
+  .advertisement-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  /* Tarjeta de anuncio */
+  .advertisement-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    text-align: left;
+    position: relative;
+  }
+  
+  .advertisement-card:hover {
+    transform: scale(1.03);
+  }
+  
+  /* Imagen del anuncio */
+  .ad-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Botón de alquilar */
+  .rent-button {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.2s ease-in-out;
+  }
+  
+  .rent-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Barra inferior fija */
+  .fixed-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f8f8f8;
+    border-top: 2px solid #ccc;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Estilo para los botones de navegación */
+  .nav-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .nav-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .nav-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* Icono de favorito en la esquina superior derecha */
+  .favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  .no-ads-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  

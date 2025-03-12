@@ -1,5 +1,14 @@
 version: "3.9"
 services:
+  frontend:
+    build:
+      context: ./front
+    container_name: goaway-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
   db:
     image: mysql:8.0
     container_name: goaway-db
@@ -24,6 +33,9 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    volumes:
+      - D:/UNIVERSIDAD/TFG/GoAway/back/adsImages:/app/images
 
 volumes:
   db_data:
+  

@@ -1,0 +1,138 @@
+<!-- Cabecera -->
+<header class="header">
+  <div class="header-left">
+    <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" (click)="goToAdvertisements()" />
+  </div>
+
+  <div class="header-center">
+    <h1>Mis transacciones</h1>
+  </div>
+
+  <div class="header-right">
+    <button class="my-ads-button" (click)="onMyAdsClick()">Mis anuncios</button>
+    <button class="logout" (click)="onLogoutClick()">Salir</button>
+  </div>
+</header>
+
+<!-- Selector Owner / Tenant -->
+<div class="transaction-toggle">
+  <button [class.active]="isOwnerView" (click)="setView('owner')">Peticiones</button>
+  <button [class.active]="!isOwnerView" (click)="setView('tenant')">Solicitudes</button>
+</div>
+
+<!-- Selector de ordenamiento -->
+<div class="sort-toggle">
+  <select id="sortOrder" [(ngModel)]="sortOrder" (change)="fetchTransactions()">
+    <option value="desc">Más reciente primero</option>
+    <option value="asc">Más antiguo primero</option>
+  </select>
+</div>
+
+<!-- Contenedor de transacciones -->
+<div class="transaction-container">
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando transacciones</p>
+  </div>
+
+  <div class="error" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Mensaje cuando no hay transacciones -->
+  <div class="no-transactions-message" *ngIf="!loading && !errorMessage && transactions.length === 0">
+    <p>{{ isOwnerView ? noOwnerTransactionsMessage : noTenantTransactionsMessage }}</p>
+  </div>
+
+  <!-- Lista de transacciones -->
+  <div class="transaction-list" *ngIf="!loading && !errorMessage && transactions.length > 0">
+    <div class="transaction-card" *ngFor="let transaction of transactions">
+      <div class="advertisement-section" (click)="onAdvertisementClick(transaction.advertisementId)">
+        <h3 *ngIf="transaction.advertisement">{{ transaction.advertisement.title }}</h3>
+        <p *ngIf="transaction.advertisement" class="description">
+          <strong>Descripción:</strong> {{ transaction.advertisement.description }}
+        </p>
+        <p *ngIf="transaction.advertisement">
+          <strong>Precio original:</strong> <span class="original-price">{{ transaction.advertisement.price }}€/mes</span>
+        </p>
+      </div>
+
+      <div class="transaction-details">
+        <p><strong>Comienzo:</strong> {{ transaction.startDate }}</p>
+        <p><strong>Fin:</strong> {{ transaction.endDate }}</p>
+        <p><strong>Precio total:</strong> <span class="final-price">{{ transaction.totalPrice }}€</span></p>
+        <p><strong>Método de pago:</strong> {{ transaction.paymentMethod }}</p>
+        <p><strong>Última actualización:</strong> {{ formatDateTime(transaction.updatedAt) }}</p>
+        <p>
+          <img 
+            [src]="getConfirmationIcon(transaction.ownerConfirmation)" 
+            [alt]="transaction.ownerConfirmation" 
+            class="confirmation-icon" 
+            [title]="getConfirmationTooltip(transaction.ownerConfirmation)"
+          >
+        </p>
+      </div>
+
+      <!-- Botones de Aceptar / Rechazar -->
+      <div class="action-buttons" *ngIf="isOwnerView && transaction.ownerConfirmation === 'PENDING'">
+        <button class="accept" (click)="onAccept(transaction.id)">✔ Aceptar</button>
+        <button class="reject" (click)="onReject(transaction.id)">✖ Denegar</button>
+      </div>
+
+      <!-- Botón de Contactar (Owner) -->
+      <div class="contact-button-container" *ngIf="isOwnerView && (transaction.ownerConfirmation === 'ACCEPTED' || transaction.ownerConfirmation === 'REJECTED')">
+        <button class="contact" (click)="openContactPopup(transaction)">Contactar</button>
+      </div>
+
+      <!-- Botón de Contactar (Tenant) -->
+      <div class="contact-button-container" *ngIf="!isOwnerView && transaction.ownerConfirmation === 'ACCEPTED'">
+        <button class="contact" (click)="openContactPopup(transaction)">Contactar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup de contacto -->
+<div class="contact-popup" *ngIf="showContactPopup">
+  <div class="popup-content">
+    <h2>Contactar con {{ isOwnerView ? 'el solicitante' : 'el propietario' }}</h2>
+    <p><strong>Email:</strong> {{ isOwnerView ? selectedTransaction?.tenantEmail : selectedTransaction?.ownerEmail }}</p>
+
+    <!-- Campo de asunto -->
+    <div class="input-group">
+      <label for="subject">Asunto</label>
+      <input id="subject" type="text" placeholder="Asunto del correo" />
+    </div>
+
+    <!-- Campo de mensaje -->
+    <div class="input-group">
+      <label for="message">Mensaje</label>
+      <textarea
+        id="message"
+        placeholder="Escribe tu mensaje (máximo 500 caracteres)..."
+        [(ngModel)]="contactMessage"
+        (input)="updateCharacterCount()"
+      ></textarea>
+      <p class="character-count">{{ characterCount }} / 500 caracteres</p>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="popup-buttons">
+      <button class="send">Enviar</button>
+      <button class="close-popup" (click)="closeContactPopup()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Barra inferior con iconos de navegación -->
+<div class="fixed-bottom-bar">
+  <button class="nav-button" (click)="onFavoritesClick()">
+    <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
+  </button>
+  <button class="nav-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
+  </button>
+  <button class="nav-button" (click)="onTransactionsClick()">
+    <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
+  </button>
+</div>

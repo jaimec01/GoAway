@@ -1,0 +1,216 @@
+/* Estilos para el logo */
+.logo {
+  width: 120px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.advertisement-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+  }
+
+  /* Estilos para el carrusel de imágenes */
+  .image-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 25px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+
+    /* Contenedor de la imagen con aspecto 4:3 */
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-top: 75%; /* 4:3 Aspect Ratio (3/4 * 100) */
+      overflow: hidden;
+      z-index: 1; /* Asegurar que el contenedor esté detrás de los botones */
+    }
+
+    .advertisement-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 15px;
+      z-index: 1; /* Mismo z-index que el contenedor, detrás de los botones */
+    }
+
+    /* Botones de navegación del carrusel */
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 18px;
+      transition: background 0.2s ease-in-out;
+      z-index: 2; /* Asegurar que los botones estén por encima de la imagen */
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      &.prev {
+        left: 10px;
+      }
+
+      &.next {
+        right: 10px;
+      }
+
+      &:disabled {
+        background-color: rgba(0, 0, 0, 0.2);
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+
+    /* Indicadores de imágenes */
+    .carousel-indicators {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 2; /* Asegurar que los indicadores estén por encima */
+
+      span {
+        width: 10px;
+        height: 10px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+
+        &.active {
+          background-color: rgba(255, 255, 255, 1);
+        }
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+  }
+
+  .no-images {
+    text-align: center;
+    margin-top: 20px;
+  
+    .no-images-icon {
+      width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  
+    p {
+      font-size: 1.2rem;
+      color: #666;
+    }
+  }
+
+  .advertisement-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    .detail-item {
+      font-size: 1.1rem;
+      margin: 15px 0;
+      color: #555;
+      line-height: 1.6;
+
+      strong {
+        color: #333;
+        font-weight: 600;
+      }
+    }
+
+    .description {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.6;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #e0e0e0;
+
+      strong {
+        color: #333;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .back-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.2s ease-in-out;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    &:hover {
+      background-color: #2980b9;
+    }
+
+    .back-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.loading, .error {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 30px;
+  color: #555;
+}
+
+.loading {
+  p {
+    margin-top: 15px;
+  }
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: bold;
+}

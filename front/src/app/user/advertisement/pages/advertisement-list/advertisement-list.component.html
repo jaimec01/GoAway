@@ -1,0 +1,117 @@
+<!-- Cabecera -->
+<header class="header">
+  <div class="header-left">
+    <img src="assets/images/logoApp.png" alt="Logo" class="header-logo" />
+  </div>
+
+  <!-- Centro con los filtros -->
+  <div class="header-center">
+    <h1>Lista de Anuncios</h1>
+
+    <div class="filters">
+      <!-- ComboBox de Categoría -->
+      <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
+        <option value="">Todas las categorías</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{ categoryTranslations[category] }}
+        </option>
+      </select>
+
+      <!-- ComboBox de Condición -->
+      <select [(ngModel)]="selectedCondition" (change)="applyFilters()">
+        <option value="">Todas las condiciones</option>
+        <option *ngFor="let condition of conditions" [value]="condition">
+          {{ conditionTranslations[condition] }}
+        </option>
+      </select>
+
+      <!-- ComboBox de Ordenación -->
+      <select [(ngModel)]="selectedSortOrder" (change)="applyFilters()">
+        <option value="desc">Más recientes primero</option>
+        <option value="asc">Más antiguos primero</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onLoginClick()">Iniciar sesión</button>
+    <button *ngIf="!isAuthenticated" class="auth-button" (click)="onSignUpClick()">Registrarse</button>
+    <button *ngIf="isAuthenticated" class="my-ads-button" (click)="onMyAdsClick()">Mis anuncios</button>
+    <button *ngIf="isAuthenticated" class="logout-button" (click)="onLogoutClick()">Salir</button>
+  </div>
+</header>
+
+<!-- Contenedor de anuncios -->
+<div class="advertisement-container">
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando anuncios...</p>
+  </div>
+
+  <div class="error" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="no-ads-message" *ngIf="!loading && !errorMessage && displayedAdvertisements.length === 0">
+    <p>{{ noAdsMessage }}</p>
+  </div>
+  
+  <!-- Lista de anuncios -->
+  <div class="advertisement-list" *ngIf="!loading && !errorMessage && displayedAdvertisements.length > 0">
+    <div class="advertisement-card" *ngFor="let ad of displayedAdvertisements">
+      <!-- Sección superior: Ícono de favorito -->
+      <div class="favorite-section">
+        <img
+          class="favorite-icon"
+          [src]="ad.isFavorite ? 'assets/images/favoritoActivado.png' : 'assets/images/favoritoDesactivado.png'"
+          (click)="toggleFavorite(ad.id)"
+          alt="Favorito"
+        />
+      </div>
+
+      <!-- Sección inferior: Contenido del anuncio -->
+      <div class="content-section" (click)="onAdvertisementClick(ad.id)">
+        <img [src]="getImageUrl(ad.photoUrls && ad.photoUrls.length > 0 ? ad.photoUrls[0] : '')" alt="Imagen del anuncio" class="ad-image" />
+        <h2>{{ ad.title }}</h2>
+        <p class="description">{{ ad.description }}</p>
+        <p><strong>Categoría:</strong> {{ categoryTranslations[ad.advertisementCategory] || ad.advertisementCategory }}</p>
+        <p><strong>Condición:</strong> {{ conditionTranslations[ad.advertisementCondition] || ad.advertisementCondition }}</p>
+        <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
+        <p><strong>Última modificación:</strong> {{ ad.updatedAt }}</p>
+        
+        <!-- Botón de alquilar solo si el usuario está autenticado -->
+        <button *ngIf="isAuthenticated" class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controles de paginación -->
+  <div class="pagination-controls" *ngIf="!loading && !errorMessage && advertisements.length > 0">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
+</div>
+
+<!-- Barra inferior fija con los iconos de navegación -->
+<div class="fixed-bottom-bar">
+  <button class="nav-button" (click)="onFavoritesClick()">
+    <img src="assets/images/listaFavoritos.png" alt="Lista de Favoritos" class="nav-icon" />
+  </button>
+
+  <button class="nav-button" (click)="onCreateAdvertisementClick()">
+    <img src="assets/images/newAdvertisement.png" alt="Crear Anuncio" class="nav-icon" />
+  </button>
+
+  <button class="nav-button" (click)="onTransactionsClick()">
+    <img src="assets/images/transaction.png" alt="Transacciones" class="nav-icon" />
+  </button>
+</div>
+
+<!-- Pop-up de autenticación -->
+<div *ngIf="showLoginPopup" class="auth-popup">
+  <div class="popup-content">
+    <p>Debes iniciar sesión para acceder a esta función.</p>
+    <button class="close-popup" (click)="closeLoginPopup()">Cerrar</button>
+  </div>
+</div>
