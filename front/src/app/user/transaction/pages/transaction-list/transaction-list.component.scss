@@ -98,7 +98,6 @@
 }
 
 /* Tarjeta de transacción */
-/* Tarjeta de transacción */
 .transaction-card {
   background: #fff;
   padding: 20px;
@@ -112,10 +111,21 @@
     transform: translateY(-5px);
   }
 
-  .transaction-header {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+  .transaction-details {
+    p {
+      margin: 8px 0;
+    }
+
+    .confirmation-icon {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
   }
 
   /* Estilos para Owner Confirmation */
@@ -379,4 +389,33 @@
   background-color: #f8f8f8;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sort-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+  gap: 10px;
+
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #fff;
+    transition: border-color 0.2s ease-in-out;
+
+    &:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+  }
 }

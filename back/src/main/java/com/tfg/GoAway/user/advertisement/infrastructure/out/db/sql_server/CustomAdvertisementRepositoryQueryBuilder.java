@@ -30,19 +30,21 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    public static TypedQuery<AdvertisementEntity> buildQueryByFilters(final String category, final String condition, final EntityManager entityManager) {
+    public static TypedQuery<AdvertisementEntity> buildQueryByFilters(final String category, final String condition,
+            final EntityManager entityManager) {
         StringBuilder queryString = new StringBuilder(Q_BASE);
         queryString.append(Q_FILTER_ACTIVE); // Filtro constante
-    
+
         if (category != null) {
             queryString.append(Q_FILTER_CATEGORY);
         }
         if (condition != null) {
             queryString.append(Q_FILTER_CONDITION);
         }
-    
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
-    
+
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
+
         if (category != null) {
             try {
                 query.setParameter(PARAM_CATEGORY, AdvertisementCategory.valueOf(category.toUpperCase()));
@@ -50,7 +52,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
                 throw new IllegalArgumentException("Categoría inválida: " + category);
             }
         }
-    
+
         if (condition != null) {
             try {
                 query.setParameter(PARAM_CONDITION, AdvertisementCondition.valueOf(condition.toUpperCase()));
@@ -58,11 +60,12 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
                 throw new IllegalArgumentException("Condición inválida: " + condition);
             }
         }
-    
+
         return query;
     }
 
-    public static TypedQuery<AdvertisementEntity> buildQueryByIdAndUserEmail(final String id, final String userEmail, final EntityManager entityManager) {
+    public static TypedQuery<AdvertisementEntity> buildQueryByIdAndUserEmail(final String id, final String userEmail,
+            final EntityManager entityManager) {
         StringBuilder queryString = new StringBuilder(Q_BASE);
         queryString.append(Q_FILTER_ACTIVE);
 
@@ -73,7 +76,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
             queryString.append(Q_FILTER_USER_EMAIL);
         }
 
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
 
         if (id != null) {
             query.setParameter(PARAM_ID, id);
@@ -86,7 +90,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
     }
 
     public static TypedQuery<AdvertisementEntity> buildQueryByFiltersAndExcludeUser(
-        final String userEmail, final String category, final String condition, final EntityManager entityManager) {
+            final String userEmail, final String category, final String condition, final EntityManager entityManager) {
 
         StringBuilder queryString = new StringBuilder(Q_BASE);
 
@@ -102,7 +106,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
             queryString.append(Q_FILTER_CONDITION);
         }
 
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
 
         if (userEmail != null) {
             query.setParameter(PARAM_USER_EMAIL, userEmail);
@@ -126,7 +131,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
     }
 
     public static TypedQuery<AdvertisementEntity> buildQueryByFiltersOrderByUpdatedAtDesc(
-        final String category, final String condition, final EntityManager entityManager) {
+            final String category, final String condition, final EntityManager entityManager) {
 
         StringBuilder queryString = new StringBuilder(Q_BASE);
 
@@ -141,7 +146,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
 
         queryString.append(Q_ORDER_BY_UPDATED_AT_DESC);
 
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
 
         if (category != null) {
             try {
@@ -163,7 +169,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
     }
 
     public static TypedQuery<AdvertisementEntity> buildQueryByFiltersOrderByUpdatedAtAsc(
-        final String category, final String condition, final EntityManager entityManager) {
+            final String category, final String condition, final EntityManager entityManager) {
 
         StringBuilder queryString = new StringBuilder(Q_BASE);
 
@@ -178,7 +184,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
 
         queryString.append(Q_ORDER_BY_UPDATED_AT_ASC);
 
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
 
         if (category != null) {
             try {
@@ -200,7 +207,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
     }
 
     public static TypedQuery<AdvertisementEntity> buildQueryByFiltersAndExcludeUserOrderByUpdatedAtDesc(
-        final String userEmail, final String category, final String condition, final EntityManager entityManager) {
+            final String userEmail, final String category, final String condition, final EntityManager entityManager) {
 
         StringBuilder queryString = new StringBuilder(Q_BASE);
 
@@ -218,7 +225,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
 
         queryString.append(Q_ORDER_BY_UPDATED_AT_DESC);
 
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
 
         if (userEmail != null) {
             query.setParameter(PARAM_USER_EMAIL, userEmail);
@@ -242,7 +250,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
     }
 
     public static TypedQuery<AdvertisementEntity> buildQueryByFiltersAndExcludeUserOrderByUpdatedAtAsc(
-        final String userEmail, final String category, final String condition, final EntityManager entityManager) {
+            final String userEmail, final String category, final String condition, final EntityManager entityManager) {
 
         StringBuilder queryString = new StringBuilder(Q_BASE);
 
@@ -260,7 +268,8 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
 
         queryString.append(Q_ORDER_BY_UPDATED_AT_ASC);
 
-        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(), AdvertisementEntity.class);
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
 
         if (userEmail != null) {
             query.setParameter(PARAM_USER_EMAIL, userEmail);
@@ -278,6 +287,28 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Condición inválida: " + condition);
             }
+        }
+
+        return query;
+    }
+
+    public static TypedQuery<AdvertisementEntity> buildQueryByUserEmailOrderByUpdatedAtDesc(
+            final String userEmail, final EntityManager entityManager) {
+
+        StringBuilder queryString = new StringBuilder(Q_BASE);
+        queryString.append(Q_FILTER_ACTIVE);
+
+        if (userEmail != null) {
+            queryString.append(Q_FILTER_USER_EMAIL);
+        }
+
+        queryString.append(Q_ORDER_BY_UPDATED_AT_DESC);
+
+        TypedQuery<AdvertisementEntity> query = entityManager.createQuery(queryString.toString(),
+                AdvertisementEntity.class);
+
+        if (userEmail != null) {
+            query.setParameter(PARAM_USER_EMAIL, userEmail);
         }
 
         return query;

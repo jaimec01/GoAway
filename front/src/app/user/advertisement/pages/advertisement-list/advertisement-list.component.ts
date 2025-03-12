@@ -2,8 +2,8 @@ import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';  // Importar FormsModule para el [(ngModel)]
-import { ImageConfigService } from '@app/core/services/image-config.service'; // Usar el alias @app
+import { FormsModule } from '@angular/forms';
+import { ImageConfigService } from '@app/core/services/image-config.service';
 
 interface Advertisement {
   id: string;
@@ -22,24 +22,22 @@ interface Advertisement {
 @Component({
   selector: 'app-advertisement-list',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Importar FormsModule
+  imports: [CommonModule, FormsModule],
   templateUrl: './advertisement-list.component.html',
   styleUrls: ['./advertisement-list.component.scss'],
 })
 export class AdvertisementListComponent implements OnInit {
-  advertisements: Advertisement[] = []; // Todos los anuncios cargados
-  displayedAdvertisements: Advertisement[] = []; // Anuncios mostrados en la página actual
+  advertisements: Advertisement[] = [];
+  displayedAdvertisements: Advertisement[] = [];
   loading = true;
   errorMessage = '';
   isAuthenticated = false;
   showLoginPopup = false;
 
-  // Paginación
-  currentPage = 1; // Página actual
-  itemsPerPage = 20; // Número de anuncios por página
-  totalPages = 1; // Número total de páginas
+  currentPage = 1;
+  itemsPerPage = 20;
+  totalPages = 1;
 
-  // Filtros
   categoryTranslations: { [key: string]: string } = {
     chair: 'Silla',
     table: 'Mesa',
@@ -56,18 +54,17 @@ export class AdvertisementListComponent implements OnInit {
     Excellent: 'Excelente'
   };
 
-  // Filtros con los valores reales para el backend
   categories: string[] = Object.keys(this.categoryTranslations);
   conditions: string[] = Object.keys(this.conditionTranslations);
 
   selectedCategory: string = '';
   selectedCondition: string = '';
-  selectedSortOrder: string = 'desc'; // Valor por defecto: más recientes primero
+  selectedSortOrder: string = 'desc';
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private imageConfigService: ImageConfigService, // Inyectar el servicio
+    private imageConfigService: ImageConfigService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -93,7 +90,6 @@ export class AdvertisementListComponent implements OnInit {
 
     let url = `/public/advertisements`;
 
-    // Aplicar filtros en la URL si están seleccionados
     const params = [];
     if (this.selectedCategory) {
       params.push(`category=${this.selectedCategory}`);
@@ -111,11 +107,23 @@ export class AdvertisementListComponent implements OnInit {
 
     this.http.get<Advertisement[]>(url, { headers }).subscribe({
       next: (data) => {
-        this.advertisements = data.map((ad) => ({
-          ...ad,
-          photoUrls: Array.isArray(ad.photoUrls) ? ad.photoUrls : [ad.photoUrls], // Convertir a array si no lo es
-          updatedAt: new Date(ad.updatedAt).toLocaleDateString('es-ES'),
-        }));
+        this.advertisements = data.map((ad) => {
+          // Depuración: loguear photoUrls para inspeccionar su contenido
+          console.log(`Anuncio ${ad.id} - photoUrls:`, ad.photoUrls);
+
+          // Asegurar que photoUrls sea un array, incluso si el backend devuelve algo inesperado
+          const photoUrls = Array.isArray(ad.photoUrls)
+            ? ad.photoUrls
+            : ad.photoUrls
+            ? [ad.photoUrls]
+            : [];
+
+          return {
+            ...ad,
+            photoUrls,
+            updatedAt: new Date(ad.updatedAt).toLocaleDateString('es-ES'),
+          };
+        });
 
         this.totalPages = Math.ceil(this.advertisements.length / this.itemsPerPage);
         this.updateDisplayedAdvertisements();
@@ -150,14 +158,13 @@ export class AdvertisementListComponent implements OnInit {
   }
 
   applyFilters(): void {
-    this.currentPage = 1; // Reiniciar a la primera página
+    this.currentPage = 1;
     this.fetchAdvertisements();
   }
 
   onScroll(): void {
-    // Verificar si el usuario ha llegado al final de la página
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-      this.fetchAdvertisements(); // Cargar más anuncios
+      this.fetchAdvertisements();
     }
   }
 
@@ -187,7 +194,6 @@ export class AdvertisementListComponent implements OnInit {
     });
   }
 
-  // Métodos de navegación y autenticación
   onLoginClick(): void {
     this.router.navigate(['/login']);
   }
@@ -199,6 +205,7 @@ export class AdvertisementListComponent implements OnInit {
   onLogoutClick(): void {
     sessionStorage.removeItem('token');
     this.isAuthenticated = false;
+    this.fetchAdvertisements();
     this.router.navigate(['/']);
   }
 
@@ -252,7 +259,7 @@ export class AdvertisementListComponent implements OnInit {
 
   onAdvertisementClick(advertisementId: string): void {
     this.router.navigate([`/advertisement/${advertisementId}`], {
-      queryParams: { returnUrl: this.router.url } 
+      queryParams: { returnUrl: this.router.url }
     });
   }
 
@@ -266,9 +273,13 @@ export class AdvertisementListComponent implements OnInit {
   }
 
   getImageUrl(relativePath: string): string {
-    if (!relativePath) {
-      return 'assets/images/placeholder.png'; // Imagen de placeholder si no hay ruta
+  
+    if (!relativePath || relativePath.trim() === '') {
+      return 'assets/images/noImages.png';
     }
-    return `${this.imageConfigService.imageBaseUrl}/${relativePath}`;
+  
+    const imageUrl = `${this.imageConfigService.imageBaseUrl}/${relativePath}`;
+    return imageUrl;
   }
+  
 }

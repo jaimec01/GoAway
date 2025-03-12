@@ -26,4 +26,7 @@ public interface AdvertisementRepository {
     List<Advertisement> findByFiltersAndExcludeUserOrderByUpdatedAtDesc(String userEmail, String category, String condition);
 
     List<Advertisement> findByFiltersAndExcludeUserOrderByUpdatedAtAsc(String userEmail, String category, String condition);
+
+    List<Advertisement> findByUserEmailOrderByUpdatedAtDesc(String userEmail);
+
 }

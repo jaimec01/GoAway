@@ -6,7 +6,8 @@
     <form [formGroup]="adForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
       <div class="input-group">
         <label for="title">Título</label>
-        <input id="title" type="text" formControlName="title" />
+        <input id="title" type="text" formControlName="title" maxlength="60" (input)="updateTitleCharacterCount()" />
+        <p class="character-count">{{ titleCharacterCount }} / 60 caracteres</p>
       </div>
 
       <div class="input-group">
@@ -41,6 +42,9 @@
       <div class="input-group">
         <label for="price">Precio/mes (€)</label>
         <input id="price" type="number" formControlName="price" />
+        <p *ngIf="adForm.get('price')?.invalid && adForm.get('price')?.touched && adForm.get('price')?.value < 0" class="error">
+          El precio debe ser positivo (0 o mayor).
+        </p>
       </div>
 
       <div class="input-group">

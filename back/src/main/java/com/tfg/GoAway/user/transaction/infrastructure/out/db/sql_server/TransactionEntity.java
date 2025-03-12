@@ -9,6 +9,7 @@ import com.tfg.GoAway.user.transaction.domain.TransactionOwnerConfirmation;
 import com.tfg.GoAway.user.transaction.domain.TransactionStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Table(name = "transaction")
@@ -50,5 +51,22 @@ public class TransactionEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "owner_confirmation", nullable = false)
     private TransactionOwnerConfirmation ownerConfirmation = TransactionOwnerConfirmation.PENDING;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
 }

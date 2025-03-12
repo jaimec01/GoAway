@@ -80,7 +80,7 @@ export class MyAdsComponent implements OnInit {
   // Método para obtener la URL completa de la imagen
   getImageUrl(photoUrlObject: { id: string; photoUrl: string } | string): string {
     if (!photoUrlObject) {
-      return 'assets/images/placeholder.png'; // Imagen de placeholder si no hay ruta
+      return 'assets/images/noImages.png'; 
     }
     const url = typeof photoUrlObject === 'string' ? photoUrlObject : photoUrlObject.photoUrl;
     return `${this.imageConfigService.imageBaseUrl}/${url}`;

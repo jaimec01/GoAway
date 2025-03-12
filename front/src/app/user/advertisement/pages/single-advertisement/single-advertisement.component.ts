@@ -103,7 +103,7 @@ export class SingleAdvertisementComponent implements OnInit {
   // Método para obtener la URL completa de la imagen
   getImageUrl(photo: any): string {
     if (!photo || !photo.photoUrl) {
-      return 'assets/images/placeholder.png';
+      return 'assets/images/noImages.png';
     }
     return `${this.imageConfigService.imageBaseUrl}/${photo.photoUrl}`;
   }

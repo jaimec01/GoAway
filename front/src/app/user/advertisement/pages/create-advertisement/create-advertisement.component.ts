@@ -12,11 +12,12 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule],
 })
 export class CreateAdvertisementComponent {
-  @ViewChild('fileInput') fileInput: any; // Referencia al input de archivos
+  @ViewChild('fileInput') fileInput: any; 
   adForm: FormGroup;
   errorMessage: string = '';
   returnUrl: string = '/advertisements';
-  characterCount = 0; // Contador de caracteres
+  characterCount = 0; 
+  titleCharacterCount = 0;
   fileError: string = '';
   selectedFiles: File[] = [];
   isDragging: boolean = false;
@@ -59,6 +60,16 @@ export class CreateAdvertisementComponent {
         this.returnUrl = params['returnUrl'];
       }
     });
+
+    this.updateTitleCharacterCount();
+  }
+
+  /**
+   * Actualiza el contador de caracteres del título.
+   */
+  updateTitleCharacterCount(): void {
+    const title = this.adForm.get('title')?.value || '';
+    this.titleCharacterCount = title.length;
   }
 
   /**
@@ -167,7 +178,11 @@ export class CreateAdvertisementComponent {
         },
       });
     } else {
-      this.errorMessage = 'Por favor, completa todos los campos y selecciona al menos una imagen.';
+      if (this.adForm.get('price')?.value < 0) {
+        this.errorMessage = 'El precio debe ser positivo (0 o mayor).';
+      } else {
+        this.errorMessage = 'Por favor, completa todos los campos y selecciona al menos una imagen.';
+      }
     }
   }
 

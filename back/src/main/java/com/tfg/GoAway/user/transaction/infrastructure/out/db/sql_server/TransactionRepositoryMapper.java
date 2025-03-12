@@ -17,6 +17,8 @@ public class TransactionRepositoryMapper {
         entity.setOwnerEmail(transaction.getOwnerEmail());
         entity.setAdvertisement(advertisement);
         entity.setOwnerConfirmation(transaction.getOwnerConfirmation());
+        entity.setCreatedAt(transaction.getCreatedAt()); 
+        entity.setUpdatedAt(transaction.getUpdatedAt()); 
         return entity;
     }
 
@@ -32,6 +34,8 @@ public class TransactionRepositoryMapper {
                 .ownerEmail(entity.getOwnerEmail())
                 .advertisementId(entity.getAdvertisement().getId())
                 .ownerConfirmation(entity.getOwnerConfirmation())
+                .createdAt(entity.getCreatedAt()) 
+                .updatedAt(entity.getUpdatedAt()) 
                 .build();
     }
 }

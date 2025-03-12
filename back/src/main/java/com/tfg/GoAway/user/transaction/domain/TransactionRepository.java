@@ -10,7 +10,14 @@ public interface TransactionRepository {
     Optional<Transaction> findById(String transactionId);
 
     List<Transaction> findByOwnerEmail(String ownerEmail);
+
+    List<Transaction> findByOwnerEmailOrderByUpdatedAtDesc(String ownerEmail);
+
+    List<Transaction> findByOwnerEmailOrderByUpdatedAtAsc(String ownerEmail);
     
     List<Transaction> findByTenantEmail(String tenantEmail);
 
+    List<Transaction> findByTenantEmailOrderByUpdatedAtDesc(String tenantEmail);
+
+    List<Transaction> findByTenantEmailOrderByUpdatedAtAsc(String tenantEmail);
 }
