@@ -30,7 +30,7 @@ export class CreateTransactionComponent implements OnInit {
     this.transactionForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      totalPrice: [0, [Validators.required, Validators.min(0)]], // Permitir edición y validar que sea positivo
+      totalPrice: [0, [Validators.required, Validators.min(0)]], 
       paymentMethod: ['', Validators.required],
       advertisementId: ['']
     });
@@ -156,7 +156,12 @@ export class CreateTransactionComponent implements OnInit {
         },
       });
     } else {
-      this.errorMessage = "Por favor, corrige los errores en el formulario.";
+
+      if (this.transactionForm.get('totalPrice')?.value < 0) {
+        this.errorMessage = 'El precio debe ser positivo (0 o mayor).';
+      } else {
+        this.errorMessage = 'Por favor, corrige los errores en el formulario.';
+      }
     }
   }
 

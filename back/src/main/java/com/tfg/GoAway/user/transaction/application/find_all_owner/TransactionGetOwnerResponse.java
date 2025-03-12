@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.tfg.GoAway.user.transaction.domain.TransactionOwnerConfirmation;
 import com.tfg.GoAway.user.transaction.domain.TransactionStatus;
@@ -29,4 +30,8 @@ public class TransactionGetOwnerResponse {
     private final String advertisementId;
 
     private final TransactionOwnerConfirmation ownerConfirmation;
+    
+    private LocalDateTime createdAt;
+    
+    private LocalDateTime updatedAt; 
 }

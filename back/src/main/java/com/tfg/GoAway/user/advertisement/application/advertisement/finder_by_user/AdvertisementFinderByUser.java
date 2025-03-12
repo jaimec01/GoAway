@@ -19,10 +19,12 @@ public class AdvertisementFinderByUser {
     private final AdvertisementFinderByUserGetMapper mapper;
 
     public List<AdvertisementFinderByUserGetResponse> findByUser(String userEmail) {
-        
-        return advertisementRepository.findAll().stream()
-                .filter(advertisement -> userEmail.equals(advertisement.getUserEmail()))
+        List<AdvertisementFinderByUserGetResponse> advertisements = advertisementRepository
+                .findByUserEmailOrderByUpdatedAtDesc(userEmail) 
+                .stream()
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
+
+        return advertisements;
     }
 }

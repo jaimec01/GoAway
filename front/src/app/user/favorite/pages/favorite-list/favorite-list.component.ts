@@ -75,7 +75,7 @@ export class FavoriteListComponent implements OnInit {
   // Método para obtener la URL completa de la imagen
   getImageUrl(relativePath: string): string {
     if (!relativePath) {
-      return 'assets/images/placeholder.png'; // Imagen de placeholder si no hay ruta
+      return 'assets/images/noImages.png'; 
     }
     return `${this.imageConfigService.imageBaseUrl}/${relativePath}`;
   }

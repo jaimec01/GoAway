@@ -35,7 +35,10 @@
 
       <div class="input-group">
         <label for="totalPrice">Precio Total (Recomendado)(€)</label>
-        <input id="totalPrice" type="number" formControlName="totalPrice"/>
+        <input id="totalPrice" type="number" formControlName="totalPrice" />
+        <p *ngIf="transactionForm.get('totalPrice')?.invalid && transactionForm.get('totalPrice')?.touched && transactionForm.get('totalPrice')?.value < 0" class="error-message">
+          El precio debe ser positivo (0 o mayor).
+        </p>
       </div>
 
       <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>

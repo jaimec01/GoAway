@@ -22,7 +22,9 @@ interface Transaction {
   tenantEmail?: string;
   ownerEmail?: string;
   advertisementId: string;
-  advertisement?: Advertisement; 
+  advertisement?: Advertisement;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 @Component({
@@ -38,6 +40,7 @@ export class TransactionListComponent implements OnInit {
   loading = true;
   errorMessage = '';
   successMessage = '';
+  sortOrder: 'asc' | 'desc' = 'desc'; // Valor por defecto: más reciente primero
 
   // Estado del popup de contacto
   showContactPopup = false;
@@ -60,6 +63,32 @@ export class TransactionListComponent implements OnInit {
     return 'No has realizado ninguna solicitud de alquiler.';
   }
 
+  getConfirmationIcon(status: string): string {
+    switch (status) {
+      case 'ACCEPTED':
+        return 'assets/images/acceptedTransaction.png';
+      case 'PENDING':
+        return 'assets/images/pendingTransaction.png';
+      case 'REJECTED':
+        return 'assets/images/rejectTransaction.png';
+      default:
+        return 'assets/images/pendingTransaction.png'; // Por defecto
+    }
+  }
+
+  getConfirmationTooltip(status: string): string {
+    switch (status) {
+      case 'ACCEPTED':
+        return 'Transacción aceptada por el propietario';
+      case 'PENDING':
+        return 'Esperando confirmación del propietario';
+      case 'REJECTED':
+        return 'Transacción rechazada por el propietario';
+      default:
+        return 'Estado desconocido';
+    }
+  }
+
   setView(view: 'owner' | 'tenant'): void {
     this.isOwnerView = view === 'owner';
     this.fetchTransactions();
@@ -67,13 +96,14 @@ export class TransactionListComponent implements OnInit {
 
   fetchTransactions(): void {
     this.loading = true;
-    const endpoint = this.isOwnerView ? '/api/transactions/owner' : '/api/transactions/tenant';
+    const endpoint = this.isOwnerView 
+      ? `/api/transactions/owner?order=${this.sortOrder}` 
+      : `/api/transactions/tenant?order=${this.sortOrder}`;
   
     this.http.get<Transaction[]>(endpoint).subscribe({
       next: (data) => {
         this.transactions = data;
         this.loading = false;
-  
         this.transactions.forEach(transaction => {
           this.fetchAdvertisement(transaction);
         });
@@ -115,7 +145,7 @@ export class TransactionListComponent implements OnInit {
         console.log('✅ Transacción aceptada.');
         this.successMessage = '✅ Transacción aceptada correctamente.';
         this.errorMessage = '';
-        this.fetchTransactions(); // Recargar lista de transacciones
+        this.fetchTransactions();
       },
       error: (error) => {
         console.error('❌ Error al aceptar la transacción:', error);
@@ -143,7 +173,7 @@ export class TransactionListComponent implements OnInit {
         console.log('❌ Transacción rechazada.');
         this.successMessage = '❌ Transacción rechazada correctamente.';
         this.errorMessage = '';
-        this.fetchTransactions(); // Recargar lista de transacciones
+        this.fetchTransactions();
       },
       error: (error) => {
         console.error('❌ Error al rechazar la transacción:', error);
@@ -153,10 +183,38 @@ export class TransactionListComponent implements OnInit {
     });
   }
 
+  formatDateTime(dateTime?: string): string {
+    if (!dateTime) return 'No disponible';
+  
+    // Asegurarnos de que la fecha esté en formato UTC (agregar 'Z' si no está presente)
+    const utcDateString = dateTime.endsWith('Z') ? dateTime : `${dateTime}Z`;
+  
+    // Crear un objeto Date a partir de la cadena de fecha/hora en UTC
+    const date = new Date(utcDateString);
+  
+    // Verificar si la fecha es válida
+    if (isNaN(date.getTime())) {
+      return 'Fecha inválida';
+    }
+  
+    // Formatear la fecha y hora según la zona horaria de Madrid
+    const formatter = new Intl.DateTimeFormat('es-ES', {
+      timeZone: 'Europe/Madrid', // Zona horaria de Madrid
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false, // Usar formato de 24 horas
+    });
+  
+    return formatter.format(date);
+  }
+
   openContactPopup(transaction: Transaction): void {
     this.selectedTransaction = transaction;
-    this.contactMessage = ''; // Limpiar mensaje anterior
-    this.characterCount = 0; // Reiniciar contador de caracteres
+    this.contactMessage = '';
+    this.characterCount = 0;
     this.showContactPopup = true;
   }
 

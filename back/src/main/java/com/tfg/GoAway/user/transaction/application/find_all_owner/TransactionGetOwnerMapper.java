@@ -14,7 +14,9 @@ public class TransactionGetOwnerMapper {
                 transaction.getStatus(),
                 transaction.getTenantEmail(),
                 transaction.getAdvertisementId(),
-                transaction.getOwnerConfirmation()
+                transaction.getOwnerConfirmation(),
+                transaction.getCreatedAt(),
+                transaction.getUpdatedAt()
         );
     }
 }

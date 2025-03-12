@@ -15,9 +15,14 @@ public class TransactionGetByOwner {
 
     private final TransactionRepository transactionRepository;
 
-    public List<TransactionGetOwnerResponse> execute(String ownerEmail) {
-        List<Transaction> transactions = transactionRepository.findByOwnerEmail(ownerEmail);
-        
+    public List<TransactionGetOwnerResponse> execute(String ownerEmail, String order) {
+        List<Transaction> transactions;
+        if ("asc".equalsIgnoreCase(order)) {
+            transactions = transactionRepository.findByOwnerEmailOrderByUpdatedAtAsc(ownerEmail);
+        } else {
+            // Por defecto, orden descendente
+            transactions = transactionRepository.findByOwnerEmailOrderByUpdatedAtDesc(ownerEmail);
+        }
         return transactions.stream()
                 .map(TransactionGetOwnerMapper::toResponse)
                 .collect(Collectors.toList());

@@ -2,6 +2,8 @@ package com.tfg.GoAway.user.transaction.domain;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -32,6 +34,10 @@ public class Transaction {
     private final String advertisementId;
 
     private TransactionOwnerConfirmation ownerConfirmation;
+
+    private LocalDateTime createdAt;
+    
+    private LocalDateTime updatedAt; 
 
     @Override
     public boolean equals(Object obj) {

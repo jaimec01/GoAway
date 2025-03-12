@@ -17,19 +17,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Slf4j
 @Repository
 public class SqlServerTransactionRepository implements TransactionRepository {
 
     private final SqlServerJpaTransactionRepository repository;
-
     private final SqlServerJpaAdvertisementRepository advertisementRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public SqlServerTransactionRepository(SqlServerJpaTransactionRepository repository,  SqlServerJpaAdvertisementRepository advertisementRepository) {
+    public SqlServerTransactionRepository(SqlServerJpaTransactionRepository repository, SqlServerJpaAdvertisementRepository advertisementRepository) {
         this.repository = repository;
         this.advertisementRepository = advertisementRepository;
     }
@@ -57,12 +55,24 @@ public class SqlServerTransactionRepository implements TransactionRepository {
         return repository.findById(transactionId).map(TransactionRepositoryMapper::entityToTransaction);
     }
 
-    
     @Override
     public List<Transaction> findByOwnerEmail(String ownerEmail) {
-        TypedQuery<TransactionEntity> query = CustomTransactionRepositoryQueryBuilder.buildQueryForOwner(ownerEmail, entityManager);
-        List<TransactionEntity> transactionEntities = query.getResultList();
+        return findByOwnerEmailOrderByUpdatedAtDesc(ownerEmail); // Por defecto descendente
+    }
 
+    public List<Transaction> findByOwnerEmailOrderByUpdatedAtDesc(String ownerEmail) {
+        TypedQuery<TransactionEntity> query = CustomTransactionRepositoryQueryBuilder
+                .buildQueryForOwnerOrderByUpdatedAtDesc(ownerEmail, entityManager);
+        List<TransactionEntity> transactionEntities = query.getResultList();
+        return transactionEntities.stream()
+                .map(TransactionRepositoryMapper::entityToTransaction)
+                .collect(Collectors.toList());
+    }
+
+    public List<Transaction> findByOwnerEmailOrderByUpdatedAtAsc(String ownerEmail) {
+        TypedQuery<TransactionEntity> query = CustomTransactionRepositoryQueryBuilder
+                .buildQueryForOwnerOrderByUpdatedAtAsc(ownerEmail, entityManager);
+        List<TransactionEntity> transactionEntities = query.getResultList();
         return transactionEntities.stream()
                 .map(TransactionRepositoryMapper::entityToTransaction)
                 .collect(Collectors.toList());
@@ -70,14 +80,24 @@ public class SqlServerTransactionRepository implements TransactionRepository {
 
     @Override
     public List<Transaction> findByTenantEmail(String tenantEmail) {
-        TypedQuery<TransactionEntity> query = CustomTransactionRepositoryQueryBuilder.buildQueryForTenant(tenantEmail, entityManager);
-        List<TransactionEntity> transactionEntities = query.getResultList();
+        return findByTenantEmailOrderByUpdatedAtDesc(tenantEmail); // Por defecto descendente
+    }
 
+    public List<Transaction> findByTenantEmailOrderByUpdatedAtDesc(String tenantEmail) {
+        TypedQuery<TransactionEntity> query = CustomTransactionRepositoryQueryBuilder
+                .buildQueryForTenantOrderByUpdatedAtDesc(tenantEmail, entityManager);
+        List<TransactionEntity> transactionEntities = query.getResultList();
         return transactionEntities.stream()
                 .map(TransactionRepositoryMapper::entityToTransaction)
                 .collect(Collectors.toList());
     }
 
-
-
+    public List<Transaction> findByTenantEmailOrderByUpdatedAtAsc(String tenantEmail) {
+        TypedQuery<TransactionEntity> query = CustomTransactionRepositoryQueryBuilder
+                .buildQueryForTenantOrderByUpdatedAtAsc(tenantEmail, entityManager);
+        List<TransactionEntity> transactionEntities = query.getResultList();
+        return transactionEntities.stream()
+                .map(TransactionRepositoryMapper::entityToTransaction)
+                .collect(Collectors.toList());
+    }
 }

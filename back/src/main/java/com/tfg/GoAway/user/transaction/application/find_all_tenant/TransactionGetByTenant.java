@@ -15,9 +15,14 @@ public class TransactionGetByTenant {
 
     private final TransactionRepository transactionRepository;
 
-    public List<TransactionGetTenantResponse> execute(String tenantEmail) {
-        List<Transaction> transactions = transactionRepository.findByTenantEmail(tenantEmail);
-
+    public List<TransactionGetTenantResponse> execute(String tenantEmail, String order) {
+        List<Transaction> transactions;
+        if ("asc".equalsIgnoreCase(order)) {
+            transactions = transactionRepository.findByTenantEmailOrderByUpdatedAtAsc(tenantEmail);
+        } else {
+            // Por defecto, orden descendente
+            transactions = transactionRepository.findByTenantEmailOrderByUpdatedAtDesc(tenantEmail);
+        }
         return transactions.stream()
                 .map(TransactionGetTenantMapper::toResponse)
                 .collect(Collectors.toList());

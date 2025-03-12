@@ -15,7 +15,9 @@ public class TransactionGetTenantMapper {
                 transaction.getStatus(),
                 shouldShowOwnerEmail(transaction) ? transaction.getOwnerEmail() : null,
                 transaction.getAdvertisementId(),
-                transaction.getOwnerConfirmation()
+                transaction.getOwnerConfirmation(),
+                transaction.getCreatedAt(),
+                transaction.getUpdatedAt()
         );
     }
 

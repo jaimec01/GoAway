@@ -19,9 +19,10 @@ public class TransactionGetByTenantController {
     private final TransactionGetByTenant transactionGetByTenant;
 
     @GetMapping("/tenant")
-    public ResponseEntity<List<TransactionGetTenantResponse>> getTransactionsByOwner() {
-        String ownerEmail = SecurityUtils.getUserEmailFromContext();
-        List<TransactionGetTenantResponse> transactions = transactionGetByTenant.execute(ownerEmail);
+    public ResponseEntity<List<TransactionGetTenantResponse>> getTransactionsByTenant(
+            @RequestParam(name = "order", defaultValue = "desc") String order) {
+        String tenantEmail = SecurityUtils.getUserEmailFromContext();
+        List<TransactionGetTenantResponse> transactions = transactionGetByTenant.execute(tenantEmail, order);
         return ResponseEntity.ok(transactions);
     }
 }

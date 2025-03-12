@@ -21,6 +21,7 @@ export class ModifyAdvertisementComponent implements OnInit {
   advertisementId: string = '';
   returnUrl: string = '/advertisements/my-ads';
   characterCount: number = 0;
+  titleCharacterCount = 0;
   fileError: string = '';
   selectedFiles: File[] = [];
   isDragging: boolean = false;
@@ -61,7 +62,11 @@ export class ModifyAdvertisementComponent implements OnInit {
       price: [0, [Validators.required, Validators.min(0)]],
       active: [true],
     });
+
+    this.updateTitleCharacterCount();
+
   }
+
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -78,6 +83,12 @@ export class ModifyAdvertisementComponent implements OnInit {
     });
 
     this.adForm.get('description')?.valueChanges.subscribe(() => this.updateCharacterCount());
+  }
+
+
+  updateTitleCharacterCount(): void {
+    const title = this.adForm.get('title')?.value || '';
+    this.titleCharacterCount = title.length;
   }
 
   updateCharacterCount(): void {
@@ -285,6 +296,12 @@ export class ModifyAdvertisementComponent implements OnInit {
       }
     } else {
       console.warn("⚠️ Formulario inválido, revisa los campos.");
+      
+      if (this.adForm.get('price')?.value < 0) {
+        this.errorMessage = 'El precio debe ser positivo (0 o mayor).';
+      } else {
+        this.errorMessage = 'Por favor, completa todos los campos correctamente.';
+      }
     }
   }
 
@@ -293,8 +310,10 @@ export class ModifyAdvertisementComponent implements OnInit {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
+  
     const formData = new FormData();
+  
+    // Construir el objeto advertisementData
     const advertisementData = {
       id: this.advertisementId,
       title: this.adForm.get('title')?.value,
@@ -307,15 +326,20 @@ export class ModifyAdvertisementComponent implements OnInit {
         .filter(photo => !this.photosMarkedForDeletion.includes(photo.id))
         .map(photo => photo.id) // Enviar los IDs de las imágenes que queremos conservar
     };
+  
     console.log("📤 Enviando advertisementData:", advertisementData);
+  
+    // Agregar advertisementData como JSON al FormData
     formData.append('advertisement', new Blob([JSON.stringify(advertisementData)], {
       type: 'application/json',
     }));
-
+  
+    // Agregar las nuevas imágenes al FormData
     this.selectedFiles.forEach((file) => {
       formData.append('photos', file, file.name);
     });
-
+  
+    // Enviar la solicitud PUT al backend
     this.http.put(`/api/advertisements/${this.advertisementId}`, formData, { headers }).subscribe({
       next: () => {
         console.log("✅ Anuncio modificado correctamente.");
