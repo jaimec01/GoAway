@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.tfg.GoAway.user.transaction.domain.TransactionOwnerConfirmation;
-import com.tfg.GoAway.user.transaction.domain.TransactionStatus;
 
 @Getter
 @AllArgsConstructor
@@ -22,8 +21,6 @@ public class TransactionGetTenantResponse {
     private final Double totalPrice;
 
     private final String paymentMethod;
-
-    private final TransactionStatus status;
 
     private final String ownerEmail;
 

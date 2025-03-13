@@ -11,7 +11,6 @@ public class TransactionGetOwnerMapper {
                 transaction.getEndDate(),
                 transaction.getTotalPrice(),
                 transaction.getPaymentMethod(),
-                transaction.getStatus(),
                 transaction.getTenantEmail(),
                 transaction.getAdvertisementId(),
                 transaction.getOwnerConfirmation(),

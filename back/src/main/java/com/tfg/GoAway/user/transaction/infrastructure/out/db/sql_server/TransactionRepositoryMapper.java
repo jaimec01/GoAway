@@ -12,7 +12,6 @@ public class TransactionRepositoryMapper {
         entity.setEndDate(transaction.getEndDate());
         entity.setTotalPrice(transaction.getTotalPrice());
         entity.setPaymentMethod(transaction.getPaymentMethod());
-        entity.setStatus(transaction.getStatus());
         entity.setTenantEmail(transaction.getTenantEmail());
         entity.setOwnerEmail(transaction.getOwnerEmail());
         entity.setAdvertisement(advertisement);
@@ -29,7 +28,6 @@ public class TransactionRepositoryMapper {
                 .endDate(entity.getEndDate())
                 .totalPrice(entity.getTotalPrice())
                 .paymentMethod(entity.getPaymentMethod())
-                .status(entity.getStatus())
                 .tenantEmail(entity.getTenantEmail())
                 .ownerEmail(entity.getOwnerEmail())
                 .advertisementId(entity.getAdvertisement().getId())

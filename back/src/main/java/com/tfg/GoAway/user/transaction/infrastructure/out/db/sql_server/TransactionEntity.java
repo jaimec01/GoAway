@@ -6,8 +6,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.tfg.GoAway.user.advertisement.infrastructure.out.db.sql_server.AdvertisementEntity;
 import com.tfg.GoAway.user.transaction.domain.TransactionOwnerConfirmation;
-import com.tfg.GoAway.user.transaction.domain.TransactionStatus;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -33,10 +31,6 @@ public class TransactionEntity {
 
     @Column(name = "payment_method")
     private String paymentMethod;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private TransactionStatus status;
 
     @Column(name = "tenant_email", nullable = false)
     private String tenantEmail;

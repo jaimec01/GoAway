@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.tfg.GoAway.user.advertisement.domain.Advertisement;
 import com.tfg.GoAway.user.transaction.domain.Transaction;
 import com.tfg.GoAway.user.transaction.domain.TransactionOwnerConfirmation;
-import com.tfg.GoAway.user.transaction.domain.TransactionStatus;
 
 public class TransactionCreateMapper {
 
@@ -16,7 +15,6 @@ public class TransactionCreateMapper {
                 .endDate(record.getEndDate())
                 .totalPrice(record.getTotalPrice())
                 .paymentMethod(record.getPaymentMethod())
-                .status(TransactionStatus.PENDING) 
                 .tenantEmail(record.getTenantEmail()) 
                 .ownerEmail(advertisement.getUserEmail())
                 .advertisementId(advertisement.getId())

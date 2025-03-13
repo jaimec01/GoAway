@@ -25,8 +25,6 @@ public class Transaction {
 
     private String paymentMethod;
 
-    private TransactionStatus status;
-
     private String tenantEmail;
 
     private String ownerEmail;
