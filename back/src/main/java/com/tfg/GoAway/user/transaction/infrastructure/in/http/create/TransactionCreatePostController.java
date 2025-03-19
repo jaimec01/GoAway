@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfg.GoAway.user.shared.security.SecurityUtils;
+import com.tfg.GoAway.shared.security.SecurityUtils;
 import com.tfg.GoAway.user.transaction.application.create.TransactionCreate;
 import com.tfg.GoAway.user.transaction.application.create.TransactionCreateRecord;
 import com.tfg.GoAway.user.transaction.application.create.TransactionCreateResponse;

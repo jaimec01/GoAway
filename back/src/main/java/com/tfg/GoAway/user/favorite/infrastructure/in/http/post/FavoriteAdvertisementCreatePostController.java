@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tfg.GoAway.shared.security.SecurityUtils;
 import com.tfg.GoAway.user.favorite.domain.FavoriteAdvertisement;
 import com.tfg.GoAway.user.favorite.infrastructure.out.db.sql_server.SqlServerFavoriteAdvertisementRepository;
-import com.tfg.GoAway.user.shared.security.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 

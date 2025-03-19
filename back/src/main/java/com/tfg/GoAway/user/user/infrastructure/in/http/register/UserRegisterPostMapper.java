@@ -2,7 +2,7 @@ package com.tfg.GoAway.user.user.infrastructure.in.http.register;
 
 import org.springframework.stereotype.Component;
 
-import com.tfg.GoAway.user.shared.password.PasswordEncoderService;
+import com.tfg.GoAway.shared.password.PasswordEncoderService;
 import com.tfg.GoAway.user.user.domain.User;
 
 import lombok.RequiredArgsConstructor;

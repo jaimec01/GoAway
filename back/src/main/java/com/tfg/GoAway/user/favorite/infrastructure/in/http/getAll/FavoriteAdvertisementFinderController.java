@@ -3,9 +3,9 @@ package com.tfg.GoAway.user.favorite.infrastructure.in.http.getAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import com.tfg.GoAway.user.advertisement.application.advertisement.finder.AdvertisementFinderAllResponse;
+import com.tfg.GoAway.shared.security.SecurityUtils;
+import com.tfg.GoAway.user.advertisement.application.finder.AdvertisementFinderAllResponse;
 import com.tfg.GoAway.user.favorite.application.find_all.FavoriteAdvertisementFinder;
-import com.tfg.GoAway.user.shared.security.SecurityUtils;
 
 import java.util.List;
 

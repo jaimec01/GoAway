@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.math.BigInteger;
 import java.util.*;
 
-import com.tfg.GoAway.user.shared.password.PasswordEncoderService;
+import com.tfg.GoAway.shared.password.PasswordEncoderService;
 import com.tfg.GoAway.user.user.domain.User;
 
 import jakarta.persistence.Tuple;

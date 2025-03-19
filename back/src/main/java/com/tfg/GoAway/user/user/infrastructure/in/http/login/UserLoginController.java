@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfg.GoAway.user.shared.exception.CustomException;
-import com.tfg.GoAway.user.shared.password.PasswordEncoderService;
-import com.tfg.GoAway.user.shared.security.JwtTokenProvider;
+import com.tfg.GoAway.shared.exception.CustomException;
+import com.tfg.GoAway.shared.password.PasswordEncoderService;
+import com.tfg.GoAway.shared.security.JwtTokenProvider;
 import com.tfg.GoAway.user.user.domain.User;
 import com.tfg.GoAway.user.user.domain.UserRepository;
 

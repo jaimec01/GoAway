@@ -3,8 +3,8 @@ package com.tfg.GoAway.user.favorite.application.find_all;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.tfg.GoAway.user.advertisement.application.advertisement.finder.AdvertisementFinderAllMapper;
-import com.tfg.GoAway.user.advertisement.application.advertisement.finder.AdvertisementFinderAllResponse;
+import com.tfg.GoAway.user.advertisement.application.finder.AdvertisementFinderAllMapper;
+import com.tfg.GoAway.user.advertisement.application.finder.AdvertisementFinderAllResponse;
 import com.tfg.GoAway.user.advertisement.domain.Advertisement;
 import com.tfg.GoAway.user.favorite.domain.FavoriteAdvertisementRepository;
 

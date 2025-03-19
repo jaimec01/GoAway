@@ -3,7 +3,7 @@ package com.tfg.GoAway.user.transaction.infrastructure.in.http.update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.tfg.GoAway.user.shared.security.SecurityUtils;
+import com.tfg.GoAway.shared.security.SecurityUtils;
 import com.tfg.GoAway.user.transaction.application.update.TransactionUpdate;
 import com.tfg.GoAway.user.transaction.application.update.TransactionUpdateResponse;
 

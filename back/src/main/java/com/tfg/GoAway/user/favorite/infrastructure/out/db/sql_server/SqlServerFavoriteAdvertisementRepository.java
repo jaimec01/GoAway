@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.tfg.GoAway.shared.security.SecurityUtils;
 import com.tfg.GoAway.user.advertisement.domain.Advertisement;
 import com.tfg.GoAway.user.advertisement.infrastructure.out.db.sql_server.AdvertisementEntity;
 import com.tfg.GoAway.user.advertisement.infrastructure.out.db.sql_server.AdvertisementRepositoryMapper;
 import com.tfg.GoAway.user.favorite.domain.FavoriteAdvertisement;
 import com.tfg.GoAway.user.favorite.domain.FavoriteAdvertisementRepository;
-import com.tfg.GoAway.user.shared.security.SecurityUtils;
 
 @Slf4j
 @Repository

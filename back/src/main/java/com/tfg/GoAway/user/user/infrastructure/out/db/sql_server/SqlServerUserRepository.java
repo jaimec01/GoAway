@@ -2,7 +2,7 @@ package com.tfg.GoAway.user.user.infrastructure.out.db.sql_server;
 
 import org.springframework.stereotype.Repository;
 
-import com.tfg.GoAway.user.shared.password.PasswordEncoderService;
+import com.tfg.GoAway.shared.password.PasswordEncoderService;
 import com.tfg.GoAway.user.user.domain.User;
 import com.tfg.GoAway.user.user.domain.UserCriteria;
 import com.tfg.GoAway.user.user.domain.UserRepository;
