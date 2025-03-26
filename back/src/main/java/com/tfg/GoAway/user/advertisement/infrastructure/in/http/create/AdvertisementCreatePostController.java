@@ -26,11 +26,13 @@ public class AdvertisementCreatePostController {
     @PostMapping(consumes = "multipart/form-data") 
     public AdvertisementCreateResponse saveAdvertisement(
             @RequestPart("advertisement") AdvertisementCreatePostRequest request,
-            @RequestPart("photos") List<MultipartFile> photos) {
+            @RequestPart(value = "photos", required = false) List<MultipartFile> photos) {
 
         String userEmail = SecurityUtils.getUserEmailFromContext();
 
-        AdvertisementCreateRecord record = requestMapper.toRecord(request, userEmail, photos);
+        List<MultipartFile> photosToUse = (photos != null && !photos.isEmpty()) ? photos : null;
+
+        AdvertisementCreateRecord record = requestMapper.toRecord(request, userEmail, photosToUse);
 
         return advertisementCreate.execute(record);
     }

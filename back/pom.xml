@@ -3,21 +3,25 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.0</version>
         <relativePath />
     </parent>
+
     <groupId>com.tfg</groupId>
     <artifactId>GoAway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>GoAway</name>
     <description>TFG GoAway</description>
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
         <!-- Dependencias de Spring -->
         <dependency>
@@ -61,19 +65,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Pruebas -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter-test</artifactId>
-            <version>3.0.4</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -97,7 +88,6 @@
             <version>6.2.6.Final</version>
         </dependency>
 
-
         <!-- Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -105,12 +95,12 @@
             <version>28.0-jre</version>
         </dependency>
 
+        <!-- Seguridad -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
             <version>5.8.1</version>
         </dependency>
-
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -137,8 +127,38 @@
             <scope>provided</scope>
         </dependency>
 
-
+        <!-- 📌 Dependencias para TESTS -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter-test</artifactId>
+            <version>3.0.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.8.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.8.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <!-- Plugin de Spring Boot -->
@@ -155,13 +175,13 @@
                 </executions>
             </plugin>
 
-            <!-- Plugin para omitir pruebas -->
+            <!-- Plugin para manejar TESTS opcionalmente -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M8</version>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <skipTests>true</skipTests> <!-- Permite omitir tests en mvn install -->
                 </configuration>
             </plugin>
 

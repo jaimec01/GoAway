@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,25 +30,37 @@ public class AdvertisementCreate {
 
         // 3) Guardar en BD y obtener la entidad con ID
         Advertisement savedAd = advertisementRepository.save(advertisement);
-        String adId = savedAd.getId();  // YA no es null si tu DB genera ID
+        String adId = savedAd.getId();
 
-        // 4) Guardar las fotos en disco
-        List<MultipartFile> photosToStore = record.getPhotoUrls();  // del record
-        List<String> storedPaths = photoStorageService.storePhotos(
-                photosToStore,
-                record.getUserEmail(),
-                adId
-        );
+        // 4) Guardar las fotos en disco (si hay fotos)
+        List<String> storedPaths = new ArrayList<>();
+        List<MultipartFile> photosToStore = record.getPhotoUrls();
+
+        if (photosToStore != null && !photosToStore.isEmpty()) {
+            // Filtrar archivos vacíos
+            List<MultipartFile> validPhotos = photosToStore.stream()
+                .filter(photo -> photo != null && !photo.isEmpty())
+                .collect(Collectors.toList());
+
+            if (!validPhotos.isEmpty()) {
+                storedPaths = photoStorageService.storePhotos(
+                    validPhotos,
+                    record.getUserEmail(),
+                    adId
+                );
+            }
+        }
 
         // 5) Convertir rutas -> AdvertisementPhoto
         List<AdvertisementPhoto> photoList = storedPaths.stream()
-                .map(path -> AdvertisementPhoto.builder()
-                        .id(null)
-                        .advertisementId(adId)
-                        .userEmail(record.getUserEmail())
-                        .photoUrl(path)
-                        .build())
-                .collect(Collectors.toList());
+            .filter(path -> path != null && !path.trim().isEmpty()) // Filtrar paths vacíos
+            .map(path -> AdvertisementPhoto.builder()
+                .id(null)
+                .advertisementId(adId)
+                .userEmail(record.getUserEmail())
+                .photoUrl(path)
+                .build())
+            .collect(Collectors.toList());
 
         // 6) Asignar fotos a savedAd y volver a guardar
         savedAd.setPhotos(photoList);
@@ -55,8 +68,8 @@ public class AdvertisementCreate {
 
         // 7) Respuesta
         return new AdvertisementCreateResponse(
-                finalAd.getId(),
-                "Anuncio creado con éxito"
+            finalAd.getId(),
+            "Anuncio creado con éxito"
         );
     }
 
@@ -75,9 +88,6 @@ public class AdvertisementCreate {
         }
         if (record.getPrice() == null || record.getPrice() < 0) {
             throw new IllegalArgumentException("El precio no puede ser nulo ni negativo.");
-        }
-        if (record.getPhotoUrls() == null || record.getPhotoUrls().isEmpty()) {
-            throw new IllegalArgumentException("Debe proporcionar al menos una foto.");
         }
     }
 }
