@@ -12,11 +12,11 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule],
 })
 export class CreateAdvertisementComponent {
-  @ViewChild('fileInput') fileInput: any; 
+  @ViewChild('fileInput') fileInput: any;
   adForm: FormGroup;
   errorMessage: string = '';
   returnUrl: string = '/advertisements';
-  characterCount = 0; 
+  characterCount = 0;
   titleCharacterCount = 0;
   fileError: string = '';
   selectedFiles: File[] = [];
@@ -64,24 +64,18 @@ export class CreateAdvertisementComponent {
     this.updateTitleCharacterCount();
   }
 
-  /**
-   * Actualiza el contador de caracteres del título.
-   */
   updateTitleCharacterCount(): void {
     const title = this.adForm.get('title')?.value || '';
     this.titleCharacterCount = title.length;
   }
 
-  /**
-   * Actualiza el contador de caracteres de la descripción.
-   */
   updateCharacterCount(): void {
     const description = this.adForm.get('description')?.value || '';
     this.characterCount = description.length;
   }
 
   openFileInput(): void {
-    this.fileInput.nativeElement.click(); // Abre el explorador de archivos
+    this.fileInput.nativeElement.click();
   }
 
   onFileChange(event: any): void {
@@ -139,7 +133,8 @@ export class CreateAdvertisementComponent {
   }
 
   onSubmit(): void {
-    if (this.adForm.valid && this.selectedFiles.length > 0) {
+    // Solo verificamos que el formulario sea válido, las fotos son opcionales
+    if (this.adForm.valid) {
       const formData = new FormData();
 
       // Añadir los campos del formulario como un JSON
@@ -154,10 +149,12 @@ export class CreateAdvertisementComponent {
         type: 'application/json',
       }));
 
-      // Añadir las imágenes
-      this.selectedFiles.forEach((file) => {
-        formData.append('photos', file, file.name);
-      });
+      // Solo enviamos el campo photos si hay archivos seleccionados
+      if (this.selectedFiles.length > 0) {
+        this.selectedFiles.forEach((file) => {
+          formData.append('photos', file, file.name);
+        });
+      }
 
       const token = sessionStorage.getItem('token');
       if (!token) {
@@ -174,6 +171,7 @@ export class CreateAdvertisementComponent {
           this.router.navigateByUrl(this.returnUrl);
         },
         error: (error) => {
+          console.log('Error del backend:', error);
           this.errorMessage = error.error?.message || 'No se pudo crear el anuncio.';
         },
       });
@@ -181,7 +179,7 @@ export class CreateAdvertisementComponent {
       if (this.adForm.get('price')?.value < 0) {
         this.errorMessage = 'El precio debe ser positivo (0 o mayor).';
       } else {
-        this.errorMessage = 'Por favor, completa todos los campos y selecciona al menos una imagen.';
+        this.errorMessage = 'Por favor, completa todos los campos obligatorios.';
       }
     }
   }
