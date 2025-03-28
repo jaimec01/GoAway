@@ -55,30 +55,31 @@
   <div class="no-ads-message" *ngIf="!loading && !errorMessage && displayedAdvertisements.length === 0">
     <p>{{ noAdsMessage }}</p>
   </div>
-  
+
   <!-- Lista de anuncios -->
   <div class="advertisement-list" *ngIf="!loading && !errorMessage && displayedAdvertisements.length > 0">
     <div class="advertisement-card" *ngFor="let ad of displayedAdvertisements">
       <!-- Sección superior: Ícono de favorito -->
       <div class="favorite-section">
-        <img
-          class="favorite-icon"
+        <img class="favorite-icon"
           [src]="ad.isFavorite ? 'assets/images/favoritoActivado.png' : 'assets/images/favoritoDesactivado.png'"
-          (click)="toggleFavorite(ad.id)"
-          alt="Favorito"
-        />
+          (click)="toggleFavorite(ad.id)" alt="Favorito" />
       </div>
 
       <!-- Sección inferior: Contenido del anuncio -->
       <div class="content-section" (click)="onAdvertisementClick(ad.id)">
-        <img [src]="getImageUrl(ad.photoUrls && ad.photoUrls.length > 0 ? ad.photoUrls[0] : '')" alt="Imagen del anuncio" class="ad-image" />
+        <img [src]="(ad.photoUrls && ad.photoUrls.length > 0) 
+          ? getImageUrl(ad.photoUrls[0]) 
+          : 'assets/images/noImages.png'" alt="Imagen del anuncio" class="ad-image" />
         <h2>{{ ad.title }}</h2>
         <p class="description">{{ ad.description }}</p>
-        <p><strong>Categoría:</strong> {{ categoryTranslations[ad.advertisementCategory] || ad.advertisementCategory }}</p>
-        <p><strong>Condición:</strong> {{ conditionTranslations[ad.advertisementCondition] || ad.advertisementCondition }}</p>
+        <p><strong>Categoría:</strong> {{ categoryTranslations[ad.advertisementCategory] || ad.advertisementCategory }}
+        </p>
+        <p><strong>Condición:</strong> {{ conditionTranslations[ad.advertisementCondition] || ad.advertisementCondition
+          }}</p>
         <p><strong>Precio/mes:</strong> {{ ad.price }}€</p>
         <p><strong>Última modificación:</strong> {{ ad.updatedAt }}</p>
-        
+
         <!-- Botón de alquilar solo si el usuario está autenticado -->
         <button *ngIf="isAuthenticated" class="rent-button" (click)="onRentClick(ad.id)">Alquilar</button>
       </div>
