@@ -22,7 +22,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]], // 🔥 SIN restricciones de longitud 🔥
+      password: ['', [Validators.required]], 
     });
   }
 

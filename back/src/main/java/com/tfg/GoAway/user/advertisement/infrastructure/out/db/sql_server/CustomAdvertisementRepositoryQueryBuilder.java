@@ -296,7 +296,7 @@ public final class CustomAdvertisementRepositoryQueryBuilder {
             final String userEmail, final EntityManager entityManager) {
 
         StringBuilder queryString = new StringBuilder(Q_BASE);
-        queryString.append(Q_FILTER_ACTIVE);
+        //queryString.append(Q_FILTER_ACTIVE);
 
         if (userEmail != null) {
             queryString.append(Q_FILTER_USER_EMAIL);

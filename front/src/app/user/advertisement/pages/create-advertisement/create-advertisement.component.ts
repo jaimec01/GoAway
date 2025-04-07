@@ -132,12 +132,19 @@ export class CreateAdvertisementComponent {
     this.fileError = '';
   }
 
-  onSubmit(): void {
-    // Solo verificamos que el formulario sea válido, las fotos son opcionales
+  async onSubmit(): Promise<void> {
     if (this.adForm.valid) {
-      const formData = new FormData();
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        this.errorMessage = 'Error de autenticación. Inicia sesión.';
+        return;
+      }
 
-      // Añadir los campos del formulario como un JSON
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+
+      const formData = new FormData();
       const advertisementData = {
         title: this.adForm.get('title')?.value,
         description: this.adForm.get('description')?.value,
@@ -149,23 +156,21 @@ export class CreateAdvertisementComponent {
         type: 'application/json',
       }));
 
-      // Solo enviamos el campo photos si hay archivos seleccionados
+      // Comprimir y añadir imágenes si las hay
       if (this.selectedFiles.length > 0) {
-        this.selectedFiles.forEach((file) => {
-          formData.append('photos', file, file.name);
-        });
+        try {
+          const compressedFiles = await Promise.all(this.selectedFiles.map(file => this.compressImage(file)));
+          compressedFiles.forEach((file, i) => {
+            formData.append('photos', file, this.selectedFiles[i].name);
+          });
+        } catch (error) {
+          this.errorMessage = 'Error al comprimir las imágenes.';
+          console.error('Compression error:', error);
+          return;
+        }
       }
 
-      const token = sessionStorage.getItem('token');
-      if (!token) {
-        this.errorMessage = 'Error de autenticación. Inicia sesión.';
-        return;
-      }
-
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-
+      // Enviar una sola solicitud
       this.http.post('/api/advertisements', formData, { headers }).subscribe({
         next: () => {
           this.router.navigateByUrl(this.returnUrl);
@@ -186,5 +191,28 @@ export class CreateAdvertisementComponent {
 
   onCancel(): void {
     this.router.navigateByUrl(this.returnUrl);
+  }
+
+  compressImage(file: File): Promise<Blob> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800;
+          const scaleSize = MAX_WIDTH / img.width;
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+          }, 'image/jpeg', 0.7); // calidad 70%
+        };
+      };
+      reader.readAsDataURL(file);
+    });
   }
 }

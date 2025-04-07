@@ -13,6 +13,10 @@ public class UserRegisterPostResponse implements Serializable {
     
     private final String name;
 
+    private String token;
+
     private final String message;
+
+
 
 }
