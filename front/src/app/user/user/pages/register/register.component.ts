@@ -34,13 +34,20 @@ export class RegisterComponent {
 
       this.http.post('/auth/user/register', this.registerForm.value).subscribe({
         next: (response: any) => {
-          console.log('✅ Registro exitoso:', response);
+          console.log('✅ Registro exitoso, respuesta completa:', response);
 
-          // Guardar el token que el backend haya generado
+          // Verificar qué campos están disponibles
+          if (!response.token) {
+            console.error('⚠️ No se encontró "token" en la respuesta. Campos disponibles:', Object.keys(response));
+            this.errorMessage = 'Registro exitoso, pero no se recibió token. Inicia sesión manualmente.';
+            this.router.navigate(['/login']);
+            return;
+          }
+
           sessionStorage.setItem('token', response.token);
-
+          console.log('🟢 Token guardado:', sessionStorage.getItem('token'));
           console.log('🟢 Registro completado. Redirigiendo a la pantalla principal...');
-          this.router.navigate(['/']); // Redirigir directamente a la página principal
+          this.router.navigate(['/']);
         },
         error: (error) => {
           console.error('❌ Error en el registro:', error);
@@ -51,6 +58,6 @@ export class RegisterComponent {
   }
 
   onCancel(): void {
-    this.router.navigate(['/']); // Redirigir a la página principal si cancela el registro
+    this.router.navigate(['/']);
   }
 }
